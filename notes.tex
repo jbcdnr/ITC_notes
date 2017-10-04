@@ -1,0 +1,82 @@
+\documentclass{article}
+% General document formatting
+\usepackage[margin=0.7in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+
+\title{Information Theory and Coding - Prof.~Emere Telatar}
+\date{\today}
+\author{Jean-Baptiste Cordonnier, Sebastien Speierer}
+
+\begin{document}
+
+\maketitle
+
+\subsubsection{Markov chains}\label{markov-chains}
+
+For a Markov Chaine $A \to B \to C \to D$, the joint probability
+distribution of the RVs should be $p(a)p(b|a)p(c|b)p(d|c)$
+
+\begin{itemize}
+\item
+  The reverse of a MC is a MC
+\end{itemize}
+
+\paragraph{Kraft-sum}\label{kraft-sum}
+
+\textbf{Definition:} The Kraftsum of a code $C$ is
+$KS(C) = \sum_u 2^{-|C(u)|}$
+
+\begin{itemize}
+\item
+  if $C$ is prefix free then $KS(C) \leq 1$
+\item
+  if $C​$ is non singular, then $KS(C) \leq 1 + \min_u |C(u)|​$
+\item
+  $KS(C^n) = KS(C)^n$
+\end{itemize}
+
+\textbf{Theorem:} for any $U$ and associated $p(u)$ there exists a
+prefix free code $C$ s.t.
+
+\[E[|C(U)|] < 1 + \sum_{u\in U} p(u) \log \frac 1 {p(u)}\]
+
+\textbf{Theorem:} if $KS(C)\leq 1$ then there exists a prefix free
+code $C'$ such that $|C(u)| = |C'(u)|$ for all $u$
+
+\textbf{Corollar:} if $C$ is uniquely decodable, then there exists
+$C'$ that is prefix free with the same word lengths
+
+\paragraph{Entropy}\label{entropy}
+
+\textbf{Definition:} the entropy of a random variable $U$ is
+
+\[H(U) = \sum_{u\in U} p(u) \log \frac 1 {p(u)} = E_U\left[\log \frac 1 {p(u)}\right]\]
+
+\textbf{Theorem:} if $C$ is uniquely decodable then
+$E[|C(U)|] \geq H(U)$
+
+\paragraph{Properties of optimal prefix free
+codes}\label{properties-of-optimal-prefix-free-codes}
+
+\begin{enumerate}
+\item
+  $p(u) < p(v) \to |u| \geq |v|$
+\item
+  The two longest codewords have the same length
+\item
+  The 2 least probable letters are assigned codewords that differ in the
+  last bit
+\end{enumerate}
+
+\subsubsection{Hoffman algorithm}\label{hoffman-algorithm}
+
+\begin{itemize}
+\item
+  Combine the 2 least likely symbols
+\item
+  Sum their probability and assign it a new fictive symbol
+\item
+  Repeat
+\end{itemize}
+
+\end{document}
