@@ -7,6 +7,7 @@
 \usepackage{amsthm}
 \usepackage{cleveref}
 \usepackage{xcolor}
+\usepackage[toc,page]{appendix}
 
 \title{Information Theory and Coding - Prof.~Emere Telatar}
 \date{\today}
@@ -130,17 +131,6 @@ For $\X$ a set
 \end{definition}
 % ----------------------------------------
 % jb markdown
-
-
-\subsubsection{Markov chains}\label{markov-chains}
-
-For a Markov Chaine $A \to B \to C \to D$, the joint probability
-distribution of the RVs should be $p(a)p(b|a)p(c|b)p(d|c)$
-
-\begin{itemize}
-\item
-  The reverse of a MC is a MC
-\end{itemize}
 
 \paragraph{Kraft-sum}\label{kraft-sum}
 
@@ -318,5 +308,24 @@ We can apply the chain rule on the entropy as follow
     &=0
   \end{align*}
 \end{proof}
+
+\begin{appendices}
+\section{Markov chains}
+\label{appendix:markov-chains}
+
+$U_1 - U_2 - \dots - U_n$ forms a Markov chain if the joint probability
+distribution of the RVs is
+\[
+  p(a,b,c,d) = p(a)p(b|a)p(c|b)p(d|c)
+\]
+which is equivalent to $(U_1, \dots, U_{k-1})$ are independant of $(U_{k+1}, \dots, U_n)$ when conditionned on $U_k$ for any $k$.
+
+
+\begin{theorem}
+  The reverse of a MC is a MC
+\end{theorem}
+
+\end{appendices}
+
 
 \end{document}
