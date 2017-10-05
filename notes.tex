@@ -309,6 +309,74 @@ We can apply the chain rule on the entropy as follow
   \end{align*}
 \end{proof}
 
+
+\section{Data processing}
+
+\begin{theorem}
+  $U-V-W$ is a MC $\iff I(U;W|V) = 0$
+\end{theorem}
+
+\begin{corollary}
+  $I(U;V) \geq I(U;W)$ and by symetry of MC $I(W;V) \geq I(U;W)$
+\end{corollary}
+
+\begin{proof}
+  \[
+    I(U;VW) = I(U;V) + I(U;W|V) = I(U;V)
+  \]
+  and
+  \[
+    I(U;VW) = I(U;W) + I(U;V|W) \geq I(U;W)
+  \]
+\end{proof}
+
+\begin{theorem}
+  Given $U$ a RV taking values in $\U$ then $0 \leq H(U) \leq \log | \U |$. $H(U)=0$ iff $U$ is constant, $H(U)=\log | \U |$ iff $U$ is $p(u) = 1 / |\U|$ for all $u$.
+\end{theorem}
+
+\begin{proof}
+For the lower bound,
+  \[
+    H(U) = \sum_u \underbrace{p(u)}_{\geq 0} \underbrace{\log \frac 1 {p(u)}}_{\geq 0} \geq 0
+  \]
+For the upper bound,
+
+\begin{align*}
+  H(U) - \log | \U |
+  &= \sum_u p(u) \log \frac 1 {p(u)} - \sum_u p(u) \log |\U|\\
+  &= \frac 1 {\ln 2} \sum_u p(u) \ln \frac 1 {|\U | p(u)}\\
+  &\leq \frac 1 {\ln 2} \sum_u p(u) \left(\frac 1 {|\U | p(u)} - 1 \right)\\
+  &=\frac 1 {\ln 2} \left[ \sum_u \frac 1 {|\U |} - \sum_u p(u) \right]\\
+  &=0
+\end{align*}
+\end{proof}
+
+\begin{theorem}
+  $I(U;V) = 0 \iff U \bot V$
+\end{theorem}
+
+
+\begin{definition}[Entropy rate of a stochastic process]
+  $\lim_{n\to \infty} \frac 1 n H(U^n)$ if the limit exists.
+\end{definition}
+
+\begin{theorem}
+  For stationary stochastic process $U^n$, the sequences
+  \[
+    a_n = \frac 1 n H(U^n) \text{ and } b_n = H(U_n|U^{n-1})
+  \]
+  are positive and non increasing. Then $a=\lim_{n\to \infty} a_n$ and $b=\lim_{n\to \infty} b_n$ exists and $a=b$.
+\end{theorem}
+
+\begin{proof}
+  \todo{I didn't write the proof, Thomas can you write it ?}
+\end{proof}
+
+
+
+
+
+
 \begin{appendices}
 \section{Markov chains}
 \label{appendix:markov-chains}
@@ -324,6 +392,23 @@ which is equivalent to $(U_1, \dots, U_{k-1})$ are independant of $(U_{k+1}, \do
 \begin{theorem}
   The reverse of a MC is a MC
 \end{theorem}
+
+
+\section{Stochastic processes}
+\label{appendix:stoch-proc}
+
+A stochastic process is a collection $U_1, U_2 \dots U_n$ of RVs each taking values in $\U$. It is described by its joint probability
+\[
+  p(u^n) = P(U_1 \dots U_n = u_1 \dots u_n) = P(U^n = u^n)
+\]
+
+\begin{definition}[Stationary stochastic process]
+  A process $U_1, U_2, \dots$ is called stationary if for every $n$ and $k$ and $u_1 \dots u_n$, we have
+  \[
+    p(u^n) = p(U_1 \dots U_n = u_1 \dots u_n) = p(U_{1+k} \dots U_{n+k} = u_1 \dots u_n)
+  \]
+  In other words, the process is time shift invariant.
+\end{definition}
 
 \end{appendices}
 
