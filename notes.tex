@@ -48,6 +48,7 @@
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{definition}{Definition}[section]
+\newtheorem{notation}{Notation}
 
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
 
@@ -61,6 +62,8 @@
 \def\N{\mathcal{N}}
 \def\X{\mathcal{X}}
 \def\C{\mathcal{C}}
+
+\DeclareMathOperator{\E}{\mathbb{E}}% expected value
 
 
 \begin{document}
@@ -197,6 +200,9 @@ codes}\label{properties-of-optimal-prefix-free-codes}
   Repeat
 \end{itemize}
 
+\section{Entropy and mutual information}
+\label{sec:entropy}
+
 \begin{definition}[Joint entropy]
   Suppose $U, V$ are Random Variables with $p(u,v) = P(U=u, V=v)$, the joint entropy is
   \[
@@ -279,7 +285,8 @@ We can apply the chain rule on the entropy as follow
 \begin{definition}[Conditional mutual information]
   \begin{align*}
     I(U;V|W) &= H(U|W) - H(U|VW)\\
-    &= H(V|W) - H(V|UW)
+    &= H(V|W) - H(V|UW)\\
+    &= \E_{u,v,w} \left[ \log \frac {p(uv|w)} {p(u|w)p(v|w)} \right]
   \end{align*}
 \end{definition}
 
@@ -288,5 +295,28 @@ We can apply the chain rule on the entropy as follow
     I(V;U_1\dots U_n) = I(V;U_1) + I(V;U_2 | U_1) + \dots + I(V;U_n|U_1 \dots U_{n-1})
   \]
 \end{theorem}
+
+\begin{notation}
+  \[
+    U^n \triangleq (U_1, U_2, \dots U_n)
+  \]
+\end{notation}
+
+\begin{theorem}
+  \[
+    I(U;V |W) \geq 0
+  \]
+  equality iff conditioned on $w$, $u$ and $v$ are independant, that is iff $U-V-W$ is a Markov chain.
+\end{theorem}
+
+\begin{proof}
+  \begin{align*}
+    I(U;V|W) &= \frac 1 {\ln 2} \sum_{u,v,w} p(u,v,w) \ln \frac {p(u|w)p(v|w)} {p(uv | w)}\\
+    &\geq \frac 1 {\ln 2} \sum_{u,v,w} p(u,v,w) \left[ \frac {p(u|w)p(v|w)} {p(uv | w)} - 1 \right]\\
+    &=\frac 1 {\ln 2} \sum_{u,v,w}(p(w)p(u|w)p(v|w) - p(uvw))\\
+    &= \frac 1 {\ln 2}(1 - 1) \\
+    &=0
+  \end{align*}
+\end{proof}
 
 \end{document}
