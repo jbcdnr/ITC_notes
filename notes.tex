@@ -1,11 +1,12 @@
 \documentclass{article}
 % General document formatting
-\usepackage[margin=0.7in]{geometry}
+\usepackage[margin=1in]{geometry}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{amsthm}
 \usepackage{cleveref}
+\usepackage{xcolor}
 
 \title{Information Theory and Coding - Prof.~Emere Telatar}
 \date{\today}
@@ -21,31 +22,34 @@
 		    \hline\\
 			\textbf{Example~\theexample.}\\
 		    }
-		    { 
+		    {
 		    \\\hline
-	    \end{tabular} 
+	    \end{tabular}
     \end{center}
     }
 
 % define definition environments
-\newcounter{definition}[section]
-\newenvironment{definition}
-    {
-    \refstepcounter{definition}
-    \begin{center}
-	    \begin{tabular}{|p{0.8\textwidth}|}
-		    \hline\\
-			\textbf{Definition~\thedefinition.}\\
-		    }
-		    { 
-		    \\\hline
-	    \end{tabular} 
-    \end{center}
-    }
+% \newcounter{definition}[section]
+% \newenvironment{definition}
+%     {
+%     \refstepcounter{definition}
+%     \begin{center}
+% 	    \begin{tabular}{|p{0.8\textwidth}|}
+% 		    \hline\\
+% 			\textbf{Definition~\thedefinition.}\\
+% 		    }
+% 		    {
+% 		    \\\hline
+% 	    \end{tabular}
+%     \end{center}
+%     }
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}[section]
+
+\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
 
 % math bold
 \def\*#1{\mathbf{#1}}
@@ -80,7 +84,7 @@ For $\X$ a set
 \end{align*}
 
 \begin{definition}
-	A code $\C$ is called \textit{singular} if 
+	A code $\C$ is called \textit{singular} if
 	\begin{align*}
 		\exists (u, v) \in \U^2, u \neq v \quad s.t. \quad C(u) = C(v)
 	\end{align*}
@@ -88,9 +92,9 @@ For $\X$ a set
 \end{definition}
 
 \begin{definition}
-	A code $\C$ is called \textit{uniquily decodable} if 
+	A code $\C$ is called \textit{uniquily decodable} if
 	\begin{align*}
-		\forall u_1,...,u_n,v_1,...,v_n \in \U^* \quad s.t. \quad u_1,...,u_n \neq v_1,...,v_n 
+		\forall u_1,...,u_n,v_1,...,v_n \in \U^* \quad s.t. \quad u_1,...,u_n \neq v_1,...,v_n
 	\end{align*}
 	we have
 	\begin{align*}
@@ -192,5 +196,97 @@ codes}\label{properties-of-optimal-prefix-free-codes}
 \item
   Repeat
 \end{itemize}
+
+\begin{definition}[Joint entropy]
+  Suppose $U, V$ are Random Variables with $p(u,v) = P(U=u, V=v)$, the joint entropy is
+  \[
+    H(UV) = \sum_{u,v} p(u,v) \log \frac 1 {p(u,v)}
+  \]
+\end{definition}
+
+\begin{theorem}
+  \[
+    H(UV) \leq H(U) + H(V)
+  \]
+  with equality iff $U$ and $V$ are independants.
+\end{theorem}
+
+\begin{proof}
+  We want to show that
+  \begin{align*}
+    \sum_{u,v} p(u,v) \log \frac 1 {p(u,v)} \leq \sum_u p(u) \log \frac 1 {p(u)} + \sum_v p(v) \log \frac 1 {p(v)}
+    \iff \sum_{u,v} p(u,v) \log \frac {p(u)p(v)} {p(u,v)} \leq 0
+  \end{align*}
+  We use $\ln z \leq z - 1~\forall z$ (with equality iff $z=1$):
+  \begin{align*}
+    \sum_{u,v} p(u,v) \log \frac {p(u)p(v)} {p(u,v)} \leq \sum_{u,v} p(u,v) \left[ \frac {p(u)p(v)} {p(u, v)} - 1 \right] = \sum_{u,v} p(u)p(v) - \sum_{u,v} p(u,v) = 1 - 1 = 0
+  \end{align*}
+\end{proof}
+
+Same definitions of entropy holds for $n$ symbols.
+
+\begin{definition}[Joint Entropy]
+  Suppose $U_1, U_2, \dots, U_n$ are RVs and we are given $p(u_1 \dots u_n)$, the joint entropy is
+  \[
+    H(U_1, \dots, U_n) = \sum_{u_1 \dots u_n} p(u_1 \dots u_n) \log \frac 1 {p(u_1 \dots u_n)}
+  \]
+\end{definition}
+
+\begin{theorem}
+  \[
+    H(U_1, \dots, U_n) \leq \sum_{i=1}^n H(U_i)
+  \]
+  with equality iff $U$s are independants
+\end{theorem}
+
+\begin{corollary}
+  if $U_1, \dots, U_n$ are i.i.d. then $H(U_1 \dots U_n) = nH(U_1)$
+\end{corollary}
+
+\begin{definition}[Conditional entropy]
+  \[
+    H(U|V) = \sum_{u,v} p(u,v) \log \frac 1 {p(u|v)}
+  \]
+\end{definition}
+
+\begin{theorem}
+  \[
+    H(UV) = H(U) + H(V|U) = H(V) + H(U|V)
+  \]
+\end{theorem}
+
+\begin{theorem}
+  \[
+    H(U) + H(V) \geq H(U, V) = H(V) + H(U|V)
+  \]
+\end{theorem}
+
+\begin{definition}[Mutual information]
+  \begin{align*}
+  I(U;V) = I(V;U) &= H(U) - H(U|V)\\
+  &= H(V) - H(V|U)\\
+  &= H(U) + H(V) - H(UV)
+  \end{align*}
+\end{definition}
+
+We can apply the chain rule on the entropy as follow
+
+\[
+  H(U_1, U_2, \dots U_n) = H(U_1) + H(U_2|U_1) + \dots + H(U_n|U_1,U_2 \dots U_{n-1})
+\]
+
+
+\begin{definition}[Conditional mutual information]
+  \begin{align*}
+    I(U;V|W) &= H(U|W) - H(U|VW)\\
+    &= H(V|W) - H(V|UW)
+  \end{align*}
+\end{definition}
+
+\begin{theorem}
+  \[
+    I(V;U_1\dots U_n) = I(V;U_1) + I(V;U_2 | U_1) + \dots + I(V;U_n|U_1 \dots U_{n-1})
+  \]
+\end{theorem}
 
 \end{document}
