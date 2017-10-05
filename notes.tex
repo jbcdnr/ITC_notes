@@ -1,15 +1,129 @@
 \documentclass{article}
 % General document formatting
 \usepackage[margin=0.7in]{geometry}
-\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{cleveref}
 
 \title{Information Theory and Coding - Prof.~Emere Telatar}
 \date{\today}
-\author{Jean-Baptiste Cordonnier, Sebastien Speierer}
+\author{Jean-Baptiste Cordonnier, Sebastien Speierer, Thomas Batschelet}
+
+% define example environments
+\newcounter{example}[section]
+\newenvironment{example}
+    {
+    \refstepcounter{example}
+    \begin{center}
+	    \begin{tabular}{|p{0.8\textwidth}|}
+		    \hline\\
+			\textbf{Example~\theexample.}\\
+		    }
+		    { 
+		    \\\hline
+	    \end{tabular} 
+    \end{center}
+    }
+
+% define definition environments
+\newcounter{definition}[section]
+\newenvironment{definition}
+    {
+    \refstepcounter{definition}
+    \begin{center}
+	    \begin{tabular}{|p{0.8\textwidth}|}
+		    \hline\\
+			\textbf{Definition~\thedefinition.}\\
+		    }
+		    { 
+		    \\\hline
+	    \end{tabular} 
+    \end{center}
+    }
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+
+% math bold
+\def\*#1{\mathbf{#1}}
+% manuscript characters
+\def\D{\mathcal{D}}
+\def\V{\mathcal{V}}
+\def\L{\mathcal{L}}
+\def\U{\mathcal{U}}
+\def\N{\mathcal{N}}
+\def\X{\mathcal{X}}
+\def\C{\mathcal{C}}
+
 
 \begin{document}
 
 \maketitle
+
+
+\section{Data compression}
+
+Given an alphabet $\U$ (e.g. $\U = \{a, ..., z, A, ..., Z, ...\}$), we want to assign binary sequences to elements of $\U$, i.e.
+
+\begin{align*}
+	e: \U \rightarrow {0, 1}^* = \{\emptyset, 0, 1, 00, 01, ...\}
+\end{align*}
+
+For $\X$ a set
+
+\begin{align*}
+	\X^n &\equiv \{ (x_0 ... x_n), x_i \in \X\} \\
+	\X^* &\equiv \bigcup_{n \geq 0} \X^n
+\end{align*}
+
+\begin{definition}
+	A code $\C$ is called \textit{singular} if 
+	\begin{align*}
+		\exists (u, v) \in \U^2, u \neq v \quad s.t. \quad C(u) = C(v)
+	\end{align*}
+	Non singular code is defined as opposite
+\end{definition}
+
+\begin{definition}
+	A code $\C$ is called \textit{uniquily decodable} if 
+	\begin{align*}
+		\forall u_1,...,u_n,v_1,...,v_n \in \U^* \quad s.t. \quad u_1,...,u_n \neq v_1,...,v_n 
+	\end{align*}
+	we have
+	\begin{align*}
+		\C(u_1) \C(u_n) \neq \C(v_1) \C(v_n)
+	\end{align*}
+	i.e, $\C^*$ is non-singular
+\end{definition}
+
+\begin{definition}
+	Suppose $\C : \U \rightarrow \{ 0, 1\}^*$ and $\D : \V \rightarrow \{ 0, 1\}^*$ we can define
+
+	\begin{align*}
+		\C \times \D : \U \times \V \rightarrow \{0, 1\}^*
+	\end{align*}
+	as
+	\begin{align*}
+		(\C \times \D)(u, v) \rightarrow \C(u)\D(v)
+	\end{align*}
+\end{definition}
+
+\begin{definition}
+	Given $\C : \U \rightarrow \{ 0, 1\}^*$, define
+	\begin{align*}
+		\C^* : \U^* \rightarrow \{0, 1\}^*
+	\end{align*}
+	as
+	\begin{align*}
+		\C^*(u_1, u_n) = \C(u_1)...\C(u_n)
+	\end{align*}
+\end{definition}
+% ----------------------------------------
+% jb markdown
+
 
 \subsubsection{Markov chains}\label{markov-chains}
 
