@@ -49,6 +49,7 @@
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}{Proposition}[section]
 \newtheorem{notation}{Notation}
 
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
@@ -112,9 +113,7 @@ For $\X$ a set
 
 	\begin{align*}
 		\C \times \D : \U \times \V \rightarrow \{0, 1\}^*
-	\end{align*}
-	as
-	\begin{align*}
+		\quad \text{ as } \quad
 		(\C \times \D)(u, v) \rightarrow \C(u)\D(v)
 	\end{align*}
 \end{definition}
@@ -122,73 +121,205 @@ For $\X$ a set
 \begin{definition}
 	Given $\C : \U \rightarrow \{ 0, 1\}^*$, define
 	\begin{align*}
-		\C^* : \U^* \rightarrow \{0, 1\}^*
-	\end{align*}
-	as
-	\begin{align*}
+		\C^* : \U^* \rightarrow \{0, 1\}^* 
+		\quad \text{ as } \quad
 		\C^*(u_1, u_n) = \C(u_1)...\C(u_n)
 	\end{align*}
 \end{definition}
-% ----------------------------------------
-% jb markdown
 
-\paragraph{Kraft-sum}\label{kraft-sum}
+\begin{definition}
+	A code $\U \rightarrow \{0, 1\}^*$ is \textbf{prefix free} is for no $u \neq v$ $\C(u)$ is a prefix of $\C(v)$.
+\end{definition}
 
-\textbf{Definition:} The Kraftsum of a code $C$ is
-$KS(C) = \sum_u 2^{-|C(u)|}$
+\begin{theorem}
+	If $\C$ is prefix free then $\C$ is uniquely decodable.
+\end{theorem}
 
+
+\begin{definition}
+	\textbf{Kraft sum}: Given $\C : \U \rightarrow \{ 0, 1\}^*$
+	\begin{align*}
+		kraftsum(\C) = \sum 2^{length(\C(u))}
+	\end{align*}
+\end{definition}
+
+\begin{lemma}
+	if $\C : \U \rightarrow \{ 0, 1\}^*$ and $\D : \V \rightarrow \{ 0, 1\}^*$
+	then $kraftsum(\C \times \D) = kraftsum(\C)j \times kraftsum(\D)$
+	\begin{proof}
+    \begin{align*}
+      kraftsum(\C \times \D) &= \sum_{u, v} 2^{-(length(\C) * length(\D))} \\
+      &= \sum_u 2^{-length(\C)} \sum_v 2^{- length(\D)}
+    \end{align*}
+	\end{proof}
+\end{lemma}
+
+\begin{corollary}
+  $kraftsum(\C^n) = (kraftsum(\C))^n$
+\end{corollary}
+
+\begin{proposition}
+  if $\C$ is non-singular, then 
+  \begin{align*}
+    kraftsum(\C) \leq 1 + \max_n length(\C(u))
+  \end{align*}
+\end{proposition}
+
+\begin{theorem}
+  if $\C$ is uniquely decodable, then $kraftsum(\C) \leq 1$
+\end{theorem}
+
+\begin{proof}
+  $\C$ is uniquely decodable $\equiv$ $\C^*$ is non singular
+  \begin{align*}
+    &\Rightarrow kraftsum(\C^n) \leq 1 + \max _{u_1, ..., u_n} length(\C^n) \\
+    &\Rightarrow kraftsum(\C)^n \leq 1 + n L, \quad L = \max length(\C(n))
+  \end{align*}
+  A growing exp cannot be bounded by a linear function 
+  \begin{align*}
+    \Rightarrow kraftsum(\C) \leq 1
+  \end{align*}
+\end{proof}
+
+\begin{theorem}
+  Suppose $\C : \U \rightarrow \N$ is such that $\sum_u i^{\C(u)} \leq 1$, then, there exist a prefix-free code $\C: \U \rightarrow \{0, 1\}$ s.t. $\forall length(\C(u)) = \C(u)$
+\end{theorem}
+
+\begin{proof}
+  Let $\U = \{u_1, ..., u_n\}$ and $\C(u_1) \leq \C(u_2) \leq ... \leq \C(u_k) = \C_{max}$.
+  Consider the complete binary tree up to depth $\C_{max}$ initially all nodes are available to be used as codewords.
+  For $i = 1, 2, ..., n$, place $\C(u_i)$ at an available node at level $\C(u_i)$ remove all descendant of $\C(u_i)$ from the available list.
+
+  \begin{corollary}
+    Suppose $\C: \U \rightarrow \{0, 1\}^*$ is u.d., then there exist an $\C': \U \rightarrow \{0, 1\}^*$ which is prefix-free and $length(\C'(n)) = length(\C(n))$
+  \end{corollary}
+\end{proof}
+
+\begin{example}
+  $\U = \{a, b, c, d\}$, $\C: \{0, 01, 011, 111\}$ and $\C': \{0, 10, 110, 111\}$\\
+  In this case, decoding $\C$ may require delay, while decoding $\C'$ is instanteneous.
+\end{example}
+
+% -------------------------------------------------------------
+
+\section{Alphabet with statistics}
+
+Suppose we have an alphabet $\U$, and suppose we have a random variable $\U$ taking values in $\U$. We denote by $p(u) = Pr(U = u), u \in \U$ with $p(u) \geq 0$ and $\sum_u p(u) = 1$.\\
+
+Suppose we have a code $\C: \U \rightarrow \{0, 1\}^*$. We then have $\C(u)$ a random binary string and $length(\C(u))$ a random integer.
+
+\begin{example}
+  $\U = \{a, b, c, d\}$\\
+  $p: \{0.5, 0.25, 0.125, 0.125\}$ \\
+  $\C: \{0, 01, 110, 111\}$ \\
+
+  then we have
+  \begin{align*}
+    length(\C(u)) = 
+    \left\{
+      \begin{array}{l}      
+        1, \quad p = 0.5 \\
+        2, \quad p = 0.25 \\
+        3, \quad p = 0.125 + 0.125 + 0.25
+      \end{array}
+    \right.
+  \end{align*}
+\end{example}
+
+We can measure how efficient $\C$ represents $\U$ by considering
+\begin{align*}
+  E[length(\C(u))] = \sum_u p(u) \C(u) \quad \text{with} \quad \C(u) = length(\C(u))
+\end{align*}
+
+\begin{theorem}
+  if $\C$ is u.d., then 
+  \begin{align*}
+    E[length(\C(u))] \geq \sum_u p(u) \log(\frac{1}{p(u)})
+  \end{align*}
+\end{theorem}
+
+\begin{proof}
+  let $\C(u) = length(\C(u))$, we know $\sum_u 2^{-\C(u)} \leq 1$ because $\C$ is u.d.
+
+  \begin{align*}
+    E[length(\C(u))] &= \sum_u p(u) \C(u) = \sum_u p(u) \log_2(\frac{1}{q(u)}) \\
+    &\equiv \sum_u p(u) \log(\frac{q(u)}{p(u)}) \leq 0 \\
+    &\equiv \sum_u p(u) \ln(\frac{q(u)}{p(u)}) \leq 0 \\
+    &\leq \sum_u p(u) [\frac{q(u)}{p(u)} - 1]
+    = \underbrace{\sum_u q(u)}_{\leq 1} - \underbrace{\sum_u p(u)}_{=1} \leq 0
+  \end{align*}
+\end{proof}
+
+\begin{theorem}
+  For any $\U$, there exists a prefix-free code $\C$ s.t.
+  \begin{align*}
+    E[length(\C(u))] < 1 + \sum_{u \in \U} p(u) \log(\frac{1}{p(u)})
+  \end{align*}
+\end{theorem}
+\begin{proof}
+  Given $\U$, let 
+  \begin{align*}
+    &\C(u) = [\log(\frac{1}{p(u)})] < 1 + \log(\frac{1}{p(u)}) \\
+    &\Rightarrow \sum_u 2^{-\C(u)} \leq \sum_u p(u) = 1 \\
+    &\Rightarrow \sum_u p(u) \C(u) < \sum_u p(u) \log(\frac{1}{p(u)}) + \underbrace{1}_{\sum p(u)}
+  \end{align*}
+\end{proof}
+
+\begin{theorem}
+  The entropy of a RV $U \in \U$ is 
+  \begin{align*}
+    H(U) = \sum_{u \in \U} p(u) \log(\frac{1}{p(u)})
+  \end{align*}
+  with $p(u) = Pr(U = u)$
+\end{theorem}
+Note that $H(U)$ is a fonction of the distribution $\C_u(.)$ of the RV $U$, it isn't a function of $U$.
+
+\begin{align*}
+  H(U) = E[f(U)] \quad \text{where} \quad \log(\frac{1}{p(u)})
+\end{align*}
+
+How to design optimal codes (in the sense of minimizing $E[length(\C(u))]$)? \\
+Formally, given a random variable $U$, find $\C(u) \rightarrow \N$ s.t.
+\begin{align*}
+  \sum_{u \in U} 2^{\C(u)} \leq 1 
+\quad \text{that minimizes} \quad
+  \sum_{u \in U} p(u)\C(u)
+\end{align*}
+
+Properties of optimal prefix-free codes
 \begin{itemize}
-\item
-  if $C$ is prefix free then $KS(C) \leq 1$
-\item
-  if $C​$ is non singular, then $KS(C) \leq 1 + \min_u |C(u)|​$
-\item
-  $KS(C^n) = KS(C)^n$
+  \item if $p(u) < p(v)$ then $\C(u) \geq \C(v)$
+  \item The two longest codewords have the same length
+  \item There is an optimal code such that the two least probable letters are assigned codewords that differ in the last bit.
 \end{itemize}
 
-\textbf{Theorem:} for any $U$ and associated $p(u)$ there exists a
-prefix free code $C$ s.t.
+Observe that if $\C(u_1), ... , \C(u_{k-1}), \C(u_k)$ is a prefix-free collection of the property that
+\begin{align*}
+\left.
+\begin{array}{l l}
+  \C(u_{k-1}) &= \alpha 0 \\
+  \C(u_k)     &= \alpha 1 
+\end{array}
+\right.
+\quad \text{with} \quad \alpha \in \{ 0, 1\}^*
+\end{align*}
 
-\[E[|C(U)|] < 1 + \sum_{u\in U} p(u) \log \frac 1 {p(u)}\]
+then $\{\C(u_1), ..., \C(u_{k-2}, \alpha\}$ is also a prefix-free collection.
 
-\textbf{Theorem:} if $KS(C)\leq 1$ then there exists a prefix free
-code $C'$ such that $|C(u)| = |C'(u)|$ for all $u$
+Also
+\begin{align*}
+  \sum_{u \in \U} p(u) length(\C(u)) &= p(u_1) length(\C(u_1)) + ... +  p(u_{k-2}) length(\C(u_{k-2}))
+  + [p(u_{k-1}) + p(u_k)](length(\alpha) + 1) \\
+  &= (p(u_{k-1}) + p(u_k)) + \sum_{v \in \V} p(v) length(\C'(v))
+\end{align*}
 
-\textbf{Corollar:} if $C$ is uniquely decodable, then there exists
-$C'$ that is prefix free with the same word lengths
+So we have shown that with
+\begin{align*}
+  E[length(\C(U)] = p(u_{k-1}) + p(u_k) + E[length(\C'(v))]
+\end{align*}
+if $\C$ is optimal for $U$, then $\C'$ is optimal for $V$
 
-\paragraph{Entropy}\label{entropy}
-
-\textbf{Definition:} the entropy of a random variable $U$ is
-
-\[H(U) = \sum_{u\in U} p(u) \log \frac 1 {p(u)} = E_U\left[\log \frac 1 {p(u)}\right]\]
-
-\textbf{Theorem:} if $C$ is uniquely decodable then
-$E[|C(U)|] \geq H(U)$
-
-\paragraph{Properties of optimal prefix free
-codes}\label{properties-of-optimal-prefix-free-codes}
-
-\begin{enumerate}
-\item
-  $p(u) < p(v) \to |u| \geq |v|$
-\item
-  The two longest codewords have the same length
-\item
-  The 2 least probable letters are assigned codewords that differ in the
-  last bit
-\end{enumerate}
-
-\subsubsection{Hoffman algorithm}\label{hoffman-algorithm}
-
-\begin{itemize}
-\item
-  Combine the 2 least likely symbols
-\item
-  Sum their probability and assign it a new fictive symbol
-\item
-  Repeat
-\end{itemize}
+% -------------------------------------------------------------
 
 \section{Entropy and mutual information}
 \label{sec:entropy}
