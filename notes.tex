@@ -72,13 +72,16 @@
 
 \maketitle
 
-
 \section{Data compression}
+
+\begin{definition}[Information]
+  Abstractly, \textbf{information} can be thought of as the resolution of uncertainty.
+\end{definition}
 
 Given an alphabet $\U$ (e.g. $\U = \{a, ..., z, A, ..., Z, ...\}$), we want to assign binary sequences to elements of $\U$, i.e.
 
 \begin{align*}
-	e: \U \rightarrow {0, 1}^* = \{\emptyset, 0, 1, 00, 01, ...\}
+	\C: \U \rightarrow \{0, 1\}^* = \{\emptyset, 0, 1, 00, 01, ...\}
 \end{align*}
 
 For $\X$ a set
@@ -89,7 +92,7 @@ For $\X$ a set
 \end{align*}
 
 \begin{definition}
-	A code $\C$ is called \textit{singular} if
+	A code $\C$ is called \textbf{singular} if
 	\begin{align*}
 		\exists (u, v) \in \U^2, u \neq v \quad s.t. \quad C(u) = C(v)
 	\end{align*}
@@ -97,15 +100,15 @@ For $\X$ a set
 \end{definition}
 
 \begin{definition}
-	A code $\C$ is called \textit{uniquily decodable} if
+	A code $\C$ is called \textbf{uniquily decodable} if
 	\begin{align*}
 		\forall u_1,...,u_n,v_1,...,v_n \in \U^* \quad s.t. \quad u_1,...,u_n \neq v_1,...,v_n
 	\end{align*}
 	we have
 	\begin{align*}
-		\C(u_1) \C(u_n) \neq \C(v_1) \C(v_n)
+		\C(u_1)...\C(u_n) \neq \C(v_1)...\C(v_n)
 	\end{align*}
-	i.e, $\C^*$ is non-singular
+	i.e, $\C$ is non-singular
 \end{definition}
 
 \begin{definition}
@@ -128,28 +131,35 @@ For $\X$ a set
 \end{definition}
 
 \begin{definition}
-	A code $\U \rightarrow \{0, 1\}^*$ is \textbf{prefix free} is for no $u \neq v$ $\C(u)$ is a prefix of $\C(v)$.
+	A code $\U \rightarrow \{0, 1\}^*$ is \textbf{prefix-free} is for no $u \neq v$ $\C(u)$ is a prefix of $\C(v)$.
 \end{definition}
 
 \begin{theorem}
-	If $\C$ is prefix free then $\C$ is uniquely decodable.
+	If $\C$ is prefix-free then $\C$ is uniquely decodable.
 \end{theorem}
 
-
 \begin{definition}
-	\textbf{Kraft sum}: Given $\C : \U \rightarrow \{ 0, 1\}^*$
+  $l(\C(u))$ is the length of the code word $\C(u)$ and $l(\C)$ is the expected length of the code:
+  \begin{align*}
+    l(\C) = \sum_u l(\C(u)) p(u)
+  \end{align*}
+\end{definition}
+
+\begin{definition}[Kraft sum]
+  Given $\C : \U \rightarrow \{ 0, 1\}^*$
 	\begin{align*}
-		kraftsum(\C) = \sum 2^{length(\C(u))}
+		kraftsum(\C) = \sum_u 2^{l(\C(u))}
 	\end{align*}
 \end{definition}
 
 \begin{lemma}
 	if $\C : \U \rightarrow \{ 0, 1\}^*$ and $\D : \V \rightarrow \{ 0, 1\}^*$
-	then $kraftsum(\C \times \D) = kraftsum(\C)j \times kraftsum(\D)$
+	then 
+  $$kraftsum(\C \times \D) = kraftsum(\C) \times kraftsum(\D)$$
 	\begin{proof}
     \begin{align*}
-      kraftsum(\C \times \D) &= \sum_{u, v} 2^{-(length(\C) * length(\D))} \\
-      &= \sum_u 2^{-length(\C)} \sum_v 2^{- length(\D)}
+      kraftsum(\C \times \D) &= \sum_{u, v} 2^{-(l(\C) * l(\D))} \\
+      &= \sum_u 2^{-l(\C)} \sum_v 2^{- l(\D)}
     \end{align*}
 	\end{proof}
 \end{lemma}
@@ -161,10 +171,11 @@ For $\X$ a set
 \begin{proposition}
   if $\C$ is non-singular, then 
   \begin{align*}
-    kraftsum(\C) \leq 1 + \max_n length(\C(u))
+    kraftsum(\C) \leq 1 + \max_n l(\C(u))
   \end{align*}
 \end{proposition}
 
+In coding theory, the \textbf{Kraft-McMillan inequality} gives a necessary and sufficient condition for the existence of a uniquely decodable code for a given set of codeword lengths.
 \begin{theorem}
   if $\C$ is uniquely decodable, then $kraftsum(\C) \leq 1$
 \end{theorem}
@@ -172,8 +183,8 @@ For $\X$ a set
 \begin{proof}
   $\C$ is uniquely decodable $\equiv$ $\C^*$ is non singular
   \begin{align*}
-    &\Rightarrow kraftsum(\C^n) \leq 1 + \max _{u_1, ..., u_n} length(\C^n) \\
-    &\Rightarrow kraftsum(\C)^n \leq 1 + n L, \quad L = \max length(\C(n))
+    &\Rightarrow kraftsum(\C^n) \leq 1 + \max _{u_1, ..., u_n} l(\C^n) \\
+    &\Rightarrow kraftsum(\C)^n \leq 1 + n L, \quad L = \max l(\C(n))
   \end{align*}
   A growing exp cannot be bounded by a linear function 
   \begin{align*}
@@ -182,7 +193,7 @@ For $\X$ a set
 \end{proof}
 
 \begin{theorem}
-  Suppose $\C : \U \rightarrow \N$ is such that $\sum_u i^{\C(u)} \leq 1$, then, there exist a prefix-free code $\C: \U \rightarrow \{0, 1\}$ s.t. $\forall length(\C(u)) = \C(u)$
+  Suppose $\C : \U \rightarrow \N$ is such that $\sum_u i^{\C(u)} \leq 1$, then, there exist a prefix-free code $\C: \U \rightarrow \{0, 1\}$ s.t. $\forall l(\C(u)) = \C(u)$
 \end{theorem}
 
 \begin{proof}
@@ -191,7 +202,7 @@ For $\X$ a set
   For $i = 1, 2, ..., n$, place $\C(u_i)$ at an available node at level $\C(u_i)$ remove all descendant of $\C(u_i)$ from the available list.
 
   \begin{corollary}
-    Suppose $\C: \U \rightarrow \{0, 1\}^*$ is u.d., then there exist an $\C': \U \rightarrow \{0, 1\}^*$ which is prefix-free and $length(\C'(n)) = length(\C(n))$
+    Suppose $\C: \U \rightarrow \{0, 1\}^*$ is u.d., then there exist an $\C': \U \rightarrow \{0, 1\}^*$ which is prefix-free and $l(\C'(n)) = l(\C(n))$
   \end{corollary}
 \end{proof}
 
@@ -201,12 +212,12 @@ For $\X$ a set
 \end{example}
 
 % -------------------------------------------------------------
-
+\newpage
 \section{Alphabet with statistics}
 
 Suppose we have an alphabet $\U$, and suppose we have a random variable $\U$ taking values in $\U$. We denote by $p(u) = Pr(U = u), u \in \U$ with $p(u) \geq 0$ and $\sum_u p(u) = 1$.\\
 
-Suppose we have a code $\C: \U \rightarrow \{0, 1\}^*$. We then have $\C(u)$ a random binary string and $length(\C(u))$ a random integer.
+Suppose we have a code $\C: \U \rightarrow \{0, 1\}^*$. We then have $\C(u)$ a random binary string and $l(\C(u))$ a random integer.
 
 \begin{example}
   $\U = \{a, b, c, d\}$\\
@@ -215,7 +226,7 @@ Suppose we have a code $\C: \U \rightarrow \{0, 1\}^*$. We then have $\C(u)$ a r
 
   then we have
   \begin{align*}
-    length(\C(u)) = 
+    l(\C(u)) = 
     \left\{
       \begin{array}{l}      
         1, \quad p = 0.5 \\
@@ -228,21 +239,21 @@ Suppose we have a code $\C: \U \rightarrow \{0, 1\}^*$. We then have $\C(u)$ a r
 
 We can measure how efficient $\C$ represents $\U$ by considering
 \begin{align*}
-  E[length(\C(u))] = \sum_u p(u) \C(u) \quad \text{with} \quad \C(u) = length(\C(u))
+  E[l(\C(u))] = \sum_u p(u) \C(u) \quad \text{with} \quad \C(u) = l(\C(u))
 \end{align*}
 
 \begin{theorem}
   if $\C$ is u.d., then 
   \begin{align*}
-    E[length(\C(u))] \geq \sum_u p(u) \log(\frac{1}{p(u)})
+    E[l(\C(u))] \geq \sum_u p(u) \log(\frac{1}{p(u)})
   \end{align*}
 \end{theorem}
 
 \begin{proof}
-  let $\C(u) = length(\C(u))$, we know $\sum_u 2^{-\C(u)} \leq 1$ because $\C$ is u.d.
+  let $\C(u) = l(\C(u))$, we know $\sum_u 2^{-\C(u)} \leq 1$ because $\C$ is u.d.
 
   \begin{align*}
-    E[length(\C(u))] &= \sum_u p(u) \C(u) = \sum_u p(u) \log_2(\frac{1}{q(u)}) \\
+    E[l(\C(u))] &= \sum_u p(u) \C(u) = \sum_u p(u) \log_2(\frac{1}{q(u)}) \\
     &\equiv \sum_u p(u) \log(\frac{q(u)}{p(u)}) \leq 0 \\
     &\equiv \sum_u p(u) \ln(\frac{q(u)}{p(u)}) \leq 0 \\
     &\leq \sum_u p(u) [\frac{q(u)}{p(u)} - 1]
@@ -253,7 +264,7 @@ We can measure how efficient $\C$ represents $\U$ by considering
 \begin{theorem}
   For any $\U$, there exists a prefix-free code $\C$ s.t.
   \begin{align*}
-    E[length(\C(u))] < 1 + \sum_{u \in \U} p(u) \log(\frac{1}{p(u)})
+    E[l(\C(u))] < 1 + \sum_{u \in \U} p(u) \log(\frac{1}{p(u)})
   \end{align*}
 \end{theorem}
 \begin{proof}
@@ -265,20 +276,24 @@ We can measure how efficient $\C$ represents $\U$ by considering
   \end{align*}
 \end{proof}
 
+\begin{definition}[Entropy]
+  Entropy quantifies the amount of uncertainty involved in the value of a random variable or the outcome of a random process.
+\end{definition}
+
 \begin{theorem}
-  The entropy of a RV $U \in \U$ is 
+  The entropy of a random variable $U \in \U$ is 
   \begin{align*}
     H(U) = \sum_{u \in \U} p(u) \log(\frac{1}{p(u)})
   \end{align*}
   with $p(u) = Pr(U = u)$
 \end{theorem}
-Note that $H(U)$ is a fonction of the distribution $\C_u(.)$ of the RV $U$, it isn't a function of $U$.
+Note that $H(U)$ is a fonction of the distribution $\C_u(.)$ of the random variable $U$, it isn't a function of $U$.
 
 \begin{align*}
-  H(U) = E[f(U)] \quad \text{where} \quad \log(\frac{1}{p(u)})
+  H(U) = E[f(U)] \quad \text{where} \quad f(U) = \log(\frac{1}{p(u)})
 \end{align*}
 
-How to design optimal codes (in the sense of minimizing $E[length(\C(u))]$)? \\
+How to design optimal codes (in the sense of minimizing $E[l(\C(u))]$)? \\
 Formally, given a random variable $U$, find $\C(u) \rightarrow \N$ s.t.
 \begin{align*}
   \sum_{u \in U} 2^{\C(u)} \leq 1 
@@ -293,7 +308,7 @@ Properties of optimal prefix-free codes
   \item There is an optimal code such that the two least probable letters are assigned codewords that differ in the last bit.
 \end{itemize}
 
-Observe that if $\C(u_1), ... , \C(u_{k-1}), \C(u_k)$ is a prefix-free collection of the property that
+Observe that if $\{\C(u_1), ... , \C(u_{k-1}), \C(u_k)\}$ is a prefix-free collection of the property that
 \begin{align*}
 \left.
 \begin{array}{l l}
@@ -308,24 +323,24 @@ then $\{\C(u_1), ..., \C(u_{k-2}, \alpha\}$ is also a prefix-free collection.
 
 Also
 \begin{align*}
-  \sum_{u \in \U} p(u) length(\C(u)) &= p(u_1) length(\C(u_1)) + ... +  p(u_{k-2}) length(\C(u_{k-2}))
-  + [p(u_{k-1}) + p(u_k)](length(\alpha) + 1) \\
-  &= (p(u_{k-1}) + p(u_k)) + \sum_{v \in \V} p(v) length(\C'(v))
+  \sum_{u \in \U} p(u) l(\C(u)) &= p(u_1) l(\C(u_1)) + ... +  p(u_{k-2}) l(\C(u_{k-2}))
+  + [p(u_{k-1}) + p(u_k)](l(\alpha) + 1) \\
+  &= (p(u_{k-1}) + p(u_k)) + \sum_{v \in \V} p(v) l(\C'(v))
 \end{align*}
 
 So we have shown that with
 \begin{align*}
-  E[length(\C(U)] = p(u_{k-1}) + p(u_k) + E[length(\C'(v))]
+  E[l(\C(U)] = p(u_{k-1}) + p(u_k) + E[l(\C'(v))]
 \end{align*}
 if $\C$ is optimal for $U$, then $\C'$ is optimal for $V$
 
 % -------------------------------------------------------------
-
+\newpage
 \section{Entropy and mutual information}
 \label{sec:entropy}
 
 \begin{definition}[Joint entropy]
-  Suppose $U, V$ are Random Variables with $p(u,v) = P(U=u, V=v)$, the joint entropy is
+  Suppose $U, V$ are random variables with $p(u,v) = P(U=u, V=v)$, the joint entropy is
   \[
     H(UV) = \sum_{u,v} p(u,v) \log \frac 1 {p(u,v)}
   \]
@@ -389,6 +404,7 @@ Same definitions of entropy holds for $n$ symbols.
 \end{theorem}
 
 \begin{definition}[Mutual information]
+  Mutual information measures the amount of information that can be obtained about one random variable by observing another.
   \begin{align*}
   I(U;V) = I(V;U) &= H(U) - H(U|V)\\
   &= H(V) - H(V|U)\\
@@ -401,7 +417,6 @@ We can apply the chain rule on the entropy as follow
 \[
   H(U_1, U_2, \dots U_n) = H(U_1) + H(U_2|U_1) + \dots + H(U_n|U_1,U_2 \dots U_{n-1})
 \]
-
 
 \begin{definition}[Conditional mutual information]
   \begin{align*}
@@ -440,7 +455,8 @@ We can apply the chain rule on the entropy as follow
   \end{align*}
 \end{proof}
 
-
+% -----------------------------------------------------------------------
+\newpage
 \section{Data processing}
 
 \begin{theorem}
@@ -565,11 +581,11 @@ and by the "Lemma", whenever $b_n \rightarrow b$ , \space $a_n \rightarrow b$
     \end{align*}
     the expected number of bits / letter is given by
     \begin{align*}
-      \frac{1}{n} E[length(\C(\U^n))] \geq r
+      \frac{1}{n} E[l(\C(\U^n))] \geq r
     \end{align*}
     \item for any $\epsilon > 0$, there exists a source coding scheme $\C_n: \U^n \rightarrow \{0, 1\}^*$ s.t.
     \begin{align*}
-      \frac{1}{n} E[length(\C_n(\U^n))] < r + \epsilon
+      \frac{1}{n} E[l(\C_n(\U^n))] < r + \epsilon
     \end{align*}
   \end{enumerate}
 \end{theorem}
@@ -578,12 +594,12 @@ and by the "Lemma", whenever $b_n \rightarrow b$ , \space $a_n \rightarrow b$
   \begin{enumerate}
     \item we already know
     \begin{align*}
-      \frac{1}{n} E[length(\C_n(\U^n))] \geq \frac{1}{n} H(\U_1 ... \U_n)
+      \frac{1}{n} E[l(\C_n(\U^n))] \geq \frac{1}{n} H(\U_1 ... \U_n)
     \end{align*}
     and the right term is decreasing
     \item we also know that for each $n, \exists \C_n$ that is prefix-free s.t.
     \begin{align*}
-      E[length(\C_n(U^n))] < \underbrace{\frac{1}{n} H(\U^n)]}_{r} + \underbrace{\frac{1}{n}}_{0}
+      E[l(\C_n(U^n))] < \underbrace{\frac{1}{n} H(\U^n)]}_{r} + \underbrace{\frac{1}{n}}_{0}
     \end{align*}
     we can find $n$ large enough s.t. the RHS $< r + \epsilon$
   \end{enumerate}
@@ -632,7 +648,7 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
   \end{align*}
 \end{proof}
 
-\begin{definition}{Typical set}
+\begin{definition}[Typical set]
   \begin{align*}
     T(n, \epsilon, p) = \{ u^n \in U^n : u^n \text{ is } (\epsilon, p)\text{-typical}\}
   \end{align*}
@@ -664,6 +680,10 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
   TODO
 \end{proof}
 
+
+\begin{definition}[Kullback-Leiber divergence (information gain)]
+  If we compress data in a manner that assumes $q(u)$ is the distribution underlying some data, when, in reality, $p(u)$ is the correct distribution, the Kullback-Leiber divergence is the number of average additional bits per datum necessary for compression.
+\end{definition}
 
 % -------------------------------------------------------------------------
 
