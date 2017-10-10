@@ -500,7 +500,50 @@ For the upper bound,
 \end{theorem}
 
 \begin{proof}
-  \todo{I didn't write the proof, Thomas can you write it ?}
+\begin{align*}
+  b_{n+1}
+  &= H(U_{n+1}|U_1, U_2,\dots,U_n)\\
+  &\leq H(U_{n+1}|U_2,\dots,U_n)\\
+  &= H(U_n|U_1, U_2,\dots,U_{n-1})\\
+  &= b_n \text{ , because $U_1 \dots U_n \sim U_2 \dots U_{n+1}$ (Stationarity).}
+\end{align*}
+
+
+Hence, it is non-increasing.\\\\
+
+For the \{$a_n$\}, observe that
+
+\begin{align*}
+a_n = \frac{1}{n} H(U^n) 
+&= \frac{1}{n} \bigg[ H(U_1)+H(U_2|U_1)+H(U_3|U^2) +\dots+H(U_n|U^{n-1}) \bigg]\\
+&= \frac{1}{n} \bigg[ b_1+b_2+\dots+b_n\bigg]
+\end{align*}
+
+
+and by the "Lemma", whenever $b_n \rightarrow b$ , \space $a_n \rightarrow b$
+\end{proof}
+\begin{lemma}[Cesaro]
+	Suppose $b_n \rightarrow b$, \\\\
+	
+	then, 
+	\[
+	a_n = \frac{1}{n} \bigg[ b_1+b_2+\dots+b_n\bigg] \text{ also converges and to 1.}
+	\]
+\end{lemma}
+\begin{proof}
+	Since $b_n \rightarrow b$ , $\bigg( \equiv \forall \epsilon > 0$ , $\exists$ $n(\epsilon)$ s.t $ \forall n > n(\epsilon)$  $ |b_n-b| < \epsilon\bigg)$\\
+	
+	$\exists B $ s.t. $ |b_n| < B$ for all n.\\\\
+	Take $n > n_1(\epsilon) \triangleq \dots $ then
+	\[
+		|a_n-b| \leq \frac{|b_1-b|+|b_2-b|+|b_3-b|+\dots+|b_n-b|}{n}
+	\]
+	\[
+		\text{so  }  |a_n-b| \leq \frac{1}{n}\bigg[ \sum_{i=1}^{n_0(\epsilon)} \underbrace{|b_i-b|}_{2B}  + \sum_{i=n_0(\epsilon)+1}^{n} \underbrace{|b_i-b|}_{\leq \epsilon}\bigg] \leq \frac{n_0(\epsilon) 2B}{n} + \epsilon < 2\epsilon
+	\]
+	\[
+		\text{for } n>n_1(\epsilon) \triangleq \text{max, } \{ n_0(\epsilon) \frac{1}{\epsilon} n_0(\epsilon) 2B \}
+	\]
 \end{proof}
 
 
