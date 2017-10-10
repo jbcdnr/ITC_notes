@@ -548,9 +548,126 @@ and by the "Lemma", whenever $b_n \rightarrow b$ , \space $a_n \rightarrow b$
 
 
 
+% -------------------------------------------------------------------------
+% class 9.10.2017
+
+\begin{theorem}
+  Given a stationary process with entropy rate $r$:
+  \begin{align*}
+    r = \lim_{n \rightarrow \infty} \frac{1}{n} H(\U^n)
+  \end{align*}
+
+  then 
+  \begin{enumerate}
+    \item for every source coding scheme
+    \begin{align*}
+      \C_n: \U^n \rightarrow \{0, 1\}^*
+    \end{align*}
+    the expected number of bits / letter is given by
+    \begin{align*}
+      \frac{1}{n} E[length(\C(\U^n))] \geq r
+    \end{align*}
+    \item for any $\epsilon > 0$, there exists a source coding scheme $\C_n: \U^n \rightarrow \{0, 1\}^*$ s.t.
+    \begin{align*}
+      \frac{1}{n} E[length(\C_n(\U^n))] < r + \epsilon
+    \end{align*}
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}  
+  \begin{enumerate}
+    \item we already know
+    \begin{align*}
+      \frac{1}{n} E[length(\C_n(\U^n))] \geq \frac{1}{n} H(\U_1 ... \U_n)
+    \end{align*}
+    and the right term is decreasing
+    \item we also know that for each $n, \exists \C_n$ that is prefix-free s.t.
+    \begin{align*}
+      E[length(\C_n(U^n))] < \underbrace{\frac{1}{n} H(\U^n)]}_{r} + \underbrace{\frac{1}{n}}_{0}
+    \end{align*}
+    we can find $n$ large enough s.t. the RHS $< r + \epsilon$
+  \end{enumerate}
+\end{proof}
+
+\section{Typicality and typical set}
+
+Suppose we have a sequence $U_1, U_2, ...$ of i.i.d. random variables taking values in a n alphabet $\U$.
+Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\epsilon, p)$} if 
+\begin{align*}
+  p(u) (1 - \epsilon) 
+  \leq \frac{\# \text{ of times $u$ apperas in $u_1, ..., u_n$}}{n}
+  \leq p(u)(1+\epsilon)
+\end{align*}
+
+\begin{theorem}
+  $u^n$ is $(\epsilon, p)$-typical then
+  \begin{align*}
+    2^{-n H(u)(1 + \epsilon)}
+    \leq Pr(U^n = u^n)
+    \leq 2^{-n H(u)(1 + \epsilon)}
+  \end{align*}
+\end{theorem}
+
+\begin{proof}
+  \begin{align*}
+    Pr(U^n = u^n) &= \prod_{i=1}^n Pr(U_i = u_i) = \prod_{i=1}^n p(u_i) = \prod_{u \in U} p(u)^{\#_u}
+  \end{align*}
+  with $\#_u$ the number of times $u$ appears in $u_1, ..., u_n$ where
+  \begin{align*}
+    n (1-\epsilon) p(u) \leq \#_u \leq n(1+\epsilon)p(u)
+  \end{align*}
+  consequently
+  \begin{align*}
+    p(u)^(n p(u)(1-\epsilon)) \geq p(u)^{\#_u} \geq p(u)^{n p(u)(1+\epsilon)}
+  \end{align*}
+  then
+  \begin{align*}
+    (\prod_{n} p(u)^{p(u)})^{(1-\epsilon)n}
+    \geq Pr(U^n = u^n)
+    \geq (\prod_{n} p(u)^{p(u)})^{(1+\epsilon)n}
+  \end{align*}
+  but 
+  \begin{align*}
+    p(u)^{p(u)} = 2^{-p(u) \log(\frac{1}{p(u)})} \Rightarrow \prod p(u)^{p(u)} = 2^{-H(u)}
+  \end{align*}
+\end{proof}
+
+\begin{definition}{Typical set}
+  \begin{align*}
+    T(n, \epsilon, p) = \{ u^n \in U^n : u^n \text{ is } (\epsilon, p)\text{-typical}\}
+  \end{align*}
+\end{definition}
+
+\begin{theorem}
+  \begin{enumerate}
+    \item if $u^n \in T(n, \epsilon, p)$ then
+    \begin{align*}
+      p(u^n) = Pr(U^n = u^n) = 2^{-n H(u)(1 \pm \epsilon)}
+    \end{align*}  
+    when $U_i$ i.i.d.
+    \item 
+    \begin{align*}
+      \lim_{n \rightarrow \infty} Pr(U^n \in T(n, \epsilon, p)) = 1
+    \end{align*}
+    \item 
+    \begin{align*}
+      |T(n, \epsilon, p)| \leq 2^{n (H(u)(1 + \epsilon))}
+    \end{align*}
+    \item 
+    \begin{align*}
+      |T(n, \epsilon, p)| \geq (1-\epsilon) 2^{n H(u)(1-\epsilon)}
+    \end{align*}
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  TODO
+\end{proof}
 
 
+% -------------------------------------------------------------------------
 
+\newpage
 \begin{appendices}
 \section{Markov chains}
 \label{appendix:markov-chains}
