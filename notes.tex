@@ -5,6 +5,7 @@
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{amsthm}
+\usepackage{mathrsfs}
 \usepackage{cleveref}
 \usepackage{xcolor}
 \usepackage[toc,page]{appendix}
@@ -14,20 +15,20 @@
 \author{Jean-Baptiste Cordonnier, Sebastien Speierer, Thomas Batschelet}
 
 % define example environments
-\newcounter{example}[section]
-\newenvironment{example}
-    {
-    \refstepcounter{example}
-    \begin{center}
-	    \begin{tabular}{|p{0.8\textwidth}|}
-		    \hline\\
-			\textbf{Example~\theexample.}\\
-		    }
-		    {
-		    \\\hline
-	    \end{tabular}
-    \end{center}
-    }
+% \newcounter{example}[section]
+% \newenvironment{example}
+%     {
+%     \refstepcounter{example}
+%     \begin{center}
+% 	    \begin{tabular}{|p{0.8\textwidth}|}
+% 		    \hline\\
+% 			\textbf{Example~\theexample.}\\
+% 		    }
+% 		    {
+% 		    \\\hline
+% 	    \end{tabular}
+%     \end{center}
+%     }
 
 % define definition environments
 % \newcounter{definition}[section]
@@ -51,8 +52,12 @@
 \newtheorem{definition}{Definition}[section]
 \newtheorem{proposition}{Proposition}[section]
 \newtheorem{notation}{Notation}
+\newtheorem{example}{Example}
 
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
+\renewcommand{\Pr}[1]{Pr\left\{#1\right\}}
+\newcommand{\Ex}[1]{E\left[#1\right]}
+\newcommand{\pfrac}[2]{\left( \frac{#1}{#2} \right)}
 
 % math bold
 \def\*#1{\mathbf{#1}}
@@ -63,7 +68,8 @@
 \def\U{\mathcal{U}}
 \def\N{\mathcal{N}}
 \def\X{\mathcal{X}}
-\def\C{\mathcal{C}}
+
+\def\C{\mathscr{C}}
 
 \DeclareMathOperator{\E}{\mathbb{E}}% expected value
 
@@ -124,7 +130,7 @@ For $\X$ a set
 \begin{definition}
 	Given $\C : \U \rightarrow \{ 0, 1\}^*$, define
 	\begin{align*}
-		\C^* : \U^* \rightarrow \{0, 1\}^* 
+		\C^* : \U^* \rightarrow \{0, 1\}^*
 		\quad \text{ as } \quad
 		\C^*(u_1, u_n) = \C(u_1)...\C(u_n)
 	\end{align*}
@@ -154,7 +160,7 @@ For $\X$ a set
 
 \begin{lemma}
 	if $\C : \U \rightarrow \{ 0, 1\}^*$ and $\D : \V \rightarrow \{ 0, 1\}^*$
-	then 
+	then
   $$kraftsum(\C \times \D) = kraftsum(\C) \times kraftsum(\D)$$
 	\begin{proof}
     \begin{align*}
@@ -169,7 +175,7 @@ For $\X$ a set
 \end{corollary}
 
 \begin{proposition}
-  if $\C$ is non-singular, then 
+  if $\C$ is non-singular, then
   \begin{align*}
     kraftsum(\C) \leq 1 + \max_n l(\C(u))
   \end{align*}
@@ -186,7 +192,7 @@ In coding theory, the \textbf{Kraft-McMillan inequality} gives a necessary and s
     &\Rightarrow kraftsum(\C^n) \leq 1 + \max _{u_1, ..., u_n} l(\C^n) \\
     &\Rightarrow kraftsum(\C)^n \leq 1 + n L, \quad L = \max l(\C(n))
   \end{align*}
-  A growing exp cannot be bounded by a linear function 
+  A growing exp cannot be bounded by a linear function
   \begin{align*}
     \Rightarrow kraftsum(\C) \leq 1
   \end{align*}
@@ -226,9 +232,9 @@ Suppose we have a code $\C: \U \rightarrow \{0, 1\}^*$. We then have $\C(u)$ a r
 
   then we have
   \begin{align*}
-    l(\C(u)) = 
+    l(\C(u)) =
     \left\{
-      \begin{array}{l}      
+      \begin{array}{l}
         1, \quad p = 0.5 \\
         2, \quad p = 0.25 \\
         3, \quad p = 0.125 + 0.125 + 0.25
@@ -243,7 +249,7 @@ We can measure how efficient $\C$ represents $\U$ by considering
 \end{align*}
 
 \begin{theorem}
-  if $\C$ is u.d., then 
+  if $\C$ is u.d., then
   \begin{align*}
     E[l(\C(u))] \geq \sum_u p(u) \log(\frac{1}{p(u)})
   \end{align*}
@@ -268,7 +274,7 @@ We can measure how efficient $\C$ represents $\U$ by considering
   \end{align*}
 \end{theorem}
 \begin{proof}
-  Given $\U$, let 
+  Given $\U$, let
   \begin{align*}
     &\C(u) = [\log(\frac{1}{p(u)})] < 1 + \log(\frac{1}{p(u)}) \\
     &\Rightarrow \sum_u 2^{-\C(u)} \leq \sum_u p(u) = 1 \\
@@ -281,7 +287,7 @@ We can measure how efficient $\C$ represents $\U$ by considering
 \end{definition}
 
 \begin{theorem}
-  The entropy of a random variable $U \in \U$ is 
+  The entropy of a random variable $U \in \U$ is
   \begin{align*}
     H(U) = \sum_{u \in \U} p(u) \log(\frac{1}{p(u)})
   \end{align*}
@@ -296,7 +302,7 @@ Note that $H(U)$ is a fonction of the distribution $\C_u(.)$ of the random varia
 How to design optimal codes (in the sense of minimizing $E[l(\C(u))]$)? \\
 Formally, given a random variable $U$, find $\C(u) \rightarrow \N$ s.t.
 \begin{align*}
-  \sum_{u \in U} 2^{\C(u)} \leq 1 
+  \sum_{u \in U} 2^{\C(u)} \leq 1
 \quad \text{that minimizes} \quad
   \sum_{u \in U} p(u)\C(u)
 \end{align*}
@@ -313,7 +319,7 @@ Observe that if $\{\C(u_1), ... , \C(u_{k-1}), \C(u_k)\}$ is a prefix-free colle
 \left.
 \begin{array}{l l}
   \C(u_{k-1}) &= \alpha 0 \\
-  \C(u_k)     &= \alpha 1 
+  \C(u_k)     &= \alpha 1
 \end{array}
 \right.
 \quad \text{with} \quad \alpha \in \{ 0, 1\}^*
@@ -530,7 +536,7 @@ Hence, it is non-increasing.\\\\
 For the \{$a_n$\}, observe that
 
 \begin{align*}
-a_n = \frac{1}{n} H(U^n) 
+a_n = \frac{1}{n} H(U^n)
 &= \frac{1}{n} \bigg[ H(U_1)+H(U_2|U_1)+H(U_3|U^2) +\dots+H(U_n|U^{n-1}) \bigg]\\
 &= \frac{1}{n} \bigg[ b_1+b_2+\dots+b_n\bigg]
 \end{align*}
@@ -540,15 +546,15 @@ and by the "Lemma", whenever $b_n \rightarrow b$ , \space $a_n \rightarrow b$
 \end{proof}
 \begin{lemma}[Cesaro]
 	Suppose $b_n \rightarrow b$, \\\\
-	
-	then, 
+
+	then,
 	\[
 	a_n = \frac{1}{n} \bigg[ b_1+b_2+\dots+b_n\bigg] \text{ also converges and to 1.}
 	\]
 \end{lemma}
 \begin{proof}
 	Since $b_n \rightarrow b$ , $\bigg( \equiv \forall \epsilon > 0$ , $\exists$ $n(\epsilon)$ s.t $ \forall n > n(\epsilon)$  $ |b_n-b| < \epsilon\bigg)$\\
-	
+
 	$\exists B $ s.t. $ |b_n| < B$ for all n.\\\\
 	Take $n > n_1(\epsilon) \triangleq \dots $ then
 	\[
@@ -573,7 +579,7 @@ and by the "Lemma", whenever $b_n \rightarrow b$ , \space $a_n \rightarrow b$
     r = \lim_{n \rightarrow \infty} \frac{1}{n} H(\U^n)
   \end{align*}
 
-  then 
+  then
   \begin{enumerate}
     \item for every source coding scheme
     \begin{align*}
@@ -590,7 +596,7 @@ and by the "Lemma", whenever $b_n \rightarrow b$ , \space $a_n \rightarrow b$
   \end{enumerate}
 \end{theorem}
 
-\begin{proof}  
+\begin{proof}
   \begin{enumerate}
     \item we already know
     \begin{align*}
@@ -608,9 +614,9 @@ and by the "Lemma", whenever $b_n \rightarrow b$ , \space $a_n \rightarrow b$
 \section{Typicality and typical set}
 
 Suppose we have a sequence $U_1, U_2, ...$ of i.i.d. random variables taking values in a n alphabet $\U$.
-Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\epsilon, p)$} if 
+Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\epsilon, p)$} if
 \begin{align*}
-  p(u) (1 - \epsilon) 
+  p(u) (1 - \epsilon)
   \leq \frac{\# \text{ of times $u$ apperas in $u_1, ..., u_n$}}{n}
   \leq p(u)(1+\epsilon)
 \end{align*}
@@ -642,7 +648,7 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
     \geq Pr(U^n = u^n)
     \geq (\prod_{n} p(u)^{p(u)})^{(1+\epsilon)n}
   \end{align*}
-  but 
+  but
   \begin{align*}
     p(u)^{p(u)} = 2^{-p(u) \log(\frac{1}{p(u)})} \Rightarrow \prod p(u)^{p(u)} = 2^{-H(u)}
   \end{align*}
@@ -659,17 +665,17 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
     \item if $u^n \in T(n, \epsilon, p)$ then
     \begin{align*}
       p(u^n) = Pr(U^n = u^n) = 2^{-n H(u)(1 \pm \epsilon)}
-    \end{align*}  
+    \end{align*}
     when $U_i$ i.i.d.
-    \item 
+    \item
     \begin{align*}
       \lim_{n \rightarrow \infty} Pr(U^n \in T(n, \epsilon, p)) = 1
     \end{align*}
-    \item 
+    \item
     \begin{align*}
       |T(n, \epsilon, p)| \leq 2^{n (H(u)(1 + \epsilon))}
     \end{align*}
-    \item 
+    \item
     \begin{align*}
       |T(n, \epsilon, p)| \geq (1-\epsilon) 2^{n H(u)(1-\epsilon)}
     \end{align*}
@@ -677,13 +683,180 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
 \end{theorem}
 
 \begin{proof}
-  TODO
+  \todo{}
 \end{proof}
 
 
 \begin{definition}[Kullback-Leiber divergence (information gain)]
   If we compress data in a manner that assumes $q(u)$ is the distribution underlying some data, when, in reality, $p(u)$ is the correct distribution, the Kullback-Leiber divergence is the number of average additional bits per datum necessary for compression.
 \end{definition}
+
+
+% ----------------------------- %
+% ---- lecture 2017-10-10 ----- %
+% ------------ jb ------------- %
+% ----------------------------- %
+
+\begin{lemma}
+  if $U_1 \dots U_n$ are i.i.d. with distribution $q$ and $u_1 \dots u_n$ is $(\epsilon, p)$-tipycal, then
+
+  \begin{align*}
+    \Pr{U^n = u^n}
+    &= \left[ \prod q(u)^{p(u)}\right]^{n (1 + \epsilon)} \\
+    &= 2^{-n(1\pm \epsilon)} \sum_u p(u) \log \frac 1 {q(u)}
+  \end{align*}
+\end{lemma}
+
+$U_1, U_2, ...$ iid $\sim p$
+
+$\Pr{U^n \in T(n, \epsilon, p)} \to 1$ as $n\to \infty$
+
+\[
+  (1-\epsilon)2^{nH(U)(1-\epsilon) \leq | T(n, \epsilon, p) | \leq 2^{nH(U)(1+\epsilon)}}
+\]
+
+Suppose $U_1 \dots U_n$ are iid following $q$ and $u^n \in T(n, \epsilon, p)$
+
+Observe:
+
+\[
+  \left[ \prod_u q(u)^{p(u)} \right]^{n(1+\epsilon)} \leq \Pr{U^n = u^n} \leq  \left[ \prod_u q(u)^{p(u)} \right]^{n(1-\epsilon)}
+\]
+
+and
+\[
+  \prod_u q(u)^{p(u)} = 2^{-\sum p(u) \log \frac 1 {q(u)}}
+\]
+
+\[
+  \sum_u p(u) \log \frac 1 {q(u)} =
+  \underbrace{\sum_u p(u) \log \frac 1 {p(u)}}_{H(p)} +
+  \underbrace{\sum_u p(u) \log \frac {p(u)} {q(u)}}_{D(p||q)}
+\]
+
+Corollary of the observation: \todo{corolary tag}
+
+\begin{theorem}
+  if $U_1 \dots U_n$ are i.i.d. following distribution $q$, then
+  \[
+    2^{-n[(1+\epsilon)D(p||q)+2\epsilon H(p)]}
+    \leq
+    \Pr{U^n \in T(n,\epsilon,p)}
+    \leq
+    2^{-n[(1-\epsilon)D(p||q) - 2\epsilon H(p)]}
+  \]
+\end{theorem}
+
+\begin{proof}
+  \[
+    \Pr{U^n \in T(n,\epsilon,p)} = \sum_{u^n \in T(n, \epsilon, p)} \Pr{U^n = u^n}
+  \]
+  We have
+  \begin{align*}
+    2^{-n[H(p) + D(p||q)](1+\epsilon)}
+    \leq
+    &\Pr{U^n = u^n}
+    \leq
+    2^{-n[H(p) + D(p||q)](1-\epsilon)}\\
+    2^{nH(p)(1-\epsilon)}
+    \leq
+    &|T(n, \epsilon, p)|
+    \leq
+    2^{nH(p)(1+\epsilon)}
+  \end{align*}
+\end{proof}
+
+
+\begin{theorem}
+  \[
+    D(p||q) = \sum_u p(u) \log \pfrac {p(u)} {q(u)} \geq 0 \text{ with equality iff } p = q
+  \]
+\end{theorem}
+
+
+\begin{example}
+  $U \in \{0,1\}$, $p=\frac 1 2, \frac 1 2$, $q=\frac 1 2 - \delta, \frac 1 2 + \delta$
+  \[
+    D(p||q) = \frac 1 2 \log \frac 1 {1-2\delta} + frac 1 2 \log \frac 1 {1+2\delta} = \frac 1 2 \log \frac 1 {1-4\delta^2} = - \frac 1 2 \log (1-4\delta^2) \approx \frac 1 2 4\delta^2 + o(\delta^4)
+  \]
+  \todo{too long}
+  So if we want $2^{-nD(p||q)}$ small $n=\Omega(1/\delta^2)$
+\end{example}
+
+\begin{example}
+  Suppose we are told that $U$ is $p$ distributed and $p(u)$ are powers of 2 and we design a prefix-free code $\C$ to minimize $\sum_u p(u) l(\C(u))$.
+
+  We have been misinformed and $U\sim q$
+
+  \begin{align*}
+    \Ex{l(\C(u))}
+    &= \sum_u q(u) \log \frac 1 {p(u)}\\
+    &= \underbrace{H(q)}_{\text{length for optimal code}} + \underbrace{D(q||p)}_{\text{penalty for misbelief}}
+  \end{align*}
+\end{example}
+
+\subsection{Universal data compression}
+
+Suppose we know that the distribution $p$ of $U$ is either $p_1$, $p_2$ ... $p_k$, can we design a code $\C: U \to \{0,1\}^*$
+
+\[
+  \Ex{l(\C(U))} \leq H(U) + \text{small for every } p
+\]
+
+\[
+  \Ex{\frac 1 n l(\C(U))} \leq o(n) + \Ex{h_2 \pfrac K n}
+\]
+with $K = \sum_{i=1}^n u_i$
+
+We have $\frac {\Ex{K}} n = \theta_1$ and $\Ex{h_2\pfrac K n} \leq h_2\Ex{\frac K n} = h_2(\theta)$
+
+\todo{maybe missing things here}
+
+Suggestion for $\C$
+
+Given $u_1 \dots u_n \in \{0,1\}^n$, first count the number of 1, call it $k$.
+
+
+\[
+  \C(u_1 \dots u_n) =
+  \underbrace{\text{describe } k}_{\lceil \log (n+1)\rceil}
+  \underbrace{\text{describe } u_1 \dots u_n}_{\lceil \log {n \choose k}\rceil}
+\]
+
+We now want to evaluate
+
+\[
+  \frac 1 n \Ex{l(\C(U))}
+\]
+
+when $U_1 \dots U_n$ are i.i.d with $p_1 = \theta$ and $p_0 = 1 - p_1$
+
+Observe for any $0 \leq \alpha \leq 1$
+
+\begin{align*}
+  &1 = 1^n = (\alpha + (1-\alpha))^n &= \sum_{i=0}^n {n \choose i} \alpha^i (1-\alpha)^{k-i}\\
+  && \geq {n \choose k} \alpha^k (1-\alpha)^{n-k}
+\end{align*}
+
+Then for all $\alpha$
+
+\[
+{n \choose k} \leq \alpha^{-k}(1-\alpha)^{-(n-k)} = 2^{-n(\frac k n \log \frac 1 \alpha + (1-\frac k n) \log \frac 1 {1-\alpha})}
+\]
+
+We pick $\alpha = \frac k n$, and we get
+
+\[
+  {n \choose k} < 2^{n h_2 \pfrac k n}
+\]
+
+\todo{missing 1.5 pages to scribe}
+
+
+
+
+
+
 
 % -------------------------------------------------------------------------
 
