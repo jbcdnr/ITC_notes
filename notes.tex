@@ -611,13 +611,16 @@ and by the "Lemma", whenever $b_n \rightarrow b$ , \space $a_n \rightarrow b$
   \end{enumerate}
 \end{proof}
 
+% -------------------------------------------------------------------------
+% -------------------------------------------------------------------------
+
 \section{Typicality and typical set}
 
-Suppose we have a sequence $U_1, U_2, ...$ of i.i.d. random variables taking values in a n alphabet $\U$.
+Suppose we have a sequence $U_1, U_2, ...$ of i.i.d. random variables taking values in an alphabet $\U$.
 Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\epsilon, p)$} if
 \begin{align*}
   p(u) (1 - \epsilon)
-  \leq \frac{\# \text{ of times $u$ apperas in $u_1, ..., u_n$}}{n}
+  \leq \frac{\# \text{ of times $u$ appears in $u_1, ..., u_n$}}{n}
   \leq p(u)(1+\epsilon)
 \end{align*}
 
@@ -640,7 +643,7 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
   \end{align*}
   consequently
   \begin{align*}
-    p(u)^(n p(u)(1-\epsilon)) \geq p(u)^{\#_u} \geq p(u)^{n p(u)(1+\epsilon)}
+    p(u)^{(n p(u)(1-\epsilon))} \geq p(u)^{\#_u} \geq p(u)^{n p(u)(1+\epsilon)}
   \end{align*}
   then
   \begin{align*}
@@ -712,8 +715,9 @@ $U_1, U_2, ...$ iid $\sim p$
 $\Pr{U^n \in T(n, \epsilon, p)} \to 1$ as $n\to \infty$
 
 \[
-  (1-\epsilon)2^{nH(U)(1-\epsilon) \leq | T(n, \epsilon, p) | \leq 2^{nH(U)(1+\epsilon)}}
+  (1-\epsilon)2^{nH(U)(1-\epsilon)} \leq | T(n, \epsilon, p) | \leq 2^{nH(U)(1+\epsilon)}
 \]
+\todo{Something wrong in the formula above}
 
 Suppose $U_1 \dots U_n$ are iid following $q$ and $u^n \in T(n, \epsilon, p)$
 
@@ -854,11 +858,145 @@ We pick $\alpha = \frac k n$, and we get
 
 
 
+% -------------------------------------------------------------------------
+% lesson - 16.0.2017 - Thomas
 
+\todo{THOMAS SCRIBE ICI}
 
+% -------------------------------------------------------------------------
+% lesson - 17.0.2017 - sebastien
+
+Suppose we have an infinite string $u_1 u_2 ..., u_i \in U$, and 
+$$u_1 u_2 ... = v_1 v_2 ... \text{ with } v_i \in U^*, v_i \neq v_j \text{ when } i \neq j$$
+for any $k$ we have
+\begin{align*}
+  \lim_{m \to \infty} \frac{length(v_1...v_m)}{m} \geq k
+  \Rightarrow \lim_{m \to \infty} \frac{length(v_1 ... v_m)}{m} = 
+  \infty
+\end{align*}
+
+\begin{definition}
+  Given an infinite string $u_1 u_2 ...$ and a machine $M$, let
+  \begin{align*}
+    \rho_{M}(u_1 u_2 ...) = \overline{\lim_{n \to \infty}} \frac{\text{length of the output } M \text{ after reading } u_1 u_2...}{n}
+  \end{align*}
+  also given $s > 0$, define
+  \begin{itemize}
+    \item The compressibility of $U^*$ be s-state machines
+    \begin{align*}
+      \rho_s (u_1 u_2 ...) = \min_{M} \rho_{M}(u_1 u_2 ...)
+    \end{align*}
+    with $M$ an $s'$-state machine with $s' \leq s$
+    \item Compressibility of $U^*$ by finite state machines
+    \begin{align*}
+      \rho_{FSM} (u_1 u_2 ...) = \lim_{s \to \infty} \rho_s (u_1 u_2 ...)
+    \end{align*}
+  \end{itemize}
+\end{definition}
+
+\begin{definition}
+  Suppose $u_1 u_2 ...$ an infinite sequence, define $m(n)$ as the largest $m$ for which $u_1 ... u_n = v_1 ... v_m$ with distinct $v_1 ... v_m$
+  \begin{example}
+    $$ u = aaaaaaaaa, \quad \underbrace{\emptyset}_{v_1} \underbrace{a}_{v_2} \underbrace{aa}_{v_3} \underbrace{aaa}_{v_4} \underbrace{aaaa}_{v_5} \quad \Rightarrow m(10) = 5 $$
+  \end{example}
+\end{definition}
+
+So far we know that 
+
+\begin{align*}
+  \frac{\text{ length of the output of any s-state IL machine when it reads } u_1 u_2 ... }{n} \geq \frac{m(n) \log(\frac{m(n)}{8 s^2})}{n}
+\end{align*}
+with 
+\begin{align*}
+  \frac{m(n) \log(\frac{m(n)}{8 s^2})}{n} = \frac{m(n) \log(m(n))}{n} - \frac{m(n) \log(8 s^2)}{length(v_1 ... v_m)}
+\end{align*}
+
+hence if $M$ is a s-state machine
+\begin{align*}
+  \rho_M (u_1 u_2 ...) \geq \overline{\lim_{n \to \infty}} \frac{m(n) \log(m(n))}{n} 
+  \quad \text{ then } \quad 
+  \rho_{FSM} (u_1 u_2 ...) \geq \overline{\lim_{n \to \infty}} \frac{m(n) \log m(n)}{n}
+\end{align*}
 
 
 % -------------------------------------------------------------------------
+% Lemple-Ziv
+
+\newpage
+\section{Lemple-Ziv data compression method}
+
+Given some alphabet $U$ to both encoder and decoder, they also agree an order on $U$:
+
+\begin{enumerate}
+  \item Start with a dictionary $D = U$
+  \item To each word $w \in D$, assign a $\lceil \log |D| \rceil $-bit binary description in the dictionary order
+  \item Parse the first word in $u_1 u_2 ...$ in the dictionary, output its binary description
+  \item replace $w$ in $D$ by $\{ wu, \forall u \in U \}$.
+  \item Go to 2.
+\end{enumerate}
+
+\begin{example}
+  Define an alphabet $U = \{a, b, c\}$ with $a \leq b \leq c$ and an input message
+  $$ u = b b a c a c $$
+  \begin{itemize}
+    \item Create the dictionary $D = \{a, b, c\}$ and its corresponding binary description $D_{bin} = \{00, 01, 10\}$
+    \item The first word in the message is $'a'$, output its binary description
+    $$ output = 01 $$ 
+    \item Update the dictionary: 
+    $$ D = \{a, ba, bb, bc , c\} \quad D_{bin} = \{000, 001, 010, 011, 100\} $$
+    \item Parse the next word $'ba'$ and output its binary description
+    $$ output = 01 001 $$ 
+    \item Update the dictionary
+    $$ D = \{a, baa, bab, bac, bb, bc , c\} \quad D_{bin} = \{000, 001, ...\} $$
+    \item Continue until the end of the input data...
+  \end{itemize}
+  The decoder can proceed in a similar way to iteritavely update the dictionary while decoding the message.
+\end{example}
+
+\subsection{Analysis of LZ}
+
+Observe that LZ parses the string $u_1 u_2 ...$ into $v_1 v_2 ...$ with $v_i \in U^*$ or $v_i \in D_i$ where $D_i$ is the dictionary at step $i$.
+
+When going from iteration $i \rightarrow i+1$, $v_i$ is removed from $D$, consequently $v_1, v_2, v_3$ are distinct.
+
+The length of the output of LZ after reading $v_1 ... v_m$ is given by
+\begin{align*}
+  \text{LZ output's length} = \lceil \log |U| \rceil + \lceil \log (2 |U| - 1) \rceil
+  + \lceil \log (3 |U| - 2) \rceil + ... 
+  + \lceil \log (m|U| - m + 1) \rceil
+\end{align*}
+we observe that
+\begin{align*}
+  \text{LZ output's length} < m(\log(m |U|) + 1) = m \log(2 m |U|)
+\end{align*}
+
+Also we have
+
+\begin{align*}
+  \text{\# bits / letter} &< \frac{m \log(2m |U|)}{length(v_1 ... v_m)} \\
+  &= \frac{m \log(m)}{ length(v_1 ... v_m)} + \frac{m \log(2 |U|)}{length(v_1 ... v_m)}
+\end{align*}
+therefore
+\begin{align*}
+  \rho_{LZ}(u_1 u_2 ...) = \lim_{m \to \infty} \frac{\text{\# bits}}{\text{letter}} \leq \lim_{m \to \infty} \frac{m \log(m)}{length(v_1 ... v_m)} \leq \lim_{n \to \infty} \frac{m(n) \log(m(n))}{n} \leq \rho_{FSM}(u_1 u_2 ...)
+\end{align*}
+
+So we have proved the following theorem:
+
+\begin{theorem}
+  for every $u_1 u_2 ...$
+  $$ \rho_{LZ}(u_1 u_2 ...) \leq \rho_{FSM}(u_1 u_2 ...) $$
+\end{theorem}
+
+\begin{corollary}
+  if $u_1 u_2 ...$ is stationary
+  $$ \rho_{LZ}(u_1 u_2 ...) = \text{ entropy rate of } u_1 u_2 ...$$
+\end{corollary}
+
+
+% -------------------------------------------------------------------------
+% appendices
+
 
 \newpage
 \begin{appendices}
