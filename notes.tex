@@ -48,6 +48,8 @@
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{claim}{Claim}[section]
+\newtheorem{observation}{Observation}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{definition}{Definition}[section]
 \newtheorem{proposition}{Proposition}[section]
@@ -692,6 +694,9 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
 \end{definition}
 
 
+
+
+
 % ----------------------------- %
 % ---- lecture 2017-10-10 ----- %
 % ------------ jb ------------- %
@@ -734,9 +739,7 @@ and
   \underbrace{\sum_u p(u) \log \frac {p(u)} {q(u)}}_{D(p||q)}
 \]
 
-Corollary of the observation: \todo{corolary tag}
-
-\begin{theorem}
+\begin{corollary}
   if $U_1 \dots U_n$ are i.i.d. following distribution $q$, then
   \[
     2^{-n[(1+\epsilon)D(p||q)+2\epsilon H(p)]}
@@ -745,7 +748,7 @@ Corollary of the observation: \todo{corolary tag}
     \leq
     2^{-n[(1-\epsilon)D(p||q) - 2\epsilon H(p)]}
   \]
-\end{theorem}
+\end{corollary}
 
 \begin{proof}
   \[
@@ -779,7 +782,6 @@ Corollary of the observation: \todo{corolary tag}
   \[
     D(p||q) = \frac 1 2 \log \frac 1 {1-2\delta} + frac 1 2 \log \frac 1 {1+2\delta} = \frac 1 2 \log \frac 1 {1-4\delta^2} = - \frac 1 2 \log (1-4\delta^2) \approx \frac 1 2 4\delta^2 + o(\delta^4)
   \]
-  \todo{too long}
   So if we want $2^{-nD(p||q)}$ small $n=\Omega(1/\delta^2)$
 \end{example}
 
@@ -810,10 +812,11 @@ with $K = \sum_{i=1}^n u_i$
 
 We have $\frac {\Ex{K}} n = \theta_1$ and $\Ex{h_2\pfrac K n} \leq h_2\Ex{\frac K n} = h_2(\theta)$
 
-\todo{maybe missing things here}
-
 Suggestion for $\C$
 
+Because the probability of a bit string is only dependant of the number of
+1 (or 0), it makes sense to encode two strings with the same numbers of 1
+with code words of same lengths.
 Given $u_1 \dots u_n \in \{0,1\}^n$, first count the number of 1, call it $k$.
 
 
@@ -850,7 +853,41 @@ We pick $\alpha = \frac k n$, and we get
   {n \choose k} < 2^{n h_2 \pfrac k n}
 \]
 
-\todo{missing 1.5 pages to scribe}
+with this bound we have
+
+\[
+  \frac 1 n l(\C(u_1 \dots u_n)) \leq \frac 2 n + \frac {\log (n+1)} n + h_2\pfrac k n
+\]
+
+\[
+  \Ex{\frac 1 n l(\C(U))} \ leq o(n) + \Ex{h_2 \pfrac k n}, \text{ with } K = \sum u_i
+\]
+
+\begin{claim}
+Suppose $U_i$ are i.i.d. with $\Pr{U_1=1}=\theta$. We have $\Ex{ \frac k n} = \theta$ and $\Ex{h_2 \pfrac k n } \leq h_2(\Ex{\frac k n}) = h_2(\theta)$. So
+\[
+  \lim_{n\to \infty} \frac 1 n \Ex{l(\C(u_1\dots u_n))} \leq h_2(\theta)
+\]
+consequently this scheme is asymptotically optimal.
+\end{claim}
+
+\begin{proof}
+  To prove the claim we need to show that if $\beta_1\dots \beta_k$ are in $[0,1]$ and $q_1 \dots q_k$ are numbers that sum to 1
+
+  \[
+    \sum_{i=1}^k q_i h_2(\beta_i) \leq h_2 \left(\sum_{i=1}^k q_i \beta_i \right)
+  \]
+
+  For this let $U$ and $V$ be random variables with $U \in \{0,1\}, V \in \{1,\dots,k\}$ with $\Pr{V=i} = q_i$, $\Pr{U=1|V=i} = \beta_i$ and $\Pr{U=0|V=i} = 1- \beta_i$
+
+  $\Pr{U=1} = \sum_i q_i \beta_i$, $H(U) = h_2\left(\sum_i q_i \beta_i \right)$ and $H(U|V) = \sum_i q_i h_2(\beta_i)$
+
+  We already know $H(U) \geq H(U|V)$
+\end{proof}
+
+
+
+
 
 
 
