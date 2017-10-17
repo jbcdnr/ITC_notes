@@ -712,17 +712,15 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
   \end{align*}
 \end{lemma}
 
-$U_1, U_2, ...$ iid $\sim p$
-
-$\Pr{U^n \in T(n, \epsilon, p)} \to 1$ as $n\to \infty$
+We know that $\Pr{U^n \in T(n, \epsilon, p)} \to 1$ as $n\to \infty$ and
 
 \[
-  (1-\epsilon)2^{nH(U)(1-\epsilon) \leq | T(n, \epsilon, p) | \leq 2^{nH(U)(1+\epsilon)}}
+  (1-\epsilon)2^{nH(U)(1-\epsilon)} \leq | T(n, \epsilon, p) | \leq 2^{nH(U)(1+\epsilon)}
 \]
 
-Suppose $U_1 \dots U_n$ are iid following $q$ and $u^n \in T(n, \epsilon, p)$
+\begin{observation}
 
-Observe:
+Suppose $U_1 \dots U_n$ are i.i.d. following $q$ and $u^n \in T(n, \epsilon, p)$
 
 \[
   \left[ \prod_u q(u)^{p(u)} \right]^{n(1+\epsilon)} \leq \Pr{U^n = u^n} \leq  \left[ \prod_u q(u)^{p(u)} \right]^{n(1-\epsilon)}
@@ -738,6 +736,7 @@ and
   \underbrace{\sum_u p(u) \log \frac 1 {p(u)}}_{H(p)} +
   \underbrace{\sum_u p(u) \log \frac {p(u)} {q(u)}}_{D(p||q)}
 \]
+\end{observation}
 
 \begin{corollary}
   if $U_1 \dots U_n$ are i.i.d. following distribution $q$, then
@@ -770,11 +769,11 @@ and
 \end{proof}
 
 
-\begin{theorem}
+\begin{observation}
   \[
     D(p||q) = \sum_u p(u) \log \pfrac {p(u)} {q(u)} \geq 0 \text{ with equality iff } p = q
   \]
-\end{theorem}
+\end{observation}
 
 
 \begin{example}
@@ -786,9 +785,7 @@ and
 \end{example}
 
 \begin{example}
-  Suppose we are told that $U$ is $p$ distributed and $p(u)$ are powers of 2 and we design a prefix-free code $\C$ to minimize $\sum_u p(u) l(\C(u))$.
-
-  We have been misinformed and $U\sim q$
+  Suppose we are told that $U$ is $p$ distributed and $p(u)$ are powers of 2. We design a prefix-free code $\C$ to minimize $\sum_u p(u) l(\C(u))$. We have been misinformed and $U\sim q$, then:
 
   \begin{align*}
     \Ex{l(\C(u))}
@@ -810,12 +807,11 @@ Suppose we know that the distribution $p$ of $U$ is either $p_1$, $p_2$ ... $p_k
 \]
 with $K = \sum_{i=1}^n u_i$
 
-We have $\frac {\Ex{K}} n = \theta_1$ and $\Ex{h_2\pfrac K n} \leq h_2\Ex{\frac K n} = h_2(\theta)$
+We have $\frac {\Ex{K}} n = \theta_1$ and $\Ex{h_2\pfrac K n} \leq h_2 \left(\Ex{\frac K n} \right) = h_2(\theta)$
 
-Suggestion for $\C$
-
+\paragraph{Design $\C$}
 Because the probability of a bit string is only dependant of the number of
-1 (or 0), it makes sense to encode two strings with the same numbers of 1
+1s (or 0s), it makes sense to encode two strings with the same numbers of 1
 with code words of same lengths.
 Given $u_1 \dots u_n \in \{0,1\}^n$, first count the number of 1, call it $k$.
 
@@ -834,11 +830,13 @@ We now want to evaluate
 
 when $U_1 \dots U_n$ are i.i.d with $p_1 = \theta$ and $p_0 = 1 - p_1$
 
-Observe for any $0 \leq \alpha \leq 1$
+\begin{observation}
+
+for any $0 \leq \alpha \leq 1$
 
 \begin{align*}
-  &1 = 1^n = (\alpha + (1-\alpha))^n &= \sum_{i=0}^n {n \choose i} \alpha^i (1-\alpha)^{k-i}\\
-  && \geq {n \choose k} \alpha^k (1-\alpha)^{n-k}
+  1 = 1^n = (\alpha + (1-\alpha))^n &= \sum_{i=0}^n {n \choose i} \alpha^i (1-\alpha)^{k-i}\\
+  & \geq {n \choose k} \alpha^k (1-\alpha)^{n-k}
 \end{align*}
 
 Then for all $\alpha$
@@ -853,14 +851,16 @@ We pick $\alpha = \frac k n$, and we get
   {n \choose k} < 2^{n h_2 \pfrac k n}
 \]
 
-with this bound we have
+\end{observation}
+
+Using this bound we have
 
 \[
   \frac 1 n l(\C(u_1 \dots u_n)) \leq \frac 2 n + \frac {\log (n+1)} n + h_2\pfrac k n
 \]
 
 \[
-  \Ex{\frac 1 n l(\C(U))} \ leq o(n) + \Ex{h_2 \pfrac k n}, \text{ with } K = \sum u_i
+  \Ex{\frac 1 n l(\C(U))} \ leq o(n) + \Ex{h_2 \pfrac k n}
 \]
 
 \begin{claim}
@@ -872,18 +872,37 @@ consequently this scheme is asymptotically optimal.
 \end{claim}
 
 \begin{proof}
-  To prove the claim we need to show that if $\beta_1\dots \beta_k$ are in $[0,1]$ and $q_1 \dots q_k$ are numbers that sum to 1
+  To prove the claim we need to show that if $\beta_1\dots \beta_k$ are in $[0,1]$ and $q_1 \dots q_k$ are non negative numbers that sum to 1 then
 
   \[
     \sum_{i=1}^k q_i h_2(\beta_i) \leq h_2 \left(\sum_{i=1}^k q_i \beta_i \right)
   \]
 
-  For this let $U$ and $V$ be random variables with $U \in \{0,1\}, V \in \{1,\dots,k\}$ with $\Pr{V=i} = q_i$, $\Pr{U=1|V=i} = \beta_i$ and $\Pr{U=0|V=i} = 1- \beta_i$
+  Let $U$ and $V$ be random variables with $U \in \{0,1\}$ and $V \in \{1,\dots,k\}$ with
 
-  $\Pr{U=1} = \sum_i q_i \beta_i$, $H(U) = h_2\left(\sum_i q_i \beta_i \right)$ and $H(U|V) = \sum_i q_i h_2(\beta_i)$
+  \begin{align*}
+    \Pr{V=i} &= q_i\\
+    \Pr{U=1|V=i} &= \beta_i\\
+    \Pr{U=0|V=i} &= 1- \beta_i\\
+  \end{align*}
+  Then,
+  \begin{align*}
+    \Pr{U=1} &= \sum_i q_i \beta_i\\
+    H(U) &= h_2\left(\sum_i q_i \beta_i \right)\\
+    H(U|V) &= \sum_i q_i h_2(\beta_i)
+  \end{align*}
 
-  We already know $H(U) \geq H(U|V)$
+  And we already know that $H(U) \geq H(U|V)$
 \end{proof}
+
+
+
+% ----------------------------- %
+% ---- lecture 2017-10-16 ----- %
+% --------- thomas ------------ %
+% ----------------------------- %
+
+
 
 
 
