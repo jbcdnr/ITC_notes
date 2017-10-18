@@ -440,6 +440,11 @@ We can apply the chain rule on the entropy as follow
   \]
 \end{theorem}
 
+We can apply the chain rule on the mutual information as follows
+\[
+  I(U_1, U_2, ... ; V) = I(U_1; V) + I(U_2; V | U_1) + ...
+\]
+
 \begin{notation}
   \[
     U^n \triangleq (U_1, U_2, \dots U_n)
@@ -452,6 +457,7 @@ We can apply the chain rule on the entropy as follow
   \]
   equality iff conditioned on $w$, $u$ and $v$ are independant, that is iff $U-V-W$ is a Markov chain.
 \end{theorem}
+
 
 \begin{proof}
   \begin{align*}
@@ -688,7 +694,50 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
 \end{theorem}
 
 \begin{proof}
-  \todo{}
+  \begin{enumerate}
+    \item 
+    Fix $u \in \U$ let $X_i = 1$ if $ U_i = u$ and $0$ otherwise
+    \begin{align*}
+      \frac{\text{\# of times } u \text{ appears in } U_1 ... U_n}{n} = \frac{1}{n} \sum_{i = 1}^n X_i
+    \end{align*}
+    observe that $\{ X_i \}$ are i.i.d.
+    \begin{align*}
+      &X_i = 
+      \left\{
+        \begin{array}{l l}
+          1 & \text{ w.p. } p(u) \\
+          0 & \text{ w.p. } 1 - p(u)
+        \end{array}
+      \right. \\
+      &\Rightarrow \Ex{X_i} = p(u) \quad \text{ and } \quad Var[X_i] = p(u) - p(u)^2 \\
+    \end{align*}
+    \begin{align*}
+      \Pr{\underbrace{|\frac{1}{n} \sum_{i+1}^n X_i - p(u)|}_{u^n \text{ fails the test for letter } u} \geq \epsilon p(u)} \leq \frac{Var(\frac{1}{n} \sum X_i)}{(\epsilon p(u))^2}
+      = \frac{(1 - p(u))}{\epsilon^2 p(u)}
+    \end{align*}
+
+    \item 
+    \begin{align*}
+      \Pr{U^n \not \in T(n, \epsilon, p)} &= \Pr{\bigcup_{u \in U} \{u^n \text{ fails the test for u} \}} \\
+      &\leq \sum_{u \in U} \Pr{U^n \text{ fails the test for } u} \\
+      &\leq \frac{1}{n} \sum_{u \in U} \frac{(1 - p(u))}{p(u) \epsilon} \quad \text{ which goes to 0 as } n \text{ gets large}
+    \end{align*}
+
+    \item
+    \begin{align*}
+      1 \geq \Pr{U^n \in T(n, \epsilon, p)} &= \sum_{u^n \in T(n, \epsilon, p)} \Pr{U^n = u^n} \\
+      &\geq \sum_{u^n \in T(n, \epsilon, p)} 2^{-n(1 + \epsilon) H(u)} \\
+      &= 2^{n (1 + \epsilon) H(u)} |T(n, \epsilon, p)|
+    \end{align*}
+
+    \item 
+    \begin{align*}
+      1 - \epsilon \leq \Pr{U^n \in T(n, \epsilon, p)} &= \sum_{u^n \in T(n, \epsilon, p)} \Pr(U^n = u^n) \\
+       &\geq \sum_{u^n \in T(n, \epsilon, p)} 2^{n H(u)(1-\epsilon)} \\
+       &= 2^{n H(u)(1 - \epsilon)} |T(n, \epsilon, p)|
+    \end{align*}
+
+  \end{enumerate}
 \end{proof}
 
 
