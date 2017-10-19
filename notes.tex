@@ -54,6 +54,7 @@
 \newtheorem{definition}{Definition}[section]
 \newtheorem{proposition}{Proposition}[section]
 \newtheorem{notation}{Notation}
+\theoremstyle{definition} % Attention side effects lololol~
 \newtheorem{example}{Example}
 
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
@@ -695,14 +696,14 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
 
 \begin{proof}
   \begin{enumerate}
-    \item 
+    \item
     Fix $u \in \U$ let $X_i = 1$ if $ U_i = u$ and $0$ otherwise
     \begin{align*}
       \frac{\text{\# of times } u \text{ appears in } U_1 ... U_n}{n} = \frac{1}{n} \sum_{i = 1}^n X_i
     \end{align*}
     observe that $\{ X_i \}$ are i.i.d.
     \begin{align*}
-      &X_i = 
+      &X_i =
       \left\{
         \begin{array}{l l}
           1 & \text{ w.p. } p(u) \\
@@ -716,7 +717,7 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
       = \frac{(1 - p(u))}{\epsilon^2 p(u)}
     \end{align*}
 
-    \item 
+    \item
     \begin{align*}
       \Pr{U^n \not \in T(n, \epsilon, p)} &= \Pr{\bigcup_{u \in U} \{u^n \text{ fails the test for u} \}} \\
       &\leq \sum_{u \in U} \Pr{U^n \text{ fails the test for } u} \\
@@ -730,7 +731,7 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
       &= 2^{n (1 + \epsilon) H(u)} |T(n, \epsilon, p)|
     \end{align*}
 
-    \item 
+    \item
     \begin{align*}
       1 - \epsilon \leq \Pr{U^n \in T(n, \epsilon, p)} &= \sum_{u^n \in T(n, \epsilon, p)} \Pr(U^n = u^n) \\
        &\geq \sum_{u^n \in T(n, \epsilon, p)} 2^{n H(u)(1-\epsilon)} \\
@@ -971,12 +972,12 @@ consequently this scheme is asymptotically optimal.
 % -------------------------------------------------------------------------
 % lesson - 17.0.2017 - sebastien
 
-Suppose we have an infinite string $u_1 u_2 ..., u_i \in U$, and 
+Suppose we have an infinite string $u_1 u_2 ..., u_i \in U$, and
 $$u_1 u_2 ... = v_1 v_2 ... \text{ with } v_i \in U^*, v_i \neq v_j \text{ when } i \neq j$$
 for any $k$ we have
 \begin{align*}
   \lim_{m \to \infty} \frac{length(v_1...v_m)}{m} \geq k
-  \Rightarrow \lim_{m \to \infty} \frac{length(v_1 ... v_m)}{m} = 
+  \Rightarrow \lim_{m \to \infty} \frac{length(v_1 ... v_m)}{m} =
   \infty
 \end{align*}
 
@@ -1006,20 +1007,20 @@ for any $k$ we have
   \end{example}
 \end{definition}
 
-So far we know that 
+So far we know that
 
 \begin{align*}
   \frac{\text{ length of the output of any s-state IL machine when it reads } u_1 u_2 ... }{n} \geq \frac{m(n) \log(\frac{m(n)}{8 s^2})}{n}
 \end{align*}
-with 
+with
 \begin{align*}
   \frac{m(n) \log(\frac{m(n)}{8 s^2})}{n} = \frac{m(n) \log(m(n))}{n} - \frac{m(n) \log(8 s^2)}{length(v_1 ... v_m)}
 \end{align*}
 
 hence if $M$ is a s-state machine
 \begin{align*}
-  \rho_M (u_1 u_2 ...) \geq \overline{\lim_{n \to \infty}} \frac{m(n) \log(m(n))}{n} 
-  \quad \text{ then } \quad 
+  \rho_M (u_1 u_2 ...) \geq \overline{\lim_{n \to \infty}} \frac{m(n) \log(m(n))}{n}
+  \quad \text{ then } \quad
   \rho_{FSM} (u_1 u_2 ...) \geq \overline{\lim_{n \to \infty}} \frac{m(n) \log m(n)}{n}
 \end{align*}
 
@@ -1046,11 +1047,11 @@ Given some alphabet $U$ to both encoder and decoder, they also agree an order on
   \begin{itemize}
     \item Create the dictionary $D = \{a, b, c\}$ and its corresponding binary description $D_{bin} = \{00, 01, 10\}$
     \item The first word in the message is $'a'$, output its binary description
-    $$ output = 01 $$ 
-    \item Update the dictionary: 
+    $$ output = 01 $$
+    \item Update the dictionary:
     $$ D = \{a, ba, bb, bc , c\} \quad D_{bin} = \{000, 001, 010, 011, 100\} $$
     \item Parse the next word $'ba'$ and output its binary description
-    $$ output = 01 001 $$ 
+    $$ output = 01 001 $$
     \item Update the dictionary
     $$ D = \{a, baa, bab, bac, bb, bc , c\} \quad D_{bin} = \{000, 001, ...\} $$
     \item Continue until the end of the input data...
@@ -1067,7 +1068,7 @@ When going from iteration $i \rightarrow i+1$, $v_i$ is removed from $D$, conseq
 The length of the output of LZ after reading $v_1 ... v_m$ is given by
 \begin{align*}
   \text{LZ output's length} = \lceil \log |U| \rceil + \lceil \log (2 |U| - 1) \rceil
-  + \lceil \log (3 |U| - 2) \rceil + ... 
+  + \lceil \log (3 |U| - 2) \rceil + ...
   + \lceil \log (m|U| - m + 1) \rceil
 \end{align*}
 we observe that
