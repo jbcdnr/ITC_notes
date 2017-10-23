@@ -71,6 +71,7 @@
 \def\U{\mathcal{U}}
 \def\N{\mathcal{N}}
 \def\X{\mathcal{X}}
+\def\Y{\mathcal{Y}}
 
 \def\C{\mathscr{C}}
 
@@ -1099,6 +1100,188 @@ So we have proved the following theorem:
   $$ \rho_{LZ}(u_1 u_2 ...) = \text{ entropy rate of } u_1 u_2 ...$$
 \end{corollary}
 
+
+% -------------------------------------------------------------------------
+% jb 2017-10-23
+% -------------------------------------------------------------------------
+
+\section{Transmission of data}
+
+Interesting in the case of unreliable transmission media.
+
+\begin{definition}[Communication channel]
+  A communication channel $W$ is a device with an input alphavet $\X$ and an output
+  alphabet $\Y$. Its behabvior is described by
+  \[
+    W_i(y_i | x^i, y^{i-1}) = \Pr{Y_i = y_i | X^i = x^i, Y^{i-1} = y^{i-1}}
+  \]
+\end{definition}
+
+\begin{definition}[Memoryless channel]
+  a channel $W$ is said to be memoryless if
+  \[
+      W_i(y_i | x^i, y^{i-1}) = W(y_i|x_i)
+    \]
+\end{definition}
+
+\begin{definition}[Stationary channel]
+  a channel $W$ is said to be stationary if
+  \[
+      W_i(y|x) = W(y|x)
+    \]
+\end{definition}
+
+\begin{example}[Binary erasure channel - BEC]
+  $\X = \{0,1\}$ and $\Y = \{0,1,?\}$, then
+  \begin{align*}
+    W(0|0) &= 1 - p\\
+    W(?|0) &= p\\
+    W(1|0) &= 0
+  \end{align*}
+  and same for $x_i=1$.
+\end{example}
+
+\begin{example}[Binary symetric channel - BSC]
+  \begin{align*}
+    W(0|0) &= 1 - p = W(1|1)&\\
+    W(1|0) &= p =W(0|1)
+  \end{align*}
+\end{example}
+
+The input $X_1, X_2 \dots X_n$ to a channel might have memory
+
+\[
+  \Pr{X^n = x^n} = p(x_1)p(x_2 | x_1) \dots p(x_i | x^{i-1}) \dots p(x_n|x^{n-1})
+\]
+
+\begin{align*}
+  \Pr{X^n=x^n, Y^n=y^n} &= p(x_1)W_1(y_1|x_1)p(x_2|x_1,y_1)W(y_2|x_1,x_2,y_1)\dots\\
+  &= \prod_i p(x_i|
+  \underbrace{x^{i-1}}_{\text{feedback}}
+  \underbrace{y^{i-1}}_{\text{memory}}
+  )W_i(y_i|x^iy^{i-1})
+\end{align*}
+
+\begin{lemma}
+  if there is no feedback and the channel is memoryless and stationary, then
+  \[
+    \Pr{Y^n=y^n | X^n=x^n} = \prod_{i=1}^n W(y_i|x_i)
+  \]
+\end{lemma}
+
+\begin{proof}
+  \begin{align*}
+    \Pr{Y^n=y^n, X^n=x^n} &= \prod_{i=1}^n p(x_i|x^{i-1}y^{i-1})W_i(y^i|x^iy^{i-1})\\
+    &= \prod_{i=1}^n p(x_i|x^{i-1})W(y_i|x_i)\\
+    &= \prod_{i=1}^n W(y_i|x_i) \Pr{X^n=x^n}
+  \end{align*}
+\end{proof}
+
+\begin{example}
+  Suppose $W$ is BSC(1/2) but we have feedback, defined by $X_1=0$ and $X_i=Y_{i-1}$.
+
+  \begin{align*}
+    &\Pr{Y^2=00|X^2=01} = 0\\
+    &W(0|0)W(0|1) = \frac 1 4
+  \end{align*}
+
+\end{example}
+
+\begin{lemma}
+  if $W$ is stationary memoryless and there si no feedback, then
+  \[
+    H(Y^n|X^n) = \sum_{i=1}^n H(Y_i|X_i)
+  \]
+
+\end{lemma}
+
+\begin{proof}
+  \[
+    H(Y^n|X^n) = \Ex{\log \frac 1 {\Pr{Y^n|X^n}}}
+    = \Ex{\log \prod_{i=1}^n \frac 1 {\Pr{Y_i|X_i}}}
+    = \sum_{i=1}^n \Ex{\log \frac 1 {\Pr{Y_i|X_i}}}
+    = \sum_{i=1}^n H(Y_i|X_i)
+  \]
+\end{proof}
+
+For a memoryless stationary channel $W(Y|X)$ we can compute, for any
+distribition $p(x)$, $p(x,y) = p(x)W(y|x)$ and $I(X;Y)$, we can also compute
+\[
+  C(W) = \max_{p(x)} I(X;Y)
+\]
+
+\begin{lemma}
+  for a stationary memoryless $W$ without feedback, we have
+  \[
+    I(X^n;Y^n) \leq c C(W)
+  \]
+\end{lemma}
+
+
+\begin{proof}
+  \begin{align*}
+    I(X^n;Y^n) &= H(Y^n) - H(Y^n|X^n)\\
+    &= H(Y^n)- \sum_i H(Y_i|X_i)\\
+    &\leq \sum_i H(Y_i) - \sum_i H(Y_i|X_i)\\
+    &= \sum_i I(X_i;Y_i)
+  \end{align*}
+
+  Note that the joint distribution $\Pr{X_i,Y_i}$ is of the form $p(x)W(y|x)$, then $I(X_i;Y_i) \leq C(W)$
+\end{proof}
+
+\begin{notation} for simplicity
+  \[
+    p\ast q = (1-q)p + q(1-p)
+  \]
+\end{notation}
+
+\begin{example}
+  Let $W$ be a BSC($p$), $\Pr{X=0} = 1 - q$ and $\Pr{X=1} = q$. Then
+
+  \begin{align*}
+    \Pr{Y=0} = (1-q)(1-p) + qp\\
+    \Pr{Y=1} = (1-q)p + q(1-p)\\
+  \end{align*}
+
+  \begin{align*}
+    H(Y|X=0) &= p \log \frac 1 p + (1-p) \log \frac 1 {1-p}\\
+    H(Y|X=1) &= p \log \frac 1 p + (1-p) \log \frac 1 {1-p}\\
+    H(Y|X) &= p \log \frac 1 p + (1-p) \log \frac 1 {1-p}\\
+  \end{align*}
+
+  \begin{align*}
+    I(X;Y) &= H(Y) - H(Y|X)\\
+    &=(p\ast q) \log \frac 1 {p\ast q} + (1-(p\ast q))\log \frac 1 {1-(p\ast q)}
+    -
+    \left[
+    p \log \frac 1 p + (1-p) \log \frac 1 {1-p}
+    \right]
+  \end{align*}
+
+  We maximize $I(X;Y)$ for $q=1/2$
+  \[
+    C(W) = \log 2 - h_2(p)
+  \]
+
+\end{example}
+
+\begin{example}
+  Let $W$ be BEC($p$) and $\Pr{X=1} = q$
+
+  \begin{align*}
+    H(X) &= h_2(q)
+\\    H(X|Y=0) &= 0\\
+    H(X|Y=1) &= 0\\
+    H(X|Y=?) &= h_2(q)
+  \end{align*}
+
+  \[
+    I(X;Y) = h_2(q) - ph_2(q) = (1-p)h_2(q)
+  \]
+  \[
+    C(W) = (1-p)\log 2
+  \]
+\end{example}
 
 % -------------------------------------------------------------------------
 % appendices
