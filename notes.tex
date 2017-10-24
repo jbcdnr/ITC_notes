@@ -1068,20 +1068,20 @@ When going from iteration $i \rightarrow i+1$, $v_i$ is removed from $D$, conseq
 
 The length of the output of LZ after reading $v_1 ... v_m$ is given by
 \begin{align*}
-  \text{LZ output's length} = \lceil \log |U| \rceil + \lceil \log (2 |U| - 1) \rceil
-  + \lceil \log (3 |U| - 2) \rceil + ...
-  + \lceil \log (m|U| - m + 1) \rceil
+  \text{LZ output's length} = \lceil \log |\U| \rceil + \lceil \log (2 |\U| - 1) \rceil
+  + \lceil \log (3 |\U| - 2) \rceil + ...
+  + \lceil \log (m|\U| - m + 1) \rceil
 \end{align*}
 we observe that
 \begin{align*}
-  \text{LZ output's length} < m(\log(m |U|) + 1) = m \log(2 m |U|)
+  \text{LZ output's length} < m(\log(m |\U|) + 1) = m \log(2 m |\U|)
 \end{align*}
 
 Also we have
 
 \begin{align*}
-  \text{\# bits / letter} &< \frac{m \log(2m |U|)}{length(v_1 ... v_m)} \\
-  &= \frac{m \log(m)}{ length(v_1 ... v_m)} + \frac{m \log(2 |U|)}{length(v_1 ... v_m)}
+  \text{\# bits / letter} &< \frac{m \log(2m |\U|)}{length(v_1 ... v_m)} \\
+  &= \frac{m \log(m)}{ length(v_1 ... v_m)} + \frac{m \log(2 |\U|)}{length(v_1 ... v_m)}
 \end{align*}
 therefore
 \begin{align*}
@@ -1282,6 +1282,227 @@ distribition $p(x)$, $p(x,y) = p(x)W(y|x)$ and $I(X;Y)$, we can also compute
     C(W) = (1-p)\log 2
   \]
 \end{example}
+
+% -----------------------------------
+% lesson 10/24/2017 - Sebastien
+
+\subsection{Fano's inequality}
+Suppose $U$ and $V$ take values in the same alphabet $\U$, then
+
+\begin{align*}
+  H(U | V) \leq p_e \log(|\U| - 1) + h_2(p_e)
+\end{align*}
+with
+\begin{align*}
+  p_e = \Pr{U \neq V} 
+  \quad \text{ and } \quad
+  h_2(p) = p \log(\frac{1}{p}) + (1 - p) \log(\frac{1}{(1-p)})
+\end{align*}
+
+\begin{proof}
+  Define
+  \begin{align*}
+    Z =
+    \left\{
+    \begin{array}{ll}
+      1 & U = V \\
+      0 & U \neq V
+    \end{array}
+    \right. , \quad
+    H(Z) = h_2(p_e)
+  \end{align*}
+
+  \begin{align*}
+    H(UZ | V) &= H(U|V) + H(Z | UV) \\
+    &= H(Z | V) + H(U | VZ) \\
+    &\leq H(Z) + H(U | VZ) 
+  \end{align*}
+  but
+  \begin{align*}
+    H(U | VZ) = \underbrace{H(U | V, Z = 0)}_{0}\Pr{Z = 0} + \underbrace{H(u | V, Z = 1)}_{\leq \log(|\U| - 1)}\underbrace{\Pr{Z = 1}}_{p_e}
+  \end{align*}
+\end{proof}
+
+So if $H(U|V) > \lambda \Rightarrow \exists f(\lambda) > 0$, $p_e > f(\lambda)$ 
+
+\begin{corollary}
+  Suppose $U^L$, $V^L$ are random sequences with common alphabet $\U$, define :
+  \begin{align*}
+    p_{e,i} = \Pr{U_i \neq V_i} , \quad 
+    \bar{p_e} = \frac{1}{L} \sum_{i = 1}^{L} p_{e,i}
+  \end{align*}
+  then
+  \begin{align*}
+    \frac{1}{L} H(U^L | V^L) \leq h_2(\bar{p_e}) + \bar{p_e} \log(|\U| - 1)
+  \end{align*}
+\end{corollary}
+
+\begin{proof}
+  \begin{align*}
+    \frac{1}{L} H(U^L | V^L) &= \frac{1}{L} \sum_{i = 1}^{L} H(U_i | U^{i-1} V^L) \\
+    &\leq \frac{1}{L} \sum_{i = 1}^{L} H(U_i | V_i) \\
+    &\leq \frac{1}{L} \sum_{i = 1}^{L}(p_{e,i} \log(|\U| - 1) + h_2(p_{e, i})) \\
+    &= \bar{p_e} \log(|\U| - 1) + \frac{1}{L} \sum_{i = 1}^L h_2(p_{e,i}) \\
+    &\leq \bar{p_e} \log(|\U| - 1) + h_2(\frac{1}{L} \sum_{i = 1}^L p_{e,i}) \\
+    &= \bar{p_e} \log(|\U| - 1) + h_2(\bar{p_e})
+  \end{align*}
+\end{proof}
+
+\begin{theorem}{"Bad news" theorem, converse to the coding theorem}
+  \begin{itemize}
+    \item Suppose we have a stationary source $U_1 U_2 ...$ with entropy rate $H$ and produces a letter every $\tau_s$ seconds.
+    \item Suppose also that we have a channel $W$ that acceots input $X_1 X_2 ...$ once every $\tau_c$ seconds.
+    \item Suppose also 
+    \begin{align*}
+      \frac{H}{\tau_s} > \frac{c(w)}{\tau_c}
+    \end{align*}
+  \end{itemize}
+  then there is a $\lambda > 0$ such that $\bar{p_e} > \lambda$
+\end{theorem}
+
+\begin{definition}{stable}
+  suppose the encoder works by taking blocks of $L$ letters 
+  $$(U_1 ... U_L)(U_{L+1} ... U_{2L})...$$
+  and outputs
+  $$(X_1 ... X_n)(X_{n+1} ... U_{2n})...$$
+  then the encoder is stable if
+  \begin{align*}
+    L \tau_s \geq n \tau_c
+  \end{align*}
+\end{definition}
+
+\begin{proof}
+  Recall that for a stationary source $\frac{H(U_1 ... U_L)}{L}$ tends to $H$ so 
+  $$ H(U_1 ... U_L) \geq L H$$
+  We also have
+  \begin{align*}
+    I(U^2; V^2) \leq n c(w)
+  \end{align*}
+  therefore, since $\frac{n}{L} \leq \frac{\tau_s}{\tau_c}$
+  \begin{align*}
+    H(U^2 | V^2) = \frac{1}{L} (H(U^2) - I(U^2; V^2)) &\geq H - \frac{n}{L} c(w) \\
+    &\geq H - \frac{\tau_s}{\tau_c} c(w) \\
+    &= \tau_s (\frac{H}{\tau_s} - \frac{c(w)}{\tau_c}) 
+  \end{align*}
+
+  The right hand side is 
+  $$\epsilon(\tau_c, \tau_s, H, C) > 0$$
+  so for every stable encoder, decoder, we have
+  \begin{align*}
+    \bar{p_e} \log(|\U| - 1) + h_2(\bar{p_e}) > \epsilon(\tau_s, \tau_c, H, C)
+  \end{align*}
+  then 
+  \begin{align*}
+    \bar{p_e} \geq \epsilon(\tau_s, \tau_c, H, C, |\U|)
+  \end{align*}
+\end{proof}
+
+\begin{example}
+  Suppose $\U = \{ 0, 1 \}$ and $U_1 U_2 ...$ is a Markov process with
+    \begin{align*}
+    U_1 =
+    \left\{
+    \begin{array}{ll}
+      0 & \text{ with } p = 0.5 \\
+      1 & \text{ with } p = 0.5 
+    \end{array}
+    \right. , \quad
+    p(U_{n+1} | U_n) =
+    \left\{
+    \begin{array}{ll}
+      1 - p & u_{n+1} = u_n \\
+      p     & u_{n+1} \neq u_n 
+    \end{array}
+    \right. , \quad
+  \end{align*}
+\end{example}
+
+\begin{align*}
+  H &= \lim_{n \to \infty} H(U_n | U^{n-1})\\
+    &= \lim_{n \to \infty} H(U_n | U_{n_1})\\
+    &= H(U_2 | U_1) = h_2(p) 
+\end{align*}
+
+suppose $w = BEC(q), c(w) = (1 - q)\log(2)$ and $\tau_s = \tau_c = 1$
+
+\begin{align*}
+  h_2(\bar{p_e}) \geq h_2(p) - (1 - q)\log(2) \Rightarrow \bar{p_e} \geq \lambda   
+\end{align*} 
+
+What we want to do next is to show a matching "Good news" theorem: 
+
+We could show that if $\frac{H}{\tau_s} \leq \frac{c(w)}{\tau_c}$ then for any $\lambda > 0$, we can find a stable encoder and decoder such taht $p_e < \lambda$. 
+Instead, we will show stronger results:
+\begin{enumerate}
+  \item \textbf{Separation theorem}
+    The encoder can be designed in a modular way: 
+    \begin{itemize}
+      \item A \textbf{source encoder} which encoder message words in bits. The design of this encoder is strongly dependent of the type of the input.
+      \item A \textbf{channel encoder} which encoder the bits to maximize the performance with a specific channel.
+    \end{itemize}
+  \item We will show that 
+  \begin{align*}
+    \Pr{U^L \neq V^L} < \lambda
+  \end{align*}
+  using the fact that
+  \begin{align*}
+    (U_i \neq V_i) \Rightarrow (U^L \neq V^L) 
+    \quad \text{ so } \quad
+    p_{e,i} \leq \Pr{U^L \neq V^L} \Rightarrow \bar{p_e} \leq \Pr{U^L \neq V^L}
+  \end{align*}
+\end{enumerate}
+
+We will now show that good channel encoders and channel decoders exist
+
+\begin{definition}
+  Given a channel $W$ with input alphabet $\X$, a block encoder is a function
+  \begin{align*}
+    Enc: \{1, ..., M\} \rightarrow \X^n
+  \end{align*}
+  with $n$ the block length.\\
+  $Enc(1), ..., Enc(M)$ are each called codewords and $M$ is equal to the number of codewords.\\
+  The rate of the code can be defined by 
+  $$ R = \frac{\log M}{n} $$
+\end{definition}
+\begin{definition}
+  Given a channel $W$ with ouput alphabet $Y$, a block decoder is a function
+  \begin{align*}
+    Dec: \Y^n \rightarrow \{ ?, 1, ..., M\}
+  \end{align*}
+\end{definition}
+
+\begin{definition}
+  \begin{align*}
+    p_{error}(m) = \Pr{\hat{m} \neq m | m}
+  \end{align*}
+  \begin{align*}
+    \bar{p}_{error}(m) = \frac{1}{M} \sum_{m=1}^M p_{error}(m)
+  \end{align*}
+  \begin{align*}
+    \hat{p}_{error}(m) = \max_{m} p_{error}(m)
+  \end{align*}
+\end{definition}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 % -------------------------------------------------------------------------
 % appendices
