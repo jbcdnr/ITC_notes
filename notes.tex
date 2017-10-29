@@ -306,6 +306,18 @@ We can measure how efficient $\C$ represents $\U$ by considering
   \end{align*}
   with $p(u) = Pr(U = u)$
 \end{theorem}
+
+\begin{wikipedia}
+  The entropy is a lower bound on the optimal expected length
+  \begin{align*}
+    H(U) \leq \E{l(\C(u))} 
+  \end{align*}
+  In fact, one can show that there exists a uniquely decodable code such that 
+  \begin{align*}
+     H(U) \leq \E{l(\C(u))} < H(U) + 1
+   \end{align*} 
+\end{wikipedia}
+
 Note that $H(U)$ is a fonction of the distribution $\C_u(.)$ of the random variable $U$, it isn't a function of $U$.
 
 \begin{align*}
@@ -405,9 +417,10 @@ Same definitions of entropy holds for $n$ symbols.
 \end{corollary}
 
 \begin{definition}[Conditional entropy]
-  \[
-    H(U|V) = \sum_{u,v} p(u,v) \log \frac 1 {p(u|v)}
-  \]
+  \begin{align*}
+    H(U|V) &= \sum_{u,v} p(u,v) \log \frac 1 {p(u|v)}\\
+           &= \sum_v H(U | V = v) \Pr{V = v}
+  \end{align*}
 \end{definition}
 
 \begin{theorem}
@@ -435,6 +448,7 @@ We can apply the chain rule on the entropy as follow
 
 \[
   H(U_1 U_2 \dots U_n) = H(U_1) + H(U_2|U_1) + \dots + H(U_n|U_1 U_2 \dots U_{n-1})
+  = \sum_{i = 1}^n H(U_i | U^{i-1})
 \]
 
 \begin{definition}[Conditional mutual information]
@@ -455,6 +469,13 @@ We can apply the chain rule on the mutual information as follows
 \[
   I(U_1, U_2, ... ; V) = I(U_1; V) + I(U_2; V | U_1) + ...
 \]
+
+\begin{theorem}{Data processing inequality}
+  Let $X \rightarrow Y \rightarrow Z$ be a Markov chain, then
+  \begin{align*}
+    I(X ; Y) \geq I(X ; Z)
+  \end{align*}
+\end{theorem}
 
 \begin{notation}
   \[
@@ -801,6 +822,16 @@ and
 \]
 \end{observation}
 
+\begin{observation}
+  \[
+    D(p||q) = \sum_u p(u) \log \pfrac {p(u)} {q(u)} \geq 0 \text{ with equality iff } p = q
+  \]
+\end{observation}
+
+\begin{wikipedia}
+The \textbf{Kullback–Leibler divergence} (also called \textbf{relative entropy}) is a measure of how one probability distribution diverges from a second, expected probability distribution.
+\end{wikipedia}
+
 \begin{corollary}
   if $U_1 \dots U_n$ are i.i.d. following distribution $q$, then
   \[
@@ -830,14 +861,6 @@ and
     2^{nH(p)(1+\epsilon)}
   \end{align*}
 \end{proof}
-
-
-\begin{observation}
-  \[
-    D(p||q) = \sum_u p(u) \log \pfrac {p(u)} {q(u)} \geq 0 \text{ with equality iff } p = q
-  \]
-\end{observation}
-
 
 \begin{example}
   $U \in \{0,1\}$, $p=\frac 1 2, \frac 1 2$, $q=\frac 1 2 - \delta, \frac 1 2 + \delta$
@@ -898,7 +921,7 @@ when $U_1 \dots U_n$ are i.i.d with $p_1 = \theta$ and $p_0 = 1 - p_1$
 for any $0 \leq \alpha \leq 1$
 
 \begin{align*}
-  1 = 1^n = (\alpha + (1-\alpha))^n &= \sum_{i=0}^n {n \choose i} \alpha^i (1-\alpha)^{k-i}\\
+  1 = 1^n = (\alpha + (1-\alpha))^n &= \sum_{i=0}^n {n \choose i} \alpha^i (1-\alpha)^{n-i}\\
   & \geq {n \choose k} \alpha^k (1-\alpha)^{n-k}
 \end{align*}
 
