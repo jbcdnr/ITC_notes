@@ -208,10 +208,8 @@ In coding theory, the \textbf{Kraft-McMillan inequality} gives a necessary and s
   \end{align*}
 \end{proof}
 
-\todo{something fuzzy with the following theorem}
-
 \begin{theorem}
-  Suppose $\C : \U \rightarrow \N$ is such that $\sum_u i^{\C(u)} \leq 1$, then, there exists a prefix-free code $\C: \U \rightarrow \{0, 1\}$ s.t. $\forall u, l(\C(u)) = \C(u)$
+  Suppose $\C : \U \rightarrow \N$ is such that $\sum_u 2^{-l(\C(u))} \leq 1$, then, there exists a prefix-free code $\C': \U \rightarrow \{0, 1\}$ s.t. $\forall u, l(\C'(u)) = l(\C(u))$
 \end{theorem}
 
 \begin{proof}
@@ -268,28 +266,27 @@ We can measure how efficient $\C$ represents $\U$ by considering
 \end{theorem}
 
 \begin{proof}
-  let $\C(u) = l(\C(u))$, we know $\sum_u 2^{-\C(u)} \leq 1$ because $\C$ is uniquely decodable
+  let $\C(u) = l(\C(u))$, we know $\sum_u 2^{-\C(u)} \leq 1$ because $\C$ is uniquely decodable. We write $q(u)~=~2^{-\C(u)}$ and get
 
   \begin{align*}
-    E[l(\C(u))] &= \sum_u p(u) \C(u) = \sum_u p(u) \log_2(\frac{1}{q(u)}) \\
-    &\equiv \sum_u p(u) \log(\frac{q(u)}{p(u)}) \leq 0 \\
-    &\equiv \sum_u p(u) \ln(\frac{q(u)}{p(u)}) \leq 0 \\
-    &\leq \sum_u p(u) [\frac{q(u)}{p(u)} - 1]
+    E[l(\C(u))] &= \sum_u p(u) \C(u) = \sum_u p(u) \log_2\frac{1}{q(u)} \\
+    &\equiv \sum_u p(u) \log\frac{q(u)}{p(u)} \leq 0 \\
+    &\equiv \sum_u p(u) \ln\frac{q(u)}{p(u)} \leq 0 \\
+    &\leq \sum_u p(u) \left[\frac{q(u)}{p(u)} - 1\right]
     = \underbrace{\sum_u q(u)}_{\leq 1} - \underbrace{\sum_u p(u)}_{=1} \leq 0
   \end{align*}
-  \todo{what's $q(u)$ in the proof above?}
 \end{proof}
 
 \begin{theorem}
   For any $\U$, there exists a prefix-free code $\C$ s.t.
   \begin{align*}
-    E[l(\C(u))] < 1 + \sum_{u \in \U} p(u) \log(\frac{1}{p(u)})
+    E[l(\C(u))] < 1 + \sum_{u \in \U} p(u) \log\frac{1}{p(u)}
   \end{align*}
 \end{theorem}
 \begin{proof}
   Given $\U$, let
   \begin{align*}
-    &\C(u) = \log(\frac{1}{p(u)}) < 1 + \log(\frac{1}{p(u)}) \\
+    &\C(u) = \lceil \log\frac{1}{p(u)} \rceil < 1 + \log \frac{1}{p(u)} \\
     &\Rightarrow \sum_u 2^{-\C(u)} \leq \sum_u p(u) = 1 \\
     &\Rightarrow \sum_u p(u) \C(u) < \sum_u p(u) \log(\frac{1}{p(u)}) + \underbrace{1}_{\sum p(u)}
   \end{align*}
@@ -310,12 +307,12 @@ We can measure how efficient $\C$ represents $\U$ by considering
 \begin{wikipedia}
   The entropy is a lower bound on the optimal expected length
   \begin{align*}
-    H(U) \leq \E{l(\C(u))} 
+    H(U) \leq \E{l(\C(u))}
   \end{align*}
-  In fact, one can show that there exists a uniquely decodable code such that 
+  In fact, one can show that there exists a uniquely decodable code such that
   \begin{align*}
      H(U) \leq \E{l(\C(u))} < H(U) + 1
-   \end{align*} 
+   \end{align*}
 \end{wikipedia}
 
 Note that $H(U)$ is a fonction of the distribution $\C_u(.)$ of the random variable $U$, it isn't a function of $U$.
@@ -390,7 +387,7 @@ if $\C$ is optimal for $U$, then $\C'$ is optimal for $V$
     \sum_{u,v} p(u,v) \log \frac 1 {p(u,v)} \leq \sum_u p(u) \log \frac 1 {p(u)} + \sum_v p(v) \log \frac 1 {p(v)}
     \iff \sum_{u,v} p(u,v) \log \frac {p(u)p(v)} {p(u,v)} \leq 0
   \end{align*}
-  We use $\{\ln z \leq z - 1, \forall z\}$ (with equality iff $z=1$):
+  We use $\ln z \leq z - 1$ for all $z$ (with equality iff $z=1$):
   \begin{align*}
     \sum_{u,v} p(u,v) \log \frac {p(u)p(v)} {p(u,v)} \leq \sum_{u,v} p(u,v) \left[ \frac {p(u)p(v)} {p(u, v)} - 1 \right] = \sum_{u,v} p(u)p(v) - \sum_{u,v} p(u,v) = 1 - 1 = 0
   \end{align*}
@@ -550,7 +547,9 @@ For the upper bound,
 
 
 \begin{definition}[Entropy rate of a stochastic process]
-  $$ r = \lim_{n\to \infty} \frac 1 n H(U^n) \quad \text{ if the limit exists} $$
+\[
+  r = \lim_{n\to \infty} \frac 1 n H(U^n) \quad \text{ if the limit exists}
+\]
 \end{definition}
 
 \begin{theorem}
@@ -669,7 +668,7 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
   \begin{align*}
     2^{-n H(u)(1 + \epsilon)}
     \leq Pr(U^n = u^n)
-    \leq 2^{-n H(u)(1 + \epsilon)}
+    \leq 2^{-n H(u)(1 - \epsilon)}
   \end{align*}
 \end{theorem}
 
@@ -748,7 +747,11 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
       &\Rightarrow \Ex{X_i} = p(u) \quad \text{ and } \quad Var[X_i] = p(u) - p(u)^2 \\
     \end{align*}
     \begin{align*}
-      \Pr{\underbrace{|\frac{1}{n} \sum_{i+1}^n X_i - p(u)|}_{u^n \text{ fails the test for letter } u} \geq \epsilon p(u)} \leq \frac{Var(\frac{1}{n} \sum X_i)}{(\epsilon p(u))^2}
+      \underbrace{
+        \Pr{|\frac{1}{n} \sum_{i+1}^n X_i - p(u)|}\geq \epsilon p(u)
+      }_{u^n \text{ fails the test for letter } u}
+      \leq
+      \frac{Var(\frac{1}{n} \sum X_i)}{(\epsilon p(u))^2}
       = \frac{(1 - p(u))}{\epsilon^2 p(u)}
     \end{align*}
 
@@ -756,30 +759,37 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
     \begin{align*}
       \Pr{U^n \not \in T(n, \epsilon, p)} &= \Pr{\bigcup_{u \in U} \{u^n \text{ fails the test for u} \}} \\
       &\leq \sum_{u \in U} \Pr{U^n \text{ fails the test for } u} \\
-      &\leq \frac{1}{n} \sum_{u \in U} \frac{(1 - p(u))}{p(u) \epsilon} \quad \text{ which goes to 0 as } n \text{ gets large}
+      &\leq \frac{1}{n} \sum_{u \in U} \frac{(1 - p(u))}{p(u) \epsilon^2} \quad \text{ which goes to 0 as } n \text{ gets large}
     \end{align*}
 
     \item
     \begin{align*}
       1 \geq \Pr{U^n \in T(n, \epsilon, p)} &= \sum_{u^n \in T(n, \epsilon, p)} \Pr{U^n = u^n} \\
       &\geq \sum_{u^n \in T(n, \epsilon, p)} 2^{-n(1 + \epsilon) H(u)} \\
-      &= 2^{n (1 + \epsilon) H(u)} |T(n, \epsilon, p)|
+      &= 2^{-n (1 + \epsilon) H(u)} |T(n, \epsilon, p)|
     \end{align*}
 
     \item
     \begin{align*}
-      1 - \epsilon \leq \Pr{U^n \in T(n, \epsilon, p)} &= \sum_{u^n \in T(n, \epsilon, p)} \Pr(U^n = u^n) \\
-       &\geq \sum_{u^n \in T(n, \epsilon, p)} 2^{n H(u)(1-\epsilon)} \\
-       &= 2^{n H(u)(1 - \epsilon)} |T(n, \epsilon, p)|
+      1 - \epsilon \leq \Pr{U^n \in T(n, \epsilon, p)} &= \sum_{u^n \in T(n, \epsilon, p)} \Pr{U^n = u^n} \\
+       &\leq \sum_{u^n \in T(n, \epsilon, p)} 2^{n H(u)(1-\epsilon)} \\
+       &= 2^{-n H(u)(1 - \epsilon)} |T(n, \epsilon, p)|
     \end{align*}
 
   \end{enumerate}
 \end{proof}
 
+\begin{observation}
+  $\Pr{U^n \in T(n, \epsilon, p)} \to 1$ as $n\to \infty$
+\end{observation}
 
-\begin{definition}[Kullback-Leiber divergence (information gain)]
-  If we compress data in a manner that assumes $q(u)$ is the distribution underlying some data, when, in reality, $p(u)$ is the correct distribution, the Kullback-Leiber divergence is the number of average additional bits per datum necessary for compression.
+\begin{definition}[Kullback Leibler divergence]
+  \[
+    D(p||q) = \sum_u p(u) \log \frac {p(u)} {q(u)} \geq 0 \text{ with equality iff } p = q
+  \]
 \end{definition}
+
+If we compress data in a manner that assumes $q(u)$ is the distribution underlying some data, when, in reality, $p(u)$ is the correct distribution, the Kullback-Leiber divergence is the average number of additional bits per datum necessary for compression. It is also called \textbf{relative entropy} and is a measure of how one probability distribution diverges from a second probability distribution.
 
 % ----------------------------- %
 % ---- lecture 2017-10-10 ----- %
@@ -788,49 +798,32 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
 
 \begin{lemma}
   if $U_1 \dots U_n$ are i.i.d. with distribution $q$ and $u_1 \dots u_n$ is $(\epsilon, p)$-tipycal, then
-
-  \begin{align*}
+  \[
+    2^{-n[H(p) + D(p||q)](1+\epsilon)}
+    \leq
     \Pr{U^n = u^n}
-    &= \left[ \prod_u q(u)^{p(u)}\right]^{n (1 + \epsilon)} \\
-    &= 2^{-n(1\pm \epsilon)} \sum_u p(u) \log \frac 1 {q(u)}
-  \end{align*}
+  \leq
+    2^{-n[H(p) + D(p||q)](1-\epsilon)}
+  \]
 \end{lemma}
 
-We know that $\Pr{U^n \in T(n, \epsilon, p)} \to 1$ as $n\to \infty$ and
-
-\[
-  (1-\epsilon)2^{nH(U)(1-\epsilon)} \leq | T(n, \epsilon, p) | \leq 2^{nH(U)(1+\epsilon)}
-\]
-
-\begin{observation}
-
-Suppose $U_1 \dots U_n$ are i.i.d. following $q$ and $u^n \in T(n, \epsilon, p)$
-
+\begin{proof}
+  Follows from
 \[
   \left[ \prod_u q(u)^{p(u)} \right]^{n(1+\epsilon)} \leq \Pr{U^n = u^n} \leq  \left[ \prod_u q(u)^{p(u)} \right]^{n(1-\epsilon)}
 \]
-
-and
 \[
   \prod_u q(u)^{p(u)} = 2^{-\sum p(u) \log \frac 1 {q(u)}}
 \]
+and
 
 \[
   \sum_u p(u) \log \frac 1 {q(u)} =
   \underbrace{\sum_u p(u) \log \frac 1 {p(u)}}_{H(p)} +
   \underbrace{\sum_u p(u) \log \frac {p(u)} {q(u)}}_{D(p||q)}
 \]
-\end{observation}
+\end{proof}
 
-\begin{observation}
-  \[
-    D(p||q) = \sum_u p(u) \log \pfrac {p(u)} {q(u)} \geq 0 \text{ with equality iff } p = q
-  \]
-\end{observation}
-
-\begin{wikipedia}
-The \textbf{Kullback–Leibler divergence} (also called \textbf{relative entropy}) is a measure of how one probability distribution diverges from a second, expected probability distribution.
-\end{wikipedia}
 
 \begin{corollary}
   if $U_1 \dots U_n$ are i.i.d. following distribution $q$, then
@@ -867,7 +860,7 @@ The \textbf{Kullback–Leibler divergence} (also called \textbf{relative entropy
   \[
     D(p||q) = \frac 1 2 \log \frac 1 {1-2\delta} + \frac 1 2 \log \frac 1 {1+2\delta} = \frac 1 2 \log \frac 1 {1-4\delta^2} = - \frac 1 2 \log (1-4\delta^2) \approx \frac 1 2 4\delta^2 + o(\delta^4)
   \]
-  So if we want $2^{-n D(p||q)}$ small $n=\Omega(1/\delta^2)$
+  So if we want $2^{-n D(p||q)}$ small, we must pick $n=\Omega(1/\delta^2)$
 \end{example}
 
 \begin{example}
@@ -928,7 +921,7 @@ for any $0 \leq \alpha \leq 1$
 Then for all $\alpha$
 
 \[
-{n \choose k} \leq \alpha^{-k}(1-\alpha)^{-(n-k)} = 2^{-n(\frac k n \log \frac 1 \alpha + (1-\frac k n) \log \frac 1 {1-\alpha})}
+{n \choose k} \leq \alpha^{-k}(1-\alpha)^{-(n-k)} = 2^{n(\frac k n \log \frac 1 \alpha + (1-\frac k n) \log \frac 1 {1-\alpha})}
 \]
 
 We pick $\alpha = \frac k n$, and we get
@@ -999,7 +992,7 @@ consequently this scheme is asymptotically optimal.
 % -------------------------------------------------------------------------
 % lesson - 16.0.2017 - Thomas
 
-\todo{THOMAS SCRIBE ICI}
+\todo{Thomas scribes here}
 
 % -------------------------------------------------------------------------
 % lesson - 17.0.2017 - sebastien
@@ -1142,7 +1135,7 @@ So we have proved the following theorem:
 Interesting in the case of unreliable transmission media.
 
 \begin{definition}[Communication channel]
-  A communication channel $W$ is a device with an input alphavet $\X$ and an output
+  A communication channel $W$ is a device with an input alphabet $\X$ and an output
   alphabet $\Y$. Its behabvior is described by
   \[
     W_i(y_i | x^i, y^{i-1}) = \Pr{Y_i = y_i | X^i = x^i, Y^{i-1} = y^{i-1}}
@@ -1242,11 +1235,10 @@ distribition $p(x)$, $p(x,y) = p(x)W(y|x)$ and $I(X;Y)$, we can also compute
   C(W) = \max_{p(x)} I(X;Y)
 \]
 
-\todo{is $c$ a typo in the formula below? should it be $n$?}
 \begin{lemma}
   for a stationary memoryless $W$ without feedback, we have
   \[
-    I(X^n;Y^n) \leq c C(W)
+    I(X^n;Y^n) \leq n C(W)
   \]
 \end{lemma}
 
@@ -1327,7 +1319,7 @@ Suppose $U$ and $V$ take values in the same alphabet $\U$, then
 \end{align*}
 with
 \begin{align*}
-  p_e = \Pr{U \neq V} 
+  p_e = \Pr{U \neq V}
   \quad \text{ and } \quad
   h_2(p) = p \log(\frac{1}{p}) + (1 - p) \log(\frac{1}{(1-p)})
 \end{align*}
@@ -1348,7 +1340,7 @@ with
   \begin{align*}
     H(UZ | V) &= H(U|V) + H(Z | UV) \\
     &= H(Z | V) + H(U | VZ) \\
-    &\leq H(Z) + H(U | VZ) 
+    &\leq H(Z) + H(U | VZ)
   \end{align*}
   but
   \begin{align*}
@@ -1356,12 +1348,12 @@ with
   \end{align*}
 \end{proof}
 
-So if $H(U|V) > \lambda \Rightarrow \exists f(\lambda) > 0$, $p_e > f(\lambda)$ 
+So if $H(U|V) > \lambda \Rightarrow \exists f(\lambda) > 0$, $p_e > f(\lambda)$
 
 \begin{corollary}
   Suppose $U^L$, $V^L$ are random sequences with common alphabet $\U$, define :
   \begin{align*}
-    p_{e,i} = \Pr{U_i \neq V_i} , \quad 
+    p_{e,i} = \Pr{U_i \neq V_i} , \quad
     \bar{p_e} = \frac{1}{L} \sum_{i = 1}^{L} p_{e,i}
   \end{align*}
   then
@@ -1385,7 +1377,7 @@ So if $H(U|V) > \lambda \Rightarrow \exists f(\lambda) > 0$, $p_e > f(\lambda)$
   \begin{itemize}
     \item Suppose we have a stationary source $U_1 U_2 ...$ with entropy rate $H$ and produces a letter every $\tau_s$ seconds.
     \item Suppose also that we have a channel $W$ that accepts input $X_1 X_2 ...$ once every $\tau_c$ seconds.
-    \item Suppose also 
+    \item Suppose also
     \begin{align*}
       \frac{H}{\tau_s} > \frac{C(W)}{\tau_c}
     \end{align*}
@@ -1394,7 +1386,7 @@ So if $H(U|V) > \lambda \Rightarrow \exists f(\lambda) > 0$, $p_e > f(\lambda)$
 \end{theorem}
 
 \begin{definition}{stable}
-  suppose the encoder works by taking blocks of $L$ letters 
+  suppose the encoder works by taking blocks of $L$ letters
   $$(U_1 ... U_L)(U_{L+1} ... U_{2L})...$$
   and outputs
   $$(X_1 ... X_n)(X_{n+1} ... U_{2n})...$$
@@ -1405,7 +1397,7 @@ So if $H(U|V) > \lambda \Rightarrow \exists f(\lambda) > 0$, $p_e > f(\lambda)$
 \end{definition}
 
 \begin{proof}
-  Recall that for a stationary source $\frac{H(U_1 ... U_L)}{L}$ tends to $H$ so 
+  Recall that for a stationary source $\frac{H(U_1 ... U_L)}{L}$ tends to $H$ so
   $$ H(U_1 ... U_L) \geq L H$$
   We also have
   \begin{align*}
@@ -1415,16 +1407,16 @@ So if $H(U|V) > \lambda \Rightarrow \exists f(\lambda) > 0$, $p_e > f(\lambda)$
   \begin{align*}
     H(U^2 | V^2) = \frac{1}{L} (H(U^2) - I(U^2; V^2)) &\geq H - \frac{n}{L} C(W) \\
     &\geq H - \frac{\tau_s}{\tau_c} C(W) \\
-    &= \tau_s (\frac{H}{\tau_s} - \frac{C(W)}{\tau_c}) 
+    &= \tau_s (\frac{H}{\tau_s} - \frac{C(W)}{\tau_c})
   \end{align*}
 
-  The right hand side is 
+  The right hand side is
   $$\epsilon(\tau_c, \tau_s, H, C) > 0$$
   so for every stable encoder, decoder, we have
   \begin{align*}
     \bar{p_e} \log(|\U| - 1) + h_2(\bar{p_e}) > \epsilon(\tau_s, \tau_c, H, C)
   \end{align*}
-  then 
+  then
   \begin{align*}
     \bar{p_e} \geq \epsilon(\tau_s, \tau_c, H, C, |\U|)
   \end{align*}
@@ -1437,14 +1429,14 @@ So if $H(U|V) > \lambda \Rightarrow \exists f(\lambda) > 0$, $p_e > f(\lambda)$
     \left\{
     \begin{array}{ll}
       0 & \text{ with } p = 0.5 \\
-      1 & \text{ with } p = 0.5 
+      1 & \text{ with } p = 0.5
     \end{array}
     \right. , \quad
     p(U_{n+1} | U_n) =
     \left\{
     \begin{array}{ll}
       1 - p & u_{n+1} = u_n \\
-      p     & u_{n+1} \neq u_n 
+      p     & u_{n+1} \neq u_n
     \end{array}
     \right. , \quad
   \end{align*}
@@ -1453,33 +1445,33 @@ So if $H(U|V) > \lambda \Rightarrow \exists f(\lambda) > 0$, $p_e > f(\lambda)$
 \begin{align*}
   H &= \lim_{n \to \infty} H(U_n | U^{n-1})\\
     &= \lim_{n \to \infty} H(U_n | U_{n_1})\\
-    &= H(U_2 | U_1) = h_2(p) 
+    &= H(U_2 | U_1) = h_2(p)
 \end{align*}
 
 suppose $w = BEC(q), c(w) = (1 - q)\log(2)$ and $\tau_s = \tau_c = 1$
 
 \begin{align*}
-  h_2(\bar{p_e}) \geq h_2(p) - (1 - q)\log(2) \Rightarrow \bar{p_e} \geq \lambda   
-\end{align*} 
+  h_2(\bar{p_e}) \geq h_2(p) - (1 - q)\log(2) \Rightarrow \bar{p_e} \geq \lambda
+\end{align*}
 
-What we want to do next is to show a matching "Good news" theorem: 
+What we want to do next is to show a matching "Good news" theorem:
 
-We could show that if $\frac{H}{\tau_s} \leq \frac{c(w)}{\tau_c}$ then for any $\lambda > 0$, we can find a stable encoder and decoder such that $p_e < \lambda$. 
+We could show that if $\frac{H}{\tau_s} \leq \frac{c(w)}{\tau_c}$ then for any $\lambda > 0$, we can find a stable encoder and decoder such that $p_e < \lambda$.
 Instead, we will show stronger results:
 \begin{enumerate}
   \item \textbf{Separation theorem}
-    The encoder can be designed in a modular way: 
+    The encoder can be designed in a modular way:
     \begin{itemize}
       \item A \textbf{source encoder} which encoder message words in bits. The design of this encoder is strongly dependent of the type of the input.
       \item A \textbf{channel encoder} which encoder the bits to maximize the performance with a specific channel.
     \end{itemize}
-  \item We will show that 
+  \item We will show that
   \begin{align*}
     \Pr{U^L \neq V^L} < \lambda
   \end{align*}
   using the fact that
   \begin{align*}
-    (U_i \neq V_i) \Rightarrow (U^L \neq V^L) 
+    (U_i \neq V_i) \Rightarrow (U^L \neq V^L)
     \quad \text{ so } \quad
     p_{e,i} \leq \Pr{U^L \neq V^L} \Rightarrow \bar{p_e} \leq \Pr{U^L \neq V^L}
   \end{align*}
@@ -1494,7 +1486,7 @@ We will now show that good channel encoders and channel decoders exist
   \end{align*}
   with $n$ the block length.\\
   $Enc(1), ..., Enc(M)$ are each called codewords and $M$ is equal to the number of codewords.\\
-  The rate of the code can be defined by 
+  The rate of the code can be defined by
   $$ R = \frac{\log M}{n} $$
 \end{definition}
 \begin{definition}
