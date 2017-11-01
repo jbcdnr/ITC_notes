@@ -73,9 +73,10 @@
 \def\N{\mathcal{N}}
 \def\X{\mathcal{X}}
 \def\Y{\mathcal{Y}}
+\def\R{\mathbb{R}}
+
 
 \def\C{\mathscr{C}}
-
 \DeclareMathOperator{\E}{\mathbb{E}}% expected value
 
 
@@ -1509,10 +1510,20 @@ We will now show that good channel encoders and channel decoders exist
 \end{definition}
 
 
+% -----------------------------------
+% lesson 11/1/2017 - Sebastien
 
-
-
-
+\subsection{Computational consideration for $C(W)$}
+\begin{itemize}
+  \item We have an optimization problem
+  \begin{align*}
+    \max_{p_X} f(p_X) \quad \text{ where } \quad f(p_X) = I(X ; Y)
+  \end{align*}
+  \item 
+  \begin{claim}
+    $f$ is a concave function
+  \end{claim}
+\end{itemize}
 
 
 
@@ -1567,7 +1578,170 @@ A stochastic process is a collection $U_1, U_2 \dots U_n$ of RVs each taking val
   In other words, the process is time shift invariant.
 \end{definition}
 
-\end{appendices}
+\section{Concave/convex functions}
 
+A function $f : S \rightarrow \R $ is called convex if 
+\[ \forall x,y \in S, 0 \leq \lambda \leq 1,  f(\lambda x - (1 - \lambda)y) \leq \lambda f(x) + (1 - \lambda) f(y) \]
+where $S$ is a convex set.
+
+\begin{definition}
+  A set $S \subseteq \R^k$ is called to be convex if
+  \[ \forall x,y \in S, 0 \leq \lambda \leq 1,  \lambda x + (1 - \lambda) y \in S\]
+\end{definition}
+
+\begin{definition}
+  $f$ is called concave if $-f$ is convex.
+\end{definition}
+
+\begin{definition}{k-simplex}
+\[ S_k = \{(p_1, ..., p_k) \in \R^k , p \geq 0, \sum_i p_i = 1 \} \]  
+as the k-simplex ( a $(k-1)$-dimentional subset of $\R^k$)
+\end{definition}
+
+Remark: 
+Given $S_k$ a convex set and $p,q \in S_k$, let
+\begin{align*}
+  r   &= \lambda p + (1 - \lambda)q \\
+  r_i &= \lambda p_i + (1 - \lambda) q_i \geq 0
+\end{align*}
+
+\[ \sum r_i = \lambda + (1 - \lambda) = 1 \]
+
+\begin{example}
+  Let $f : S_k \rightarrow \R $, with 
+  \[ f(p_1, ..., p_k) = \sum^k p_i \log_{\frac{1}{p_i}} \]
+  claim: f is concave
+
+  \begin{proof}
+    Given $p, q \in S_k, 0 \leq \lambda \leq 1$, define $(U, V)$ with $U \in \{0, 1\}$ and $V \in \{1, ..., k\}$
+
+    \begin{align*}
+      P_{UV}(u, v) = 
+      \left\{
+      \begin{array}{l l}
+        \lambda p_i, & u=0, v=i \\
+        (1 - \lambda)q_i, & u=1, v=i 
+      \end{array}
+      \right.
+    \end{align*}
+    therefore we have
+    \begin{align*}
+      \Pr{V = i} &= \lambda p_i + (1 - \lambda) q_i \\
+      H(V) &= f(\lambda p + (1 - \lambda) q) \\
+      H(V | U) &= \lambda f(p) + (1 - \lambda) f(q) \\
+    \end{align*}
+  \end{proof}
+\end{example}
+
+
+\begin{example}
+  For $W(Y | X)$ let $f(p_X) = I(X ; Y)$ when $p(x, y) = p_X(x) W(Y | X) $
+  \textbf{Claim:} $f$ is concave, 
+  \[ I(X ; Y) = H(Y) - H(X | Y) \]
+  and
+  \[ H(Y|X) = \sum_x p_X(x) \sum_y W(Y|X) \log \frac{1}{W(Y | X)} \]
+  We see that $H(Y|X)$ is a linear function of $p_X(x)$.\\
+  $H(Y)$ is a concave function of $p_Y(y)$ with 
+  \[ p_Y(y) - \sum_x p_X(x) W(Y|X) \] 
+
+  \begin{align*}
+    p_X \underbrace{\longrightarrow}_{\text{linear}} p_Y \underbrace{\longrightarrow}_{\text{concave}} H(Y) 
+    \Longrightarrow p_X \underbrace{\longrightarrow}_{\text{concave}} H(Y)
+  \end{align*}
+\end{example}
+
+How to maximize a function on the simplex?
+
+\begin{theorem}{Karush-Kuhn-Tucker conditions - (KKT)} \\
+  Suppose $f: S_k \rightarrow \R$, smooth ($\frac{df}{dp_i dp_j}$ exists), then if $p = \{ p_1, ..., p_k\}$ maximizes $f$, then $\exists \lambda$ s.t. 
+  \[ \forall i, \frac{df}{d p_i} \leq \lambda \]
+  with equality $\forall i$ for which $p_i > 0$
+
+\begin{proof}
+  Suppose $(p_1, ..., p_k)$ maximizes $f$, then suppose that $p_i > 0$. Then we can consider a $p' \in S_k$ as follow:\\
+  Pick $j \neq i$ and a small $\epsilon, 0 < \epsilon < p_i$
+  \begin{align*}
+    p_k' = 
+    \left\{ 
+    \begin{array}{ll}
+      p_i - \epsilon, &k = i \\
+      p_j + \epsilon, & k = j \\
+      p_k, &\text{else}
+    \end{array}
+    \right.
+  \end{align*}
+
+  \begin{align*}
+    f(p') &= f(p) + \frac{d f(p)}{d p_i}(- \epsilon) + \frac{d f(p)}{d p_j} (\epsilon) + O(\epsilon^2) \\
+    &= f(p) + \epsilon \left[ \frac{df}{dp_j} - \frac{df}{dp_i} \right] + O(\epsilon^2)
+  \end{align*}
+
+  So for every $i, j$ with $p_i > 0$ we have 
+  \[ \frac{df}{dp_j} \frac{df}{dp_i} \]
+  $\Rightarrow$ equality if $i$ and $j$ are such that $p_i > 0, p_j > 0$ 
+
+  $\Rightarrow$ for $i$'s such that $p_i > 0, \frac{df}{dp_i} = \lambda$ and all the indices $j$ have $\frac{df}{dp_j} \leq \lambda$
+\end{proof}
+
+\end{theorem}
+
+\begin{theorem}
+  Suppose $f: S_k \rightarrow \R$, suppose $f$ is concave and suppose for $p \in S_k$, the KKT condition hold. Then $\forall q \in S_k, f(q) \leq f(p) $
+
+  \begin{proof}
+    \begin{align*}
+      f(\epsilon q + (1 - \epsilon)p) \geq (1 - \epsilon) f(p) + \epsilon f(q) \\
+      \frac{f(\epsilon q + (1 - \epsilon)p) - f(p)}{\lambda} \geq f(q) - f(p), \quad \forall 0 < \epsilon \leq 1
+    \end{align*}
+    \begin{align*}
+      \Rightarrow f(q) - f(p) \leq \lim_{\epsilon \to 0} \frac{f(p + \epsilon(q - p)) - f(p)}{\epsilon}
+    \end{align*}
+    \begin{align*}
+      f(p + \epsilon (q - p)) = f(p) + \sum \epsilon(q_i - p_i) \frac{df(p)}{dp_i} + O(\epsilon^2) \\
+      \frac{f(p + \epsilon(q - p)) - f(p)}{\epsilon} = \sum_{i} (q_i - p_i) \frac{d f(p)}{d p_i} + O(\epsilon)
+    \end{align*}
+    So 
+    \begin{align*}
+      \lim_{\epsilon \to 0} \frac{f(p + \epsilon(q - p)) - f(p)}{\epsilon} = \sum_i (q_i - p_i) \frac{d f(p)}{d p_i}
+    \end{align*}
+    with
+    \begin{align*}
+      (q_i - p_i) \frac{df}{dp_i} =
+      \left\{
+      \begin{array}{ll}
+        \lambda (q_i - p_i), & p_i > 0 \\
+        \underbrace{(q_i - p_i)}_{\geq 0} \underbrace{\frac{df}{dp_i}}_{\leq \lambda}, & p_i = 0
+      \end{array}
+      \right.
+      \leq \lambda (q_i - p_i)
+    \end{align*}
+    \begin{align*}
+      \Rightarrow f(q) - f(p) \leq \lim_{\epsilon \to 0} [...] \leq 0
+    \end{align*}
+  \end{proof}
+\end{theorem}
+
+\begin{example}
+  Supppose $f(p_1, p_2, p_3) = p_1 p_2^2 p_3^3$.
+  We want to maximize it. If it isn't concave, we know that $\log(f(..))$ is concave. A try with KKT:
+  \begin{align*}
+    \frac{df}{dp_1} = \frac{1}{p_1}, \frac{df}{dp_2} = \frac{2}{p_2}, \frac{df}{dp_3} = \frac{3}{p_3} 
+  \end{align*}
+  setting then all $\lambda$ yeild
+  \[ (p_1, p_2, p_3) = \lambda (1, 2, 3) = ( \frac{1}{6}, \frac{2}{6}, \frac{3}{6}) \] 
+\end{example}
+
+\begin{example}
+  \[f(p_1, p_2, p_3) = (1 + p_1) p_2 p_3 \]
+  maximize $f$ on the simplex by considering 
+  \[ \log(f) = \log(1 + p_1) + \log(p_2) + \log(p_3) \]
+  therefore:
+  \[  
+    \frac{df}{dp_1} = \frac{1}{1 + p_1}, \frac{df}{dp_2} = \frac{1}{p_2}, \frac{df}{dp_3} = \frac{1}{p_3} 
+  \]
+  suggest $p = (0, 0.5, 0.5)$ the $\frac{df}{dp} = (1, 2, 2)$
+  $\rightarrow$ satisfy KKT with $\lambda = 2$
+\end{example}
+\end{appendices}
 
 \end{document}
