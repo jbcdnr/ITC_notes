@@ -1514,26 +1514,137 @@ We will now show that good channel encoders and channel decoders exist
 % lesson 11/1/2017 - Sebastien
 
 \subsection{Computational consideration for $C(W)$}
-\begin{itemize}
-  \item We have an optimization problem
+We have an optimization problem
   \begin{align*}
     \max_{p_X} f(p_X) \quad \text{ where } \quad f(p_X) = I(X ; Y)
   \end{align*}
-  \item 
+See \cref{sec:appendix-convex} for further information on convex optimization.
   \begin{claim}
     $f$ is a concave function
   \end{claim}
-\end{itemize}
 
 
 
 
+% -----------------------------------
+% lesson 2017-11-06 - JB
 
 
+We want to compute
+\[
+  \frac {\partial  I(X;Y)} {\partial p (x)}
+\]
+We have
+\[
+  I(X;Y) = \sum_{x,y} p(x) W(y|x) \log \frac {W(y|x)} {p_Y(y)}
+\]
+
+\[
+  p_Y(y) = \sum_x p(x) W(y|x)
+\]
+
+\todo{not sure 2nd line}
+\begin{align*}
+  \frac {\partial I} {\partial p(x_0)}
+  &= \sum_{x,y} \frac \partial {\partial p(x_0)}
+  \left\{ p(x) W(y|x) \log \frac {W(y|x)} {p_Y(y)} \right\}\\
+  &= \sum_{x,y} \left\{ I_{x=x_0} W(y|x)  \log \frac {W(y|x)} {P_Y(y)} -
+    p(x)W(y|x) \frac {W(y|x_0)}{p_Y(y)} \log e \right\}\\
+  &= \sum_y W(y|x_0) \log \frac {W(y|x_0)}{p_Y(y)} - \sum_y p_Y(y) \frac {W(y|x_0)}{p_Y(y)} \log e\\
+  &= \sum_y W(y|x_0) \log \frac {W(y|x)} {P_Y(y)} - \log e
+\end{align*}
+
+\begin{theorem}
+  \label{th:1000}
+  $p_X$ maximizes $I(X;Y)$ iff there exists $\lambda$ such that for all $x$
+  \[
+    \sum_y W(y|x) \log \frac {W(y|x)} {P_Y(y)} \leq \lambda
+  \]
+  with equality when $p_X(x) = 0$. Furthermore $\lambda = C(W)$.
+\end{theorem}
+
+\begin{proof}
+  We only need to prove the furthermore part. Observe that for all $x$
+  \[
+    p_X(x) \sum_y W(y|x) \log \frac {W(y|x)} {P_Y(y)} =  p_X(x) \lambda
+  \]
+  and then
+  \[
+    \sum_x p_X(x) \sum_y W(y|x) \log \frac {W(y|x)} {P_Y(y)} =  \sum_x p_X(x) \lambda
+  \]
+\end{proof}
+
+\begin{example}[Z channel]
+  $W$ is a normal binary channel that maps a 1 input to a 0 output with probability $\epsilon$. Applying \cref{th:1000} with $x=0$ and $x=1$:
+
+  \begin{align*}
+    &W(0|0)\log \frac {W(0|0)} {p_Y(0)} = W(0|1)\log \frac {W(0|1)} {p_Y(1)} + W(1|1)\log \frac {W(1|1)} {p_Y(1)}\\
+    \iff& \log \frac 1 {p_Y(y)} = \epsilon \log \frac \epsilon {p_Y(0)} + (1-\epsilon) \log \frac {1-\epsilon} {p_Y(1)} = h_2(\epsilon) + \epsilon \log \frac 1 {p_Y(0)} + (1-\epsilon)\log\frac 1 {p_Y(1)}\\
+    \iff&\log \frac {p_Y(1)} {p_Y(0)} = - \frac {h_2(\epsilon)}{1-\epsilon} \triangleq -\alpha\\
+    \Longrightarrow~&p_Y(1) = \frac {2^{-\alpha}} { 1+2^{-\alpha}} ~\text{and}~p_Y(0) = \frac 1 {1+2^{-\alpha}}
+  \end{align*}
+
+  \[
+    C(W) = \log (1+2^{-\alpha})
+  \]
+\end{example}
 
 
+\begin{lemma}
+  For any circle with red segments of cumulative length strictly less than $1/4$, there exists a square whose all corners are on the circle but not on the red segments.
+\end{lemma}
 
+\begin{proof}
+  By random construction. Place the first corner of the square uniformly at random on the circle (also makes the 3 other uniform).
+  \begin{align*}
+    \Pr{\text{1st corner lands on red}} &< \frac 1 4\\
+    \Pr{i\text{th corner lands on red}} &< \frac 1 4\\
+    \Pr{\bigcup\limits_{i=1} i\text{th corner lands on red}} &< 1\\
+    \Pr{\text{none of the corners land on red}} &> 0\\
+  \end{align*}
+\end{proof}
 
+\begin{theorem}[Channel coding - good news]
+  Given a channel $W$ (discrete, memoryless, stationary), a rate $R < C(W)$ and $\epsilon > 0$, there exists a $n$ large enough and encoding/decoding functions $Enc:\{1\dots M\} \to \X^n$ with $M \geq 2^{nR}$ and $Dec: \Y^n \to \{1\dots M\}$ such that for all $m\in\{1\dots M\}$
+  \[
+    \Pr{Dec(Y^n) \not = m | X^n = Enc(m) } < \epsilon
+  \]
+\end{theorem}
+
+In other words we can communicate reliably at rate greater or equal to $R$ on channel $W$.
+
+\begin{proof}
+  Given $W$ and $R<C(W)$, fix a $p_X$ such that $I(X;Y)>R$. Pick $n$
+  large enough (to be determined later) and pick $M' = \lceil 2 2^{nR} \rceil$. Define the
+  encoding function
+  \begin{align*}
+    Enc(1) =~&X(1)_1 \dots  X(1)_n\\
+    \dots~=~&\dots\\
+    Enc(M') =~&X(M')_1 \dots X(M')_n
+  \end{align*}
+  choosing $\{X(n)_i : 1 \leq i \leq n, 1 \leq m \leq M' \}$ i.i.d. $\sim p_X$.
+
+  For the decoder fix
+  \[
+    T(n, \delta, p_{XY})= \left\{(x^n, y^n): (1-\delta)p_{XY}(x,y) \leq \frac {\# \{(x_i, y_i) = (x,y)\}} n \leq (1+\delta)p_{XY}(x,y)\right\}
+  \]
+
+  $Dec(y^n)$: check for each $m$ if $(Enc(m), y^n) \in T(n,\delta, p_{XY})$, if there is
+  only a single $m$ for which the pair is in the typical set then $Dec(y^n) = m$ otherwise
+  (if there is none or more than one) $Dec(y^n) = 0$.
+
+  We now compute the probability of error $p_{e,m} \triangleq \Pr{Dec(Y^n) \not = m | X^n = Enc(m)}$. $p_{e,m}$ depends on the choice of $Enc(1) \dots Enc(M)$ and since $Enc(1) \dots Enc(M)$ are randomly chosen, $p_{e,m}$ is a random variable.
+
+  \begin{align*}
+    \Ex{p_{e,m}} = \dots
+  \end{align*}
+  \todo{next week}
+
+\end{proof}
+
+\begin{example}
+  Suppose $\X = \{a,b,c\}$, $C(W)=1.3$ and $R=1.25$, then $Enc(1 \dots 32) \to \X^4$ is a valid encoding function for this channel, while $Enc(1 \dots 32) \to \X^5$ would not allow reliable transmission.
+\end{example}
 
 
 
@@ -1579,8 +1690,9 @@ A stochastic process is a collection $U_1, U_2 \dots U_n$ of RVs each taking val
 \end{definition}
 
 \section{Concave/convex functions}
+\label{sec:appendix-convex}
 
-A function $f : S \rightarrow \R $ is called convex if 
+A function $f : S \rightarrow \R $ is called convex if
 \[ \forall x,y \in S, 0 \leq \lambda \leq 1,  f(\lambda x - (1 - \lambda)y) \leq \lambda f(x) + (1 - \lambda) f(y) \]
 where $S$ is a convex set.
 
@@ -1594,11 +1706,11 @@ where $S$ is a convex set.
 \end{definition}
 
 \begin{definition}{k-simplex}
-\[ S_k = \{(p_1, ..., p_k) \in \R^k , p \geq 0, \sum_i p_i = 1 \} \]  
+\[ S_k = \{(p_1, ..., p_k) \in \R^k , p \geq 0, \sum_i p_i = 1 \} \]
 as the k-simplex ( a $(k-1)$-dimentional subset of $\R^k$)
 \end{definition}
 
-Remark: 
+Remark:
 Given $S_k$ a convex set and $p,q \in S_k$, let
 \begin{align*}
   r   &= \lambda p + (1 - \lambda)q \\
@@ -1608,7 +1720,7 @@ Given $S_k$ a convex set and $p,q \in S_k$, let
 \[ \sum r_i = \lambda + (1 - \lambda) = 1 \]
 
 \begin{example}
-  Let $f : S_k \rightarrow \R $, with 
+  Let $f : S_k \rightarrow \R $, with
   \[ f(p_1, ..., p_k) = \sum^k p_i \log_{\frac{1}{p_i}} \]
   claim: f is concave
 
@@ -1616,11 +1728,11 @@ Given $S_k$ a convex set and $p,q \in S_k$, let
     Given $p, q \in S_k, 0 \leq \lambda \leq 1$, define $(U, V)$ with $U \in \{0, 1\}$ and $V \in \{1, ..., k\}$
 
     \begin{align*}
-      P_{UV}(u, v) = 
+      P_{UV}(u, v) =
       \left\{
       \begin{array}{l l}
         \lambda p_i, & u=0, v=i \\
-        (1 - \lambda)q_i, & u=1, v=i 
+        (1 - \lambda)q_i, & u=1, v=i
       \end{array}
       \right.
     \end{align*}
@@ -1636,16 +1748,16 @@ Given $S_k$ a convex set and $p,q \in S_k$, let
 
 \begin{example}
   For $W(Y | X)$ let $f(p_X) = I(X ; Y)$ when $p(x, y) = p_X(x) W(Y | X) $
-  \textbf{Claim:} $f$ is concave, 
+  \textbf{Claim:} $f$ is concave,
   \[ I(X ; Y) = H(Y) - H(X | Y) \]
   and
   \[ H(Y|X) = \sum_x p_X(x) \sum_y W(Y|X) \log \frac{1}{W(Y | X)} \]
   We see that $H(Y|X)$ is a linear function of $p_X(x)$.\\
-  $H(Y)$ is a concave function of $p_Y(y)$ with 
-  \[ p_Y(y) - \sum_x p_X(x) W(Y|X) \] 
+  $H(Y)$ is a concave function of $p_Y(y)$ with
+  \[ p_Y(y) - \sum_x p_X(x) W(Y|X) \]
 
   \begin{align*}
-    p_X \underbrace{\longrightarrow}_{\text{linear}} p_Y \underbrace{\longrightarrow}_{\text{concave}} H(Y) 
+    p_X \underbrace{\longrightarrow}_{\text{linear}} p_Y \underbrace{\longrightarrow}_{\text{concave}} H(Y)
     \Longrightarrow p_X \underbrace{\longrightarrow}_{\text{concave}} H(Y)
   \end{align*}
 \end{example}
@@ -1653,7 +1765,7 @@ Given $S_k$ a convex set and $p,q \in S_k$, let
 How to maximize a function on the simplex?
 
 \begin{theorem}{Karush-Kuhn-Tucker conditions - (KKT)} \\
-  Suppose $f: S_k \rightarrow \R$, smooth ($\frac{df}{dp_i dp_j}$ exists), then if $p = \{ p_1, ..., p_k\}$ maximizes $f$, then $\exists \lambda$ s.t. 
+  Suppose $f: S_k \rightarrow \R$, smooth ($\frac{df}{dp_i dp_j}$ exists), then if $p = \{ p_1, ..., p_k\}$ maximizes $f$, then $\exists \lambda$ s.t.
   \[ \forall i, \frac{df}{d p_i} \leq \lambda \]
   with equality $\forall i$ for which $p_i > 0$
 
@@ -1661,8 +1773,8 @@ How to maximize a function on the simplex?
   Suppose $(p_1, ..., p_k)$ maximizes $f$, then suppose that $p_i > 0$. Then we can consider a $p' \in S_k$ as follow:\\
   Pick $j \neq i$ and a small $\epsilon, 0 < \epsilon < p_i$
   \begin{align*}
-    p_k' = 
-    \left\{ 
+    p_k' =
+    \left\{
     \begin{array}{ll}
       p_i - \epsilon, &k = i \\
       p_j + \epsilon, & k = j \\
@@ -1676,9 +1788,9 @@ How to maximize a function on the simplex?
     &= f(p) + \epsilon \left[ \frac{df}{dp_j} - \frac{df}{dp_i} \right] + O(\epsilon^2)
   \end{align*}
 
-  So for every $i, j$ with $p_i > 0$ we have 
+  So for every $i, j$ with $p_i > 0$ we have
   \[ \frac{df}{dp_j} \frac{df}{dp_i} \]
-  $\Rightarrow$ equality if $i$ and $j$ are such that $p_i > 0, p_j > 0$ 
+  $\Rightarrow$ equality if $i$ and $j$ are such that $p_i > 0, p_j > 0$
 
   $\Rightarrow$ for $i$'s such that $p_i > 0, \frac{df}{dp_i} = \lambda$ and all the indices $j$ have $\frac{df}{dp_j} \leq \lambda$
 \end{proof}
@@ -1700,7 +1812,7 @@ How to maximize a function on the simplex?
       f(p + \epsilon (q - p)) = f(p) + \sum \epsilon(q_i - p_i) \frac{df(p)}{dp_i} + O(\epsilon^2) \\
       \frac{f(p + \epsilon(q - p)) - f(p)}{\epsilon} = \sum_{i} (q_i - p_i) \frac{d f(p)}{d p_i} + O(\epsilon)
     \end{align*}
-    So 
+    So
     \begin{align*}
       \lim_{\epsilon \to 0} \frac{f(p + \epsilon(q - p)) - f(p)}{\epsilon} = \sum_i (q_i - p_i) \frac{d f(p)}{d p_i}
     \end{align*}
@@ -1725,19 +1837,19 @@ How to maximize a function on the simplex?
   Supppose $f(p_1, p_2, p_3) = p_1 p_2^2 p_3^3$.
   We want to maximize it. If it isn't concave, we know that $\log(f(..))$ is concave. A try with KKT:
   \begin{align*}
-    \frac{df}{dp_1} = \frac{1}{p_1}, \frac{df}{dp_2} = \frac{2}{p_2}, \frac{df}{dp_3} = \frac{3}{p_3} 
+    \frac{df}{dp_1} = \frac{1}{p_1}, \frac{df}{dp_2} = \frac{2}{p_2}, \frac{df}{dp_3} = \frac{3}{p_3}
   \end{align*}
   setting then all $\lambda$ yeild
-  \[ (p_1, p_2, p_3) = \lambda (1, 2, 3) = ( \frac{1}{6}, \frac{2}{6}, \frac{3}{6}) \] 
+  \[ (p_1, p_2, p_3) = \lambda (1, 2, 3) = ( \frac{1}{6}, \frac{2}{6}, \frac{3}{6}) \]
 \end{example}
 
 \begin{example}
   \[f(p_1, p_2, p_3) = (1 + p_1) p_2 p_3 \]
-  maximize $f$ on the simplex by considering 
+  maximize $f$ on the simplex by considering
   \[ \log(f) = \log(1 + p_1) + \log(p_2) + \log(p_3) \]
   therefore:
-  \[  
-    \frac{df}{dp_1} = \frac{1}{1 + p_1}, \frac{df}{dp_2} = \frac{1}{p_2}, \frac{df}{dp_3} = \frac{1}{p_3} 
+  \[
+    \frac{df}{dp_1} = \frac{1}{1 + p_1}, \frac{df}{dp_2} = \frac{1}{p_2}, \frac{df}{dp_3} = \frac{1}{p_3}
   \]
   suggest $p = (0, 0.5, 0.5)$ the $\frac{df}{dp} = (1, 2, 2)$
   $\rightarrow$ satisfy KKT with $\lambda = 2$
