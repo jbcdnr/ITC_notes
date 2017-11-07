@@ -1543,7 +1543,6 @@ We have
   p_Y(y) = \sum_x p(x) W(y|x)
 \]
 
-\todo{not sure 2nd line}
 \begin{align*}
   \frac {\partial I} {\partial p(x_0)}
   &= \sum_{x,y} \frac \partial {\partial p(x_0)}
@@ -1614,15 +1613,15 @@ We have
 In other words we can communicate reliably at rate greater or equal to $R$ on channel $W$.
 
 \begin{proof}
-  Given $W$ and $R<C(W)$, fix a $p_X$ such that $I(X;Y)>R$. Pick $n$
-  large enough (to be determined later) and pick $M' = \lceil 2 2^{nR} \rceil$. Define the
+  Given $W$ and $R<C(W)$, fix a $p_X$ such that $I(X;Y)>R$. Pick $\delta > 0$, $n$
+  large enough (to be determined later) and set $M' = \lceil 2 \cdot 2^{nR} \rceil$. Define the
   encoding function
   \begin{align*}
     Enc(1) =~&X(1)_1 \dots  X(1)_n\\
     \dots~=~&\dots\\
     Enc(M') =~&X(M')_1 \dots X(M')_n
   \end{align*}
-  choosing $\{X(n)_i : 1 \leq i \leq n, 1 \leq m \leq M' \}$ i.i.d. $\sim p_X$.
+  choosing $\{X(m)_i : 1 \leq i \leq n, 1 \leq m \leq M' \}$ i.i.d. $\sim p_X$.
 
   For the decoder fix
   \[
@@ -1633,18 +1632,122 @@ In other words we can communicate reliably at rate greater or equal to $R$ on ch
   only a single $m$ for which the pair is in the typical set then $Dec(y^n) = m$ otherwise
   (if there is none or more than one) $Dec(y^n) = 0$.
 
-  We now compute the probability of error $p_{e,m} \triangleq \Pr{Dec(Y^n) \not = m | X^n = Enc(m)}$. $p_{e,m}$ depends on the choice of $Enc(1) \dots Enc(M)$ and since $Enc(1) \dots Enc(M)$ are randomly chosen, $p_{e,m}$ is a random variable.
+  We now compute the probability of error $p_{e,m} \triangleq \Pr{Dec(Y^n) \not = m | X^n = Enc(m)}$. $p_{e,m}$ depends on the choice of $Enc(1) \dots Enc(M)$ and since $Enc(1) \dots Enc(M)$ are randomly chosen, $p_{e,m}$ is a random variable. Supposing $m$ is sent, an error will happen if and only if $(Enc(m), y^n) \not \in T$ or for some $m' \not = m:~(Enc(m'), y^n)~\in~T$
 
   \begin{align*}
-    \Ex{p_{e,m}} = \dots
+    \Ex{p_{e,m}} &= E_{Enc}[ E_{y} [ I\left\{\text{error has happened $|~m$ is sent}\right\}]]\\
+    &= E_{Enc}[ I\{(Enc(m),y) \not \in T, \exists m' \not=m (Enc(m', Y^n) \in T\} |~m \text{ is sent}]\\
+    &\leq E[I\{(Enc(m), Y^n) \not \in T\}] + \sum_{m' \not = m} I\{(Enc(m'), Y^n) \in T\} |~m \text{ is sent}]\\
+    &= \Pr{(Enc(m), Y^n) \not \in T | m \text{ is sent}} + \sum_{m'\not = m} \Pr{(Enc(m'), Y^n) \in T| m \text{ is sent}}
   \end{align*}
-  \todo{next week}
 
+  We have
+  \begin{align*}
+    \Pr{Enc(m) = x_1\dots x_n, Y^n=y_1 \dots y_n |~m \text{ is sent}}
+    &= p_x(x_1)p_x(x_2)\dots p_x(x_n)W(y_1|x_1)W(y_2|x_2) \dots W(y_n|x_n) \\
+    &= p_X(x_1)p_X(x_2)\dots p_X(x_n)p_Y(y_1)p_Y(y_2)\dots p_Y(y_n)
+  \end{align*}
+  and as $n$ gets large
+  \[
+    \Pr{(Enc(m), Y^n) \not \in T (p_{XY}, n, \delta)} = \Pr{\text{iid sequence} \sim p_{XY} \not \in T(p_{XY}, n, \delta)} \to 0
+  \]
+because $(Enc(m), Y^n)$ is iid $\sim p_{XY}$. Recall from typicallity that if $U^n$ is iid $p_U$, then
+\begin{align*}
+  \lim_{n\to\infty} \Pr{U^n \not \in T(n, p_U, \delta)} = 0
+\end{align*}
+and if $U^n$ is in reality iid $\sim~q_U$
+\[
+  \Pr{U^n \in T(n,p,\delta)} \leq 2^{-n[D(p||q) - o(\delta)]}\\
+\]
+
+Then,
+
+\begin{align*}
+  \Pr{(Enc(m), Enc(m'), Y^n) = (x^n, (x')^n, y^n)} &= p_X(x^n) p_X((x')^n)W(y^n|x^n)\\
+  \Pr{(Enc(m), y^n) = (x^n, y^n)} &= p_X(x^n)W(y^n|x^n)\\
+  \Pr{(Enc(m'), y^n) = ((x')^n, y^n)} &= p_X((x')^n) \underbrace{\sum_{x^n} p(x^n)W(y^n|x^n)}_{p_Y(y)}\\
+  \iff (Enc(m'), y') \text{ is iid } \sim q_{XY} &= p_Xp_Y\\
+  \Rightarrow \Pr{(Enc(m'), y^n) \in T(p_{XY}, n, \delta)} &\leq 2^{-n[D(p||q)- o(\delta)]}
+\end{align*}
+
+Also
+\[
+  D(p||q) = \sum_{xy} p_{XY}(x,y) \log \frac {p_{XY}(x,y)} {p_X(x) p_Y(y)} = I(X;Y)
+\]
+
+
+Remember $M' = \lceil2 \cdot 2^{nR} \rceil \leq 2 \cdot 2^{nR} + 1$ then $M'-1 \leq 2 \cdot 2^{nR}$
+
+\[
+  \Ex{p_{e,m}} \leq o_n(1) + (M' -1)  2^{-n[I(X;Y)- o(\delta)]}
+  \leq o_n(1) + 2 \cdot 2^{-n(I(X;Y) - R - o(\delta))}
+\]
+
+We choose $\delta$ small enough to have a negative exponent. Then it will go to 0 as $n$ gets large. So we have shown that for $n $ large enough we can make for every $m$:
+
+\begin{align*}
+  &\Ex{p_{e,m}} < \frac \epsilon 2\\
+  \Rightarrow& \Ex{\sum_{m=1}^{M'} p_{e,m}} \leq \frac{M'} 2 \epsilon\\
+  \Rightarrow& \exists \text{an encoder such that } \sum_{m=1}^{M'} p_{e,m} \leq \frac{M'} 2 \epsilon
+\end{align*}
+
+How many terms in the sumation can be greater or equal to $\epsilon$ ? At most $M'/2$, so remaining must be stricly smaller than $\epsilon$ but
+
+\[
+  M' - \frac 1 2 M' = \frac 1 2 \lceil 2 \cdot 2^{nR} \rceil \geq \frac 1 2 2 \cdot 2^{nR} = 2^{nR}
+\]
+We throw away the one smaller than $\epsilon$ and we have a code with rate greater than $R$ for
+\[
+  \max_m p_{e,m} < \epsilon
+\]
 \end{proof}
 
 \begin{example}
   Suppose $\X = \{a,b,c\}$, $C(W)=1.3$ and $R=1.25$, then $Enc(1 \dots 32) \to \X^4$ is a valid encoding function for this channel, while $Enc(1 \dots 32) \to \X^5$ would not allow reliable transmission.
 \end{example}
+
+\begin{example}
+  Suppose we want to design a code with $n=1000$, $R=\frac 1 2$. The encoding table will have $1000 \times 2^{500}$ elements, more than $10^{153}$ elements. "C'est impossible M'sieur !"
+\end{example}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
