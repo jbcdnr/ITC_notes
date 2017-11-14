@@ -6,7 +6,7 @@
 \usepackage{amsfonts}
 \usepackage{amsthm}
 \usepackage{mathrsfs}
-\usepackage{cleveref}
+\usepackage[nameinlink]{cleveref}
 \usepackage{xcolor}
 \usepackage[toc,page]{appendix}
 
@@ -62,6 +62,7 @@
 \renewcommand{\Pr}[1]{Pr\left\{#1\right\}}
 \newcommand{\Ex}[1]{E\left[#1\right]}
 \newcommand{\pfrac}[2]{\left( \frac{#1}{#2} \right)}
+\newcommand{\overeq}[1]{\stackrel{#1}{=}}
 
 % math bold
 \def\*#1{\mathbf{#1}}
@@ -656,6 +657,8 @@ and by the "Lemma", whenever $b_n \rightarrow b$ , \space $a_n \rightarrow b$
 
 \section{Typicality and typical set}
 
+\begin{definition}[Typicality]
+  \label{def:typicality}
 Suppose we have a sequence $U_1, U_2, ...$ of i.i.d. random variables taking values in an alphabet $\U$.
 Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\epsilon, p)$} if
 \begin{align*}
@@ -663,6 +666,7 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
   \leq \frac{\# \text{ of times $u$ appears in $u_1, ..., u_n$}}{n}
   \leq p(u)(1+\epsilon)
 \end{align*}
+\end{definition}
 
 \begin{theorem}
   $u^n$ is $(\epsilon, p)$-typical then
@@ -1604,6 +1608,7 @@ We have
 \end{proof}
 
 \begin{theorem}[Channel coding - good news]
+  \label{thm:channel-coding}
   Given a channel $W$ (discrete, memoryless, stationary), a rate $R < C(W)$ and $\epsilon > 0$, there exists a $n$ large enough and encoding/decoding functions $Enc:\{1\dots M\} \to \X^n$ with $M \geq 2^{nR}$ and $Dec: \Y^n \to \{1\dots M\}$ such that for all $m\in\{1\dots M\}$
   \[
     \Pr{Dec(Y^n) \not = m | X^n = Enc(m) } < \epsilon
@@ -1712,15 +1717,157 @@ We throw away the one smaller than $\epsilon$ and we have a code with rate great
 
 
 
+% -----------------------------------
+% lesson 2017-11-13 - JB
+
+To illustrate the proof technique that we used to prove the coding theorem, we take an example.
+
+\begin{example}
+  Assume $W$ is a BEC channel (probability $p$ to have an erasure symbol \texttt{?}).
+  \[
+    C(W) = 1-p = \max_{p_x} I(X;Y)
+  \]
+  achieved when $p_X(0)=p_X(1)=\frac 1 2$. Our coding theorem says that when $R<1-p$, $\epsilon > 0$ we can find a code of rate $R$ with error probability $< \epsilon$. In the proof of the \cref{thm:channel-coding}, we generate a $n\times M$ coding matrix with $n$ large and $M=2^{nR}$ according to $p_X$ defining $C(W)$.
+
+  To send a $nR$-bit message $m \in \{1 \dots M\}$, we send the $m$th row of the table over the chanel. When we receive $y~=~(y_1\dots~y_n)$, we compare $y$ to each row of the table and check the tipicality. In our case
+
+  \begin{align*}
+    \frac 1 n \{\text{\# of }(0,0)\} \approx \frac {1-p} 2 \hspace{5em}&
+    \frac 1 n \{\text{\# of }(0,1)\} = 0 \hspace{5em}&
+    \frac 1 n \{\text{\# of }(0,?)\} \approx \frac p 2 \\
+    \frac 1 n \{\text{\# of }(1,0)\} = 0 \hspace{5em}&
+    \frac 1 n \{\text{\# of }(1,1)\} \approx \frac {1-p} 2 \hspace{5em}&
+    \frac 1 n \{\text{\# of }(1,?)\} \approx \frac p 2
+  \end{align*}
+
+  If there is exactly one row (i.e. $\hat m$) return $\hat m$, otherwise return $0$.
+
+  \begin{itemize}
+    \item The correct codeword will pass the test with high probability, thanks to law of large numbers,
+    \item What about an incorrect codeword ?
+  \end{itemize}
+
+  Recall the definition of typicality (\cref{def:typicality}) and suppose
+
+  \[
+    y = \underbrace{0\dots0}_{n \frac{1-p} 2} \underbrace{1\dots1}_{n \frac{1-p} 2} \underbrace{?\dots?}_{np}
+  \]
+
+  $m' = x_1 x_2 \dots x_n$ will be typical only if it is of the type
+  \[
+    \underbrace{0\dots0}_{n \frac{1-p} 2} \underbrace{1\dots1}_{n \frac{1-p} 2} \underbrace{?\dots?}_{np}
+  \]
+
+  \[
+    \Pr{
+    \begin{pmatrix}
+      x_1 & \dots & x_n\\
+      y_1 & \dots & y_n
+    \end{pmatrix}
+    \text{ is typical}
+    }
+    \leq
+    \pfrac 1 2 ^ {n(1-p)} = 2^{-n(1-p)}
+  \]
+  Then, using that an upperbound to the number of incorrect codewords is $2^{nR}$,
+  \[
+    \Pr{error} < 2^{-n(1-p)}2^{nR} + \Pr{\text{correct $w$ fails the test}}
+  \]
+  and because $R < 1-p$
+  \[
+    \lim_{n\to \infty} \Pr{error} = 0
+  \]
+
+\end{example}
 
 
+\section{Differential entropy}
 
+\begin{definition}[Differential entropy]
+  Let $X$ be a real valued random variable with probability density function $f(x)$ such that
+  \[
+    \Pr{x \leq X \leq x + \delta} \approx \delta f(x)
+  \]
+  The differential entropy of $X$ is
+  \[
+    h(X) \triangleq \int f(x) \log \frac 1 {f(x)} dx
+  \]
+\end{definition}
 
+\begin{example}
+  Uniform random variable in $[0,a]$ then \[
+    h(A) = log a = \begin{cases}
+      < 0 & \text{if } a < 1\\
+      0 & \text{if } a = 1\\
+      > 0 & \text{if } a > 1
+    \end{cases}
+  \]
+\end{example}
 
+\begin{lemma}
+  Suppose $Y=X+a$, $a$ is a constante then $h(Y)=h(X)$
+\end{lemma}
 
+\begin{proof}
+  We have $f_Y(y) = f_X(y-a)$, then
+  \[
+    h(Y) = \int f_X(y-a) \log \frac 1 {f_X(y-a)}dy = \int f_X(x) \log \frac 1 {f_X(x)}dx = h(X)
+  \]
+\end{proof}
 
+\begin{lemma}
+  Suppose $Y=aX$, then $h(Y) = h(X) + \log |a|$
+\end{lemma}
 
+\begin{proof}
+  Suppose $a > 0$,
 
+  \[
+    f_Y(y) = \Pr{y\leq Y \leq y + \delta} = \Pr{\frac y a \leq X < \frac y a + \frac \delta a} \approx \frac 1 a f_X \pfrac y a
+  \]
+
+  \[
+    \log \frac 1 {f_Y(y)} = \log a + \log \frac 1 {f_X\pfrac y a}
+  \]
+  \[
+    h(Y) = \int f_Y(y) \log \frac 1 {f_Y(y)} dy = \log a + \int f_X \pfrac y a \left(\log \frac 1 {f_X\pfrac y a} \right) \frac 1 a dy = \log a + \underbrace{\int f_X(x) \log \frac 1 {f_X(x)} dx}_{h(X)}
+  \]
+\end{proof}
+
+\begin{example}
+  Suppose $Y$ is a gaussian with mean $\mu$ and variance $\sigma^2$ then $Y=\sigma X + \mu$ where $X$ is $N(0,1)$
+
+  \[
+    h(Y) = h(\sigma X) = \log \sigma + h(X)
+  \]
+
+  \[
+    h(X) = \int \frac 1 {\sqrt{2\pi}} e^{-\frac {x^2} 2} \left[ \log \sqrt{2\pi} + \frac 1 2 x^2 \log e \right] dx
+    \overeq{(a)} \frac 1 2 \log 2\pi + \frac 1 2 \log e = \frac 1 2 \log 2\pi e
+  \]
+  Where the second term of (a) follows from $\Ex{X^2} = 1$.
+\end{example}
+
+\begin{lemma}
+  Suppose $X$ is a real value random variable with differentiable entropy $h(X)$. Consider a $\delta > 0$ and $X_\delta$, the quantization of $X$ in interval of width $\delta$
+  \[
+    X_\delta = \delta \left\lfloor \frac X \delta \right\rfloor = n\delta \text{ if } n\delta \leq X \leq (n+1) \delta
+  \]
+  then
+  \[
+    \lim_{\delta \to 0} H(X_\delta) + \log \delta = h(X)
+  \]
+\end{lemma}
+
+\begin{proof}
+\begin{align*}
+  H(X_\delta) &= \sum_n \Pr{X_\delta = n\delta} \log \frac 1 {\Pr{X_\delta = n\delta}}\\
+  &\approx \sum_n \delta f_X(n\delta) \log \frac 1 {\delta f_X(n\delta)}\\
+  &= \log \frac 1 \delta + \sum_n \left(f_X(n\delta) \log \frac 1 {f_X(n\delta)} \right)\delta\\
+  &\overeq{(a)} \log \frac 1 \delta + \int f(x) \log \frac 1 {f(x)} dx\\
+\end{align*}
+We recognize a Riemann sum for equality (a).
+\end{proof}
 
 
 
