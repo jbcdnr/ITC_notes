@@ -1874,7 +1874,7 @@ We recognize a Riemann sum for equality (a).
 %   Sebastien - 15/11/2017
 
 
-Suppose $X_1 ... X_n$ are $\R$-valued RV's ($X^n \in \R^n$), we define 
+Suppose $X_1 ... X_n$ are $\R$-valued RV's ($X^n \in \R^n$), we define
 
 \[
   h(X^n) = h(X_1 ... X_n) = \underbrace{\int \int}_{\R^n} f_{X^n} (x_1 ... x_n) \log(\frac{1}{f_{X^n}(x_1 ... x_n)}) dx_1...dx_n
@@ -1896,7 +1896,7 @@ Suppose $X_1 ... X_n$ are $\R$-valued RV's ($X^n \in \R^n$), we define
 \end{theorem}
 
 \begin{definition}
-  Given two densities $f(x), g(x)$, let 
+  Given two densities $f(x), g(x)$, let
   \[
     D(f || g) = \int f(x) \log(\frac{f(x)}{g(x)}) dx
   \]
@@ -1936,25 +1936,25 @@ Suppose $X_1 ... X_n$ are $\R$-valued RV's ($X^n \in \R^n$), we define
 \end{proposition}
 
 \begin{lemma}
-  Given $X, Y$, $\R$-valued with joint pdf $f_{XY}$, for $\delta > 0$, define $X_{\delta}, Y_{\delta}$ as $X_{\delta} = \delta \lfloor \frac{X}{\delta} \rfloor, Y_{\delta} = \delta \lfloor \frac{Y}{\delta} \rfloor$, then 
+  Given $X, Y$, $\R$-valued with joint pdf $f_{XY}$, for $\delta > 0$, define $X_{\delta}, Y_{\delta}$ as $X_{\delta} = \delta \lfloor \frac{X}{\delta} \rfloor, Y_{\delta} = \delta \lfloor \frac{Y}{\delta} \rfloor$, then
   \[
     \underbrace{I(X_{\delta}; Y_{\delta})}_{\text{discrete I}} \rightarrow I(X ; Y) \text{ as } \delta \rightarrow 0
   \]
 
   \begin{proof}
-    observe 
+    observe
     \begin{align*}
       \Pr{X_{\delta} = n \delta} &= \Pr{X \in [n \delta, (n+1)\delta]} \equiv \delta f_X(n \delta) \\
       \Pr{Y_{\delta} = m \delta} &= \Pr{Y \in [m \delta, (m+1)\delta]} \equiv \delta f_Y(m \delta) \\
-      \Pr{X_{\delta} = n \delta, Y_{\delta} = m \delta} 
+      \Pr{X_{\delta} = n \delta, Y_{\delta} = m \delta}
       &= \Pr{X \in [n \delta, (n+1) \delta], Y \in [m \delta, (m+1)\delta]} \equiv \delta^2 f_{XY}(n \delta, m \delta)
     \end{align*}
 
     \begin{align*}
-      I(X_{\delta} ; Y_{\delta}) 
+      I(X_{\delta} ; Y_{\delta})
       &= \sum_{n, m} \Pr{X_{\delta} = n \delta, Y_{\delta} = m \delta} \log(\frac{\Pr{X_{\delta} = n \delta, Y_{\delta} = m \delta}}{\Pr{X_{\delta} = n \delta} \Pr{Y_{\delta} = m \delta}}) \\
       &\equiv \sum_{n, m} \delta^2 f_{XY} (n \delta, m \delta) \log(\frac{\delta^2 f_{XY}(n \delta, m \delta)}{\delta f_X(n \delta) \delta f_Y(m \delta)}) \\
-      &\equiv \sum_{n, m} \delta^2 f_{XY} (n \delta, m \delta) \log(\frac{f_{XY}(n \delta, m \delta)}{f_X(n \delta) f_Y(m \delta)}) \\ 
+      &\equiv \sum_{n, m} \delta^2 f_{XY} (n \delta, m \delta) \log(\frac{f_{XY}(n \delta, m \delta)}{f_X(n \delta) f_Y(m \delta)}) \\
       &= \text{Riemann sum for} \quad \int \int f_{XY}(x,y) \log \frac{f_{XY}(x,y)}{f_X(x) f_Y(y)}dx dy = I(X ; Y)
     \end{align*}
   \end{proof}
@@ -1962,7 +1962,7 @@ Suppose $X_1 ... X_n$ are $\R$-valued RV's ($X^n \in \R^n$), we define
 
 In general, define for $X^n \in \R^n, Y^m \in \R^m, Z^k \in \R^k$
 
-\[ 
+\[
   I(X^n ; Y^m | Z^k) = \underbrace{\int ... \int}_{n + m + k} f_{X^n Y^m Z^k}(x^n, y^m, z^k) \log(\frac{f_{XY|Z}(x^n y^m | z^k)}{f_{X|Z}(x^n | z^k) f_{Y|Z}(Y^m | z^k)}
 \]
 
@@ -1970,7 +1970,7 @@ we then have
 
 \begin{theorem}{Chain Rule for $I$}
   \[
-    I(X^n ; Y) = \sum_{i = 1}^n I(X_i ; Y | X^{i - 1}) 
+    I(X^n ; Y) = \sum_{i = 1}^n I(X_i ; Y | X^{i - 1})
   \]
   \begin{proof}
     Same proof as in the discrete case
@@ -1983,7 +1983,7 @@ we then have
     h(X^n) = \underbrace{h(X^n - \bar{\mu})}_{\text{Gaussian with zero-mean with covariance} K}
   \]
 
-  consequently we may assume that $\bar{\mu} = \bar{0}$, recall that the joint pdf of a zero-mean gaussian is given by 
+  consequently we may assume that $\bar{\mu} = \bar{0}$, recall that the joint pdf of a zero-mean gaussian is given by
   \begin{align*}
     f(\bar{x}) = \underbrace{\frac{1}{det(2 \pi K)^{1/2}}}_{(2 \pi)^{n/2} (det(k)^{1/2})} e^{0.5 (X^T K^{-1} X)}
   \end{align*}
@@ -1999,7 +1999,7 @@ we then have
 
   \textit{Side knowledge}:
   \begin{align*}
-    \E{X^T A X} = \E{\sum_{i,j} X_i A_{ij} X_j} = \sum_{i, j} A_{ij} \E{X_i X_j} 
+    \E{X^T A X} = \E{\sum_{i,j} X_i A_{ij} X_j} = \sum_{i, j} A_{ij} \E{X_i X_j}
     = \sum_{i,j} A_{ij} K_{ij} = \sum_i (\sum_j A_{ij} K_{ij}) = tr(AK)
   \end{align*}
 \end{example}
@@ -2017,7 +2017,7 @@ we then have
 \end{theorem}
 
 \begin{proof}
-  Let $f$ be the density of $X^n$, let g be the gaussian density 
+  Let $f$ be the density of $X^n$, let g be the gaussian density
   \[
     g(x) = \frac{1}{det(2 \pi K)^{1/2}} e^{1 \frac{1}{2}(X^T K^{-1} X)}
   \]
@@ -2029,16 +2029,16 @@ we then have
   \end{align*}
   how
   \[
-    0 \geq \int f(x) \log(\frac{g(x)}{f(x)}) dx = - \{\frac{1}{2} \log(det(2 \pi e K))\} + h(x) 
+    0 \geq \int f(x) \log(\frac{g(x)}{f(x)}) dx = - \{\frac{1}{2} \log(det(2 \pi e K))\} + h(x)
   \]
 \end{proof}
 
 \textbf{Another example of maximum entropy} \\
 Suppose we know that $X \in [a, b]$ with probability 1. then $h(X) \leq \log(b - a)$ equality uff $X$ is uniform on $[a, b]$.
 \begin{proof}
-  Let 
+  Let
   \[
-    g(x) = 
+    g(x) =
     \left\{
     \begin{array}{cc}
       \frac{1}{b - a} , & a \leq x \leq b \\
@@ -2053,6 +2053,147 @@ Suppose we know that $X \in [a, b]$ with probability 1. then $h(X) \leq \log(b -
   0 \geq \int f(x) \log(\frac{g(x)}{f(x)} dx) = - \log(b - a) + h(X)
 \]
 \end{proof}
+
+
+\begin{definition}[Additive Gaussian noise channel]
+  An additive Gaussian noise channel is a non-discrete communication channel from $\X$ to $\Y$ such that $Y=X+Z$ where $Z$ is $N(0,\sigma^2)$.
+\end{definition}
+
+\begin{example}
+  A simple encoder for this channel would be to distribute $m$ points in $\R$ such that $m_{i+1} - m_i = 100\sigma$. The decoder pick the point $m$ closest to $y$. Errrors appear with low probability because the space between point is much larger than the noise. We need a very large range of values (e.g. electrical tension) which is not feasible in practice.
+\end{example}
+
+To avoid physically unrealisable scenarios, we need to impose some kind of cost constraint in our encoder. Suppose now that we are given $b : \X \to \R$ ($b(x) = x^2$ for the previous example) that associates a cost $b(x)$ to each input symbol. When an encoder $Enc: \{ 1 \dots M \} \to \X^n$ is given, in adition to rate $R = \frac 1 n \log M$, we will also define
+
+\[
+  b(Enc(m)) = \frac 1 n \sum_{i=1}^n b(Enc(m)_i)
+\]
+and we let
+\[
+  cost(Enc) = \max_{1\leq m \leq M}
+\]
+
+\begin{definition}[Channel capacity with power]
+Given a channel $W(y|x)$ with input $\X$, output $\Y$, $b:\X\to \R$ and $\beta \in \R$ with $\beta > \inf_x b(x)$ we define
+\[
+  C(W, \beta) = \sup_{x, \Ex{b(x) \leq \beta}} I(X;Y)
+\]
+\end{definition}
+
+\begin{theorem}[Bad news]
+  Suppose a channel $\U^L \to \X^n \xrightarrow{W} \Y^n \to V^L$ with $\frac 1 n \sum_{i=1}^N \Ex{b(X_i)} \leq \beta$ and $\bar p_e = \frac 1 L \sum_{i=1}^L \Pr{U_i \not= V_i}$. Then
+
+  \[
+    h(\bar p_e) + \bar p_e \log(|\U| - 1) \geq H - \frac L n C(W, \beta)
+  \]
+  with $H=\lim_{m \to\infty} \frac {H(U^m)} m$
+\end{theorem}
+
+\begin{proof}
+  We know that
+  \begin{align*}
+    h(\bar p_e) - \bar p_e \log(|\U| - 1) &\geq \frac 1 L H(U^L| V^L)\\
+    &=\frac 1 L [H(U^L) - I(U^L;V^L)]\\
+    &\overset{(a)}\geq \frac 1 L [H(U^L) - I(X^n;Y^n)]\\
+    &\overset{(b)}\geq H - \frac 1 L I(X^n;Y^n) \\
+    &\overset{(c)}\geq H - \frac n L \frac 1 n \sum_{i=1}^N I(X_i;Y_i) \\
+    &\geq H -  \frac n L \frac 1 n \sum_{i=1}^N C(W, \beta_i)\text{ with } \beta_i = \Ex{b(X_i)} \\
+    &\overset{(d)}\geq H - \frac n L C\left(W, \frac 1 n \sum_{i=1}^N \beta_i\right) \\
+    &\geq H - \frac n L C(W, \beta)
+  \end{align*}
+  where we use (a) data processing, (b) stationary sources, (c) memory lossness and (d) we use the \cref{claim:concavity_inf}.
+\end{proof}
+
+\begin{claim}
+  \label{claim:concavity_inf}
+  $\beta \to C(W, \beta)$ is a non-decreasing concave function.
+\end{claim}
+
+\begin{proof}
+  Non decreasing is clear because for $\beta_1 < \beta_2$, any $p_X$ admissible for $C(W, \beta_1)$ is also admissible for $C(W, \beta_2)$.
+
+  For concavity, given $\beta_1, \beta_2$ and $\epsilon > 0$, find $p_{X_1}$ and $p_{X_2}$ such that
+  \begin{align*}
+    \left. I(X;Y) \right|_{p_{X_1}} \geq X(W, \beta_1) - \epsilon \text{ with } \Ex{b(X)}|_{p_{X_1}} \leq \beta_1\\
+    \left. I(X;Y) \right|_{p_{X_2}} \geq X(W, \beta_2) - \epsilon \text{ with } \Ex{b(X)}|_{p_{X_2}} \leq \beta_2\\
+  \end{align*}
+
+  For $0 \leq \lambda \leq 1$ we define $p_X(x) = \lambda p_{X_1}(x) + (1-\lambda) p_{X_2}(x)$, then
+  \[
+    \Ex{b(X)}|_{p_X} = \lambda \Ex{b(X)}|_{p_{X_1}} + (1-\lambda) \Ex{b(X)}|_{p_{X_2}} \leq \lambda \beta_1 + (1-\lambda)\beta_2
+  \]
+
+  Using that $I(\cdot;\cdot)$ is convex, we get
+  \[
+    C(W,\lambda \beta_1 + (1-\lambda)\beta_2 ) \geq I(X;Y)|_{p_{X}} \geq \lambda I(X;Y)|_{p_{X_1}} + (1-\lambda) I(X;Y)|_{p_{X_2}} \geq \lambda C(W, \beta_1) + (1-\lambda)C(W,\beta_2) - \epsilon
+  \]
+
+  Since $\epsilon > 0$ is arbitrary, we have shown
+
+  \[
+    C(W, \lambda \beta_1 + (1-\lambda) \beta_2) \geq \lambda C(W,\beta_1) + (1-\lambda) C(W, \beta_2)
+  \]
+\end{proof}
+
+\begin{theorem}[Good news]
+  Given a channel $W(y|x)$ with $x \in \X$, $y \in \Y$, $b:\X \to \R$, $\beta \geq \max_x b(x)$, $\epsilon \geq 0$ and $R < C(W, \beta)$ then there is a $Enc:\{1 \dots M\} \to \X^n$ and $Dec:\Y^n \to \{0 \dots M \}$ such that
+  \begin{align*}
+    \frac 1 n \log M \geq R\\
+    \forall m~:~p_{e,m} = \Pr{Dex(Y^n) \not = m | m \text{ is sent}} < \epsilon \\
+    cost(Enc) = \max_m \frac 1 n \sum_{i=1}^n b(Enc(m)_i) < \beta + \epsilon
+  \end{align*}
+\end{theorem}
+
+\begin{proof}
+  Verbatim as the proof of the coding theorem without costs, namely choose a $p_X$ such that $\Ex{b(X)} \leq \beta$ and $I(X;Y) \geq R$. Construct $Enc(\cdot)$ randomly, use the tipycality decoder. Eliminate half the codewords to end up with $Enc(1) \dots Enc(M)$ with the property that
+  \begin{equation}
+    \label{eq:pro}
+    \forall m~:~\Pr{Dex(Y^n) \not = m | m \text{ is sent}} < \epsilon
+  \end{equation}
+  Recall that the decoder decodes $m$ only if $(Enc(m), y^n) \in T(p_{X,Y}, n, \delta)$ in particular $Enc(m) \in T(p_X, n, \delta)$. Then \cref{eq:pro} implies that for each $m$, $Enc(m) \in T(p_X, n, \delta)$ and
+
+  \[
+    \frac 1 n \sum_{i=1}^n b(Enc(m)_i) = \frac 1 n \sum_{x\in \X} b(x) \{ \# \text{ of } i \text{ such that } Enc(m)_i = x\}
+  \]
+
+  \[
+    cost(Enc) \leq \underbrace{\Ex{b(x)}}_{\leq \beta} + \delta \underbrace{\Ex{|b(X)|}}_{< \epsilon}
+  \]
+\end{proof}
+
+
+\begin{example}
+  Assume an additive Gaussian noise channel $W$, $y=x+Z$ with $Z \sim N(0, \sigma^2$, and $b(x) = x^2$.
+
+  \begin{align*}
+    C(W, \beta) &= \max_{X, \Ex{X^2} \leq \beta} I(X;Y) \\
+    &= \max_{p_X, \Ex{X^2} \leq \beta} h(Y) - h(Y|X) \\
+    &= \max_{p_X, \Ex{X^2} \leq \beta} h(Y) - h(Y-X|X) \\
+    &= \max_{p_X, \Ex{X^2} \leq \beta} h(Y) - h(ZX) \\
+    &= \max_{p_X, \Ex{X^2} \leq \beta} h(Y) - h(Z) \\
+    &= \left(\max_{p_X, \Ex{X^2} \leq \beta} h(X+Z)\right) - h(Z) \\
+    &= \left(\max_{p_X, \Ex{X^2} \leq \beta} h(X+Z)\right) - \frac 1 2 \log(2\pi e \sigma^2) \\
+    &\overset{(a)}\leq \frac 1 2 \log \pfrac{2\pi e (\beta - \sigma^2)}{2\pi \sigma^2}\\
+    &= \frac 1 2 \log \left(1 + \frac \beta {\sigma^2}\right)
+  \end{align*}
+
+  For (a), note that
+  \[
+    \Ex{(X+Z)^2} = \Ex{X^2} + \sigma^2 \leq \beta + \sigma^2 \to h(X+Z) \leq \frac 1 2 \log (2\pi e (\beta + \sigma^2))
+  \]
+  On the other hanf, for $X \sim N(0, \beta)$, we have $\Ex{X^2}\leq \beta$. $X+Z$ is $N(0, \beta+\sigma^2)$ so
+
+  \begin{align*}
+    &h(X+Z)~=~\frac 1 2~\log~2\pi~e~(\beta~+~\sigma^2)\\
+\Rightarrow&\max_{p_X, \Ex{X^2} \leq \beta} \geq \frac 1 2 \log \frac {\beta + \sigma^2} {\sigma^2}
+  \end{align*}
+  Then
+  \[
+    C(W,\beta)= \frac 1 2 \log\left(1 + \frac \beta {\sigma^2} \right) = \frac 1 2 \log(1 + \text{signal to noise ratio})
+  \]
+  This formula is well known in industry and abused for other channels. Do not do that!
+\end{example}
+
 
 
 
