@@ -75,6 +75,8 @@
 \def\X{\mathcal{X}}
 \def\Y{\mathcal{Y}}
 \def\R{\mathbb{R}}
+\def\F{\mathbb{F}}
+\def\I{\mathbb{I}}
 
 
 \def\C{\mathscr{C}}
@@ -2196,13 +2198,287 @@ Given a channel $W(y|x)$ with input $\X$, output $\Y$, $b:\X\to \R$ and $\beta \
 
 
 
+% ----------------------------
+%   Sebastien 11.22.2017
+
+\[
+  \vec{Z} \sim N(\vec{0}, diag(\vec{\sigma^2}))
+\]
+
+\[
+  b(\vec{x}) = \sum_{i = 1}^k X_i^2
+\]
+
+\begin{align*}
+  &C(X^k \rightarrow Y^k = X^k + Z^k, \beta) = \max_{p_{X^k}, \E{||X^k||} \leq \beta} I(X^k, Y^k) \\
+  & \text{ with } I(X^k, Y^k) = h(Y^k) - h(Y^k | X^k) \leq \sum_{i = 1}^k \underbrace{[h(Y_i) - h(Z_i)}_{I(X_i, X_i + Z_i)} \\
+  & \text{ with } h(Y^k | X^k) = h(Y^k - X^k | X^k) = h(Z^k) = \sum_{i = 1}^k h(Z_i)
+\end{align*}
+
+with equality if $X_i$'s are independent
+
+\[
+  C(X^k \rightarrow Y^k = X^k + Z^k, \beta) \leq \sum_{i = 1}^k \frac{1}{2} \log(1 + \frac{beta_i}{\sigma^2_i}) \quad \text{ with } \beta_i = \E{X_i^2}
+\]
+
+with equality when $X_i \sim N(0, \beta_i)$
+
+\[
+  C(X^k \rightarrow Y^k = X^k + Z^k, \beta) = \max_{\beta_1, ..., \beta_k \geq 0, \sum \beta_i = \beta} \sum_{i = 1}^k \frac{1}{2} \log(1 + \frac{\beta_i}{\sigma^2_i})
+\]
+
+\[
+  C(\beta) = \max_{f_1, ..., f_k \geq 0, \sum f_i = 1} \sum_{i = 1}^k \frac{1}{2} \log(1 + \frac{f_i \beta}{\sigma^2_i})
+\]
+
+thus, we are maximazing a concave function on the simplex, so the optimal $f_i$ satisfies: \textit{for some $\lambda$}
+
+\begin{align*}
+  \frac{d}{d f_j} \sum_{i + 1}^k \frac{1}{2} \log(1 + f_i \frac{\beta}{\sigma_i^2}) &\leq \lambda \text{ for all $j$}\\
+              &= \lambda \text{ when } f_j > 0
+\end{align*}
+
+\[ 
+  \frac{1}{2} \frac{\frac{\beta}{\sigma^2_j}}{1 + f_j \frac{\beta}{\sigma^2_j}} = \frac{\beta}{2} - \frac{1}{\sigma_j^2 + \beta_j}
+\]
+
+so the optimal $\{\beta_j\}$ satisfies
+
+\begin{align*}
+  \beta_j + \sigma_j^2 &\geq \mu \text{ for all } j \\
+                       &= \mu  \text{ for } j \text{ s.t } \beta_j > 0 \\
+                       & \equiv \beta_j = \mu - \sigma_j^2
+\end{align*}
+
+\begin{notation}
+  \begin{align*}
+    a^+ \equiv 
+    \left\{
+    \begin{array}{l l}
+      a, & \text{ if } a > 0 \\
+      0, & \text{else}
+    \end{array}
+    \right.
+  \end{align*}
+\end{notation}
+
+So, in terms of $\mu$, we have 
+
+\[
+  \beta = \sum_i(\mu - \sigma^2_i)^+
+\]
+
+\[
+  C(\beta) = \sum_i \underbrace{\log(1 + \frac{(\mu - \sigma_i^2)^+}{\sigma_i^2})}_{(\log \frac{\mu}{\sigma^2_i})^+} = \sum_i (\log(\frac{\mu}{\sigma^2_i}))^+
+\]
+
+\todo{include water-filling scheme}
+
+"Water filling" solution pour water of volume $\beta$ to the basin with altitude map given by $\sigma^2_i$'s
 
 
 
+\newpage
 
+\section{Elementary Coding Theorem}
+Restrict ourselbes to Binary Symmetric and Binary Erasive Channel. Suppose 
+\[
+  Enc: \{1, ..., M\} \rightarrow \{ 0, 1\}^n, n = 1000, rate = \frac{1}{2} 
+  \Rightarrow n = 2^{500}
+\]
 
+Even the encoding table taken $1000 \cdot 2^{500}$ bits of memory. 
 
+We need structure in the $Enc$, let us try linear structures.
 
+\[ 
+  Enc(b_1, ..., b_k) = matrix(n, k) \times \vec{b}
+\]
+
+with $k = \log(M)$
+
+\begin{example}
+  Consider $\vec{X} = \{ X_1, ..., X_7\}$ s.t.
+
+  \begin{align*}
+    &\left[ 
+    \begin{array}{c c c c c c c}
+      1 & 0 & 0 & 1 & 1 & 0 & 1 \\
+      0 & 1 & 0 & 1 & 0 & 1 & 1 \\
+      0 & 0 & 1 & 0 & 1 & 1 & 1
+    \end{array}
+    \right]
+    \left[ 
+    \begin{array}{c}
+      X_1 \\
+      . \\
+      . \\
+      . \\
+      X_7
+    \end{array}
+    \right] 
+    =
+    \left[ 
+    \begin{array}{c}
+      0 \\
+      0 \\
+      0
+    \end{array}
+    \right] \\
+    &\equiv 
+    \begin{array}{l l}
+      X_1 = X_4 + X_6 + X_7 \\
+      X_2 = X_4 + X_5 + X_7 \\
+      X_3 = X_5 + X_6 + X_7
+    \end{array}\\
+    &\equiv
+    \left[ 
+    \begin{array}{c}
+      X_1 \\
+      . \\
+      . \\
+      . \\
+      X_7
+    \end{array}
+    \right] 
+    =
+    \left[ 
+    \begin{array}{c c c c}
+      1 & 0 & 1 & 1 \\
+      1 & 1 & 0 & 1 \\
+      0 & 1 & 1 & 1 \\
+      1 & 0 & 0 & 0 \\
+      0 & 1 & 0 & 0 \\
+      0 & 0 & 1 & 0 \\
+      0 & 0 & 0 & 1 \\
+    \end{array}
+    \right]     
+    \left[ 
+    \begin{array}{c}
+      X_4 \\
+      X_5 \\
+      X_6 \\
+      X_7
+    \end{array}
+    \right] \\
+    &\equiv Enc(
+    \left[ 
+    \begin{array}{c}
+      b_1 \\
+      b_2 \\
+      b_3 \\
+      b_4
+    \end{array}
+    \right] 
+    )
+  \end{align*}
+\end{example}
+
+What is the rate of this code? 
+
+\[
+  \frac{4}{7} = \frac{\# \text{bits of input to Enc}}{\# \text{bits of output to Enc}}
+\]
+
+Is there a codeword of $\underbrace{\text{weight}}_{\# \text{of 1's}} = 1$?
+No because no column of the matrix is $\{0, 0, 0\}$
+
+Is there a codeword of weight $= 2$? No because no two columns of $H$ are equal.
+
+\begin{definition}
+  Given two vectors $X, X' \in \F^n_2$, the Hamming distance is
+  \[ 
+    d_H(X, X') = \sum_{i = 1}^n \I\{ x_i \neq x_i'\}
+  \]  
+\end{definition} 
+
+\begin{definition}
+  Given $x \in \F_2^k$, its Hamming weight is
+  \[ 
+    w_H(X) = d_H(X, 0)
+  \]
+\end{definition}
+
+\textbf{Remarks}: \\
+\[ 
+  d_H(X, X') = w_H(X + X')
+\]
+because $X_i + X_i' = 0 \Leftrightarrow X_i = X_i'$
+
+$d_H$ is a metrix
+\begin{enumerate}
+  \item $d_H(X, X') \geq 0$ \\ 
+  \item $d_H(X, X') = d_H(X', X)$ 
+  \item $d_H(X, Z) \leq d_H(X, Y) + d_H(Y, Z)$
+\end{enumerate}
+
+For the example
+
+\[ 
+  H 
+  \left[ 
+    \begin{array}{c}
+      X_1 \\
+      . \\
+      . \\
+      . \\
+      X_7
+    \end{array}
+  \right] 
+  =
+  \left[ 
+    \begin{array}{c}
+      0 \\
+      0 \\
+      0
+    \end{array}
+  \right] 
+\]
+
+suppose $X$ is a codeword $(HX = 0)$ and $X'$ is a codeword $(H X' = 0)$, then $X + X'$ is a codeword $H(X+ X') = HX + HX' = 0$ (codewords from a linear space)
+
+We saw that there are no codewords of weight $1$ or $2$.
+
+So, if $X$ and $X'$ are codewords
+
+\[ 
+  w_H(X+X') = d_H(X, X') \neq 1,2
+\]
+
+\[ 
+  \Rightarrow \min_{X, X', X \neq X'} d_H(X, X') \geq 3
+\]
+and in fact $ = 3$.
+
+For each codeword $X$, consider $\underbrace{B}_{\text{ball}}(\underbrace{X}_{\text{center}}, \underbrace{1}_{\text{radius}}) = \{Y \in \#^7_2 : d_H(X, Y) \leq 1 \}$ 
+
+\[ 
+  \Rightarrow \text{ if } X \neq X', \text{ then } B(X, 1) \cup B(X', 1) = \emptyset
+\]
+
+Also, $|B(X, 1)| = \underbrace{1}_{X} + \underbrace{17}_{\text{ all } Y \text{'s at } d_H = 1}$
+
+There are 16 coderwords: 
+
+\[ 
+  | \bigcup_{X \in \text{codewords}} B(X, 1) | = 16 * 8 = 128
+\]
+
+So we conclude that 
+
+\[ 
+  \bigcup_{X \in \text{codewords}} B(X, 1) = \F_2^7
+\]
+
+meaning that we have perfect cover of $\F_2^7$ with disjoint spheres.
+
+For this reason the code described by it is called a perfect code.
+
+The code we are discussing is called 
+
+\[
+  (\underbrace{7}_{\text{length}}, 4, \underbrace{3}_{\text{minimal distance}})-\text{Hamming code}
+\]
 
 
 
