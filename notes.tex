@@ -9,6 +9,7 @@
 \usepackage[nameinlink]{cleveref}
 \usepackage{xcolor}
 \usepackage[toc,page]{appendix}
+\usepackage[]{algorithm2e}
 
 \title{Information Theory and Coding - Prof.~Emere Telatar}
 \date{\today}
@@ -49,6 +50,8 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{claim}{Claim}[section]
+\newtheorem{fact}{Fact}[section]
+\newtheorem{consequence}{Consequence}[section]
 \newtheorem{observation}{Observation}[section]
 \newtheorem*{wikipedia}{Wikipedia}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -2238,7 +2241,7 @@ thus, we are maximazing a concave function on the simplex, so the optimal $f_i$ 
               &= \lambda \text{ when } f_j > 0
 \end{align*}
 
-\[ 
+\[
   \frac{1}{2} \frac{\frac{\beta}{\sigma^2_j}}{1 + f_j \frac{\beta}{\sigma^2_j}} = \frac{\beta}{2} - \frac{1}{\sigma_j^2 + \beta_j}
 \]
 
@@ -2252,7 +2255,7 @@ so the optimal $\{\beta_j\}$ satisfies
 
 \begin{notation}
   \begin{align*}
-    a^+ \equiv 
+    a^+ \equiv
     \left\{
     \begin{array}{l l}
       a, & \text{ if } a > 0 \\
@@ -2262,7 +2265,7 @@ so the optimal $\{\beta_j\}$ satisfies
   \end{align*}
 \end{notation}
 
-So, in terms of $\mu$, we have 
+So, in terms of $\mu$, we have
 
 \[
   \beta = \sum_i(\mu - \sigma^2_i)^+
@@ -2281,17 +2284,17 @@ So, in terms of $\mu$, we have
 \newpage
 
 \section{Elementary Coding Theorem}
-Restrict ourselbes to Binary Symmetric and Binary Erasive Channel. Suppose 
+Restrict ourselbes to Binary Symmetric and Binary Erasive Channel. Suppose
 \[
-  Enc: \{1, ..., M\} \rightarrow \{ 0, 1\}^n, n = 1000, rate = \frac{1}{2} 
+  Enc: \{1, ..., M\} \rightarrow \{ 0, 1\}^n, n = 1000, rate = \frac{1}{2}
   \Rightarrow n = 2^{500}
 \]
 
-Even the encoding table taken $1000 \cdot 2^{500}$ bits of memory. 
+Even the encoding table taken $1000 \cdot 2^{500}$ bits of memory.
 
 We need structure in the $Enc$, let us try linear structures.
 
-\[ 
+\[
   Enc(b_1, ..., b_k) = matrix(n, k) \times \vec{b}
 \]
 
@@ -2301,14 +2304,14 @@ with $k = \log(M)$
   Consider $\vec{X} = \{ X_1, ..., X_7\}$ s.t.
 
   \begin{align*}
-    &\left[ 
+    &\left[
     \begin{array}{c c c c c c c}
       1 & 0 & 0 & 1 & 1 & 0 & 1 \\
       0 & 1 & 0 & 1 & 0 & 1 & 1 \\
       0 & 0 & 1 & 0 & 1 & 1 & 1
     \end{array}
     \right]
-    \left[ 
+    \left[
     \begin{array}{c}
       X_1 \\
       . \\
@@ -2316,23 +2319,23 @@ with $k = \log(M)$
       . \\
       X_7
     \end{array}
-    \right] 
+    \right]
     =
-    \left[ 
+    \left[
     \begin{array}{c}
       0 \\
       0 \\
       0
     \end{array}
     \right] \\
-    &\equiv 
+    &\equiv
     \begin{array}{l l}
       X_1 = X_4 + X_6 + X_7 \\
       X_2 = X_4 + X_5 + X_7 \\
       X_3 = X_5 + X_6 + X_7
     \end{array}\\
     &\equiv
-    \left[ 
+    \left[
     \begin{array}{c}
       X_1 \\
       . \\
@@ -2340,9 +2343,9 @@ with $k = \log(M)$
       . \\
       X_7
     \end{array}
-    \right] 
+    \right]
     =
-    \left[ 
+    \left[
     \begin{array}{c c c c}
       1 & 0 & 1 & 1 \\
       1 & 1 & 0 & 1 \\
@@ -2352,8 +2355,8 @@ with $k = \log(M)$
       0 & 0 & 1 & 0 \\
       0 & 0 & 0 & 1 \\
     \end{array}
-    \right]     
-    \left[ 
+    \right]
+    \left[
     \begin{array}{c}
       X_4 \\
       X_5 \\
@@ -2362,19 +2365,19 @@ with $k = \log(M)$
     \end{array}
     \right] \\
     &\equiv Enc(
-    \left[ 
+    \left[
     \begin{array}{c}
       b_1 \\
       b_2 \\
       b_3 \\
       b_4
     \end{array}
-    \right] 
+    \right]
     )
   \end{align*}
 \end{example}
 
-What is the rate of this code? 
+What is the rate of this code?
 
 \[
   \frac{4}{7} = \frac{\# \text{bits of input to Enc}}{\# \text{bits of output to Enc}}
@@ -2387,36 +2390,36 @@ Is there a codeword of weight $= 2$? No because no two columns of $H$ are equal.
 
 \begin{definition}
   Given two vectors $X, X' \in \F^n_2$, the Hamming distance is
-  \[ 
+  \[
     d_H(X, X') = \sum_{i = 1}^n \I\{ x_i \neq x_i'\}
-  \]  
-\end{definition} 
+  \]
+\end{definition}
 
 \begin{definition}
   Given $x \in \F_2^k$, its Hamming weight is
-  \[ 
+  \[
     w_H(X) = d_H(X, 0)
   \]
 \end{definition}
 
 \textbf{Remarks}: \\
-\[ 
+\[
   d_H(X, X') = w_H(X + X')
 \]
 because $X_i + X_i' = 0 \Leftrightarrow X_i = X_i'$
 
 $d_H$ is a metrix
 \begin{enumerate}
-  \item $d_H(X, X') \geq 0$ \\ 
-  \item $d_H(X, X') = d_H(X', X)$ 
+  \item $d_H(X, X') \geq 0$ \\
+  \item $d_H(X, X') = d_H(X', X)$
   \item $d_H(X, Z) \leq d_H(X, Y) + d_H(Y, Z)$
 \end{enumerate}
 
 For the example
 
-\[ 
-  H 
-  \left[ 
+\[
+  H
+  \left[
     \begin{array}{c}
       X_1 \\
       . \\
@@ -2424,15 +2427,15 @@ For the example
       . \\
       X_7
     \end{array}
-  \right] 
+  \right]
   =
-  \left[ 
+  \left[
     \begin{array}{c}
       0 \\
       0 \\
       0
     \end{array}
-  \right] 
+  \right]
 \]
 
 suppose $X$ is a codeword $(HX = 0)$ and $X'$ is a codeword $(H X' = 0)$, then $X + X'$ is a codeword $H(X+ X') = HX + HX' = 0$ (codewords from a linear space)
@@ -2441,32 +2444,32 @@ We saw that there are no codewords of weight $1$ or $2$.
 
 So, if $X$ and $X'$ are codewords
 
-\[ 
+\[
   w_H(X+X') = d_H(X, X') \neq 1,2
 \]
 
-\[ 
+\[
   \Rightarrow \min_{X, X', X \neq X'} d_H(X, X') \geq 3
 \]
 and in fact $ = 3$.
 
-For each codeword $X$, consider $\underbrace{B}_{\text{ball}}(\underbrace{X}_{\text{center}}, \underbrace{1}_{\text{radius}}) = \{Y \in \#^7_2 : d_H(X, Y) \leq 1 \}$ 
+For each codeword $X$, consider $\underbrace{B}_{\text{ball}}(\underbrace{X}_{\text{center}}, \underbrace{1}_{\text{radius}}) = \{Y \in \#^7_2 : d_H(X, Y) \leq 1 \}$
 
-\[ 
+\[
   \Rightarrow \text{ if } X \neq X', \text{ then } B(X, 1) \cup B(X', 1) = \emptyset
 \]
 
 Also, $|B(X, 1)| = \underbrace{1}_{X} + \underbrace{17}_{\text{ all } Y \text{'s at } d_H = 1}$
 
-There are 16 coderwords: 
+There are 16 coderwords:
 
-\[ 
+\[
   | \bigcup_{X \in \text{codewords}} B(X, 1) | = 16 * 8 = 128
 \]
 
-So we conclude that 
+So we conclude that
 
-\[ 
+\[
   \bigcup_{X \in \text{codewords}} B(X, 1) = \F_2^7
 \]
 
@@ -2474,12 +2477,202 @@ meaning that we have perfect cover of $\F_2^7$ with disjoint spheres.
 
 For this reason the code described by it is called a perfect code.
 
-The code we are discussing is called 
+The code we are discussing is called
 
 \[
   (\underbrace{7}_{\text{length}}, 4, \underbrace{3}_{\text{minimal distance}})-\text{Hamming code}
 \]
 
+
+% -------------------------
+%  JB - 11.27.2017
+
+
+% \begin{example}
+%   $(7, 4, 3)$ Hamming code. All code words $x \in \F_2^7$ satisfy $Hx = 0$ with
+%   \[
+%     H=\begin{bmatrix}
+%       1&0&0&0&1&1&1\\
+%       0&1&0&1&0&1&1\\
+%       0&0&1&1&1&0&1\\
+%     \end{bmatrix}
+%   \]
+%   We saw there are $2^4$ code words.
+% \end{example}
+
+% \begin{observation}
+%   In general if $H \in \F_2^{m\times n}$ has rank $r$ then we will have $2^{n-r}$ solutions to $Hx=0$.
+% \end{observation}
+
+% \begin{observation}
+% Codewords form a linear space (i.e. $x+x'$ is a codeword for all $x,x' \in F_2^n$)
+% \end{observation}
+
+Let's extend the Hamming code to more general parameters $(2^{m}-1, 2^m - 1 - m, 3)$. Then H is a matrix $F_2^{m\times2^m-1}$.$\{B(x,1) : x \text{ is a codeword}\}$ form a disjoint collection and
+
+\[
+  |B(x,1)| = 1 + (2^m - 1) = 2^m
+\]
+\[
+  | \bigcup B(x,1) | = 2^{2^m - 1 - m} \cdot 2^m = 2^{2^n -1} = | \F_2^{2^m - 1} |
+\]
+
+\begin{theorem}[Sphere packing bound]
+  Suppose we have a code in $\F_2^n$ with $M$ codewords and the Hamming distance between codewords is
+  \[
+    d = \min_{x\not=x'} d_H(x,x')
+  \]
+  then
+  \[
+    2^m \geq M \sum_{i=0}^{\left\lfloor \frac {d-1} 2 \right \rfloor} {n \choose i}
+  \]
+\end{theorem}
+
+\begin{proof}
+  The balls of radius $\left\lfloor \frac {d-1} 2 \right \rfloor$ around each codeword are distinct (because any two words are more than $d$ appart).
+  \[
+    2^n
+    = |\F_2^n| \geq \left| \bigcup_x B\left(x, \left\lfloor \frac {d-1} 2 \right \rfloor\right) \right|
+    = \sum_x \left| \bigcup_x B\left(x, \left\lfloor \frac {d-1} 2 \right \rfloor\right) \right|
+    = M \sum_{i=0}^{\left\lfloor \frac {d-1} 2 \right \rfloor} {n \choose i}
+  \]
+\end{proof}
+
+\begin{theorem}[Gilbert bound]
+  Given $n,d$ there is a code in $\F_2^n$ with min distance $\geq 2$ and numbers of codewords $M$ with
+  \[
+    M\sum_{i=0}^{d-1} {n \choose i} \geq 2^n
+  \]
+\end{theorem}
+
+\begin{proof}~\\
+  \begin{algorithm}[H]
+ % \KwData{this text}
+ % \KwResult{how to write algorithm with \LaTeX2e }
+ $S \leftarrow F_2^n$\;
+ \While{$S \not = \emptyset$}{
+  pich $x \in S$ as a codeword\;
+  $S \leftarrow S \setminus B(x, d-1)$\;
+ }
+\end{algorithm}
+\end{proof}
+
+\begin{observation}
+  Suppose we are in $\F_q^n$, we can define the Hamming distance
+  \[
+    d_H(x, x') = \I_{x_i \not = x_i'}
+  \]
+  and
+  \[
+      |B(x,r)| = \sum_{i=0}^r {n \choose i} (q-1)^i
+    \]
+\end{observation}
+
+\begin{theorem}[Singleton bound]
+  Suppose we have a code in $\F_2^n$ with $M > 2^k$ codewords. Then the code jas minimum distance $\leq n - k$ (i.e. there are $x\not = x$ codewords with $d_H(x,x' \leq n-k)$).
+\end{theorem}
+
+\begin{proof}
+  Split words of length $n$ in two parts (of length $n-k$ and $k$). There are $2^k$ possible right halves but $> 2^k$ codewords. By pigeon hole principle, there exists two codewords $x\not = x'$ with the same right half thus $d_H(x,x') \leq n-k$ (left half part is fully changed).
+\end{proof}
+
+
+\subsection{Linear code}
+
+\begin{definition}
+  A collection $\C \subseteq \F_2^n$ of code words form a linear code if $\C$ is a vector space over $\F_2$ (i.e. $x,x' \in \C \to x+x' \in \C$).
+\end{definition}
+
+\begin{observation}
+  The previous definition implies that $0 \in \C$, $-x \in \C$ and $ax +a'x' \in \C \forall a,a' \in \F_2$
+\end{observation}
+
+\begin{definition}
+  For any collection $\C$, define
+  \[
+    d_{\min}(\C) = \min_{x,x'\in \C, x\not=x'} d_H(x,x')
+  \]
+\end{definition}
+
+\begin{lemma}
+  if $\C$ is a linear code, then
+  \[
+    d_{\min}(\C) = w_{\min}(\C) \triangleq \min_{x\in \C, x \not=0} w_H(x)
+  \]
+\end{lemma}
+
+\begin{proof}
+  Let $x, x'\in \C$ have
+  \[
+    d_H(x,x') = d_{\min} \Rightarrow w_H(x+x') = d_{\min} \Rightarrow w_{\min} \leq d_{\min}
+  \]
+  Also let $x\in \C$ with $w_H(x) = w_{\min}$ then
+  \[
+    d_H(0,x) = w_{\min} \Rightarrow d_{\min}(\C) \leq w_{\min}(\C)
+  \]
+\end{proof}
+
+
+\begin{fact}
+  if $\C$ is a linear code in $\F_2^n$, then there is a matrix $G\in \F_2^{n\times k}$ (called the generator matrix) so that $\C = \{G_u : u \in \F_2^k \}$ in particular $|\C| = 2^k$. One can even pick $G$ to be of the form
+  \[
+    G=\begin{bmatrix}
+      I_k\\
+      A_{n-k\times k}
+    \end{bmatrix}
+  \]
+  and its row permutations.
+\end{fact}
+
+\begin{consequence}
+  if $\C$ is a linear code in $\F_2^n$, then there is a matrix $H \in \F_2^{n\times n}$ such that $\C = \{ x \in \F_2^n : H x = 0 \}$. One can even choose $H$ or some column permutation of
+  \[
+    H = \begin{bmatrix}
+      I_r|A_{r \times n-r}
+    \end{bmatrix}
+  \]
+  so that $|\C| = 2^{n-r} = 2^k$
+\end{consequence}
+
+
+\begin{proof}
+  \[
+    \text{If } G = \begin{bmatrix}
+      I_k\\
+      A
+    \end{bmatrix} \text{ then } \C = \left\{ \begin{bmatrix}
+      u\\ A_u
+    \end{bmatrix} : u \in \F_2^k \right\}
+    \text{ i.e. } x\in \C \iff \begin{bmatrix}
+      1\\ \vdots\\x_k\\x_{k+1}\\ \vdots\\x_n
+    \end{bmatrix} \text{ has } \begin{bmatrix}
+      x_{k+1}\\ \vdots\\ x_n
+    \end{bmatrix} = A \begin{bmatrix}
+      x_{1}\\ \vdots\\ x_k
+    \end{bmatrix}
+  \]
+  \[
+    \iff I_{k-n} \begin{bmatrix}
+      x_{k+1}\\ \vdots\\ x_n
+    \end{bmatrix} = A \begin{bmatrix}
+      x_{1}\\ \vdots\\ x_k
+    \end{bmatrix}
+    \iff
+    \underbrace{[A~|~-I_{k-n}]}_{H}\begin{bmatrix}
+      x_1\\x_k\\x_{k+1}\\x_n
+    \end{bmatrix} =
+    \begin{bmatrix}
+      0\\ \vdots \\ 0
+    \end{bmatrix}
+  \]
+\end{proof}
+
+\begin{theorem}[Gilbert-Varshanov]
+  Given $n,d$ there is a linear code in $\F_2^n$ with $\geq 2 ^{n-r}$ codewords, provided that
+  \[
+    \sum_{i=0}^{d-2} {n-1 \choose i} < 2^n
+  \]
+\end{theorem}
 
 
 
@@ -2503,7 +2696,7 @@ For such an $x$, $Hx = $ linear combination of weight $(x)$ columns of $H$. Such
 
 Thus $w_min > k$
 
-Suppose there exists $l$ columns of $H$ which are linearly dependent $\Rightarrow \exists x \neq 0$ with weight $(x) \leq l$ such that $Hx = 0$. Thus $w_{min}$ 
+Suppose there exists $l$ columns of $H$ which are linearly dependent $\Rightarrow \exists x \neq 0$ with weight $(x) \leq l$ such that $Hx = 0$. Thus $w_{min}$
 
 \begin{theorem}
   The code $C = \{ x: Hx = 0 \}$ has minimum distance $d$ if and only if any collection of $d-1$ columns of $H$ are linearly independent, and some $d$ columns are linearly independent.
@@ -2517,8 +2710,8 @@ Suppose there exists $l$ columns of $H$ which are linearly dependent $\Rightarro
 
 Recall $d_H(x, x') = \sum_{i = 1}^n \I(x_i \neq x_i')$ with $x, x'\in \X^n$
 
-\textbf{Singleton bound}: Suppose $C \subset \X^n, |C| > |X|^k$ then 
-\[ 
+\textbf{Singleton bound}: Suppose $C \subset \X^n, |C| > |X|^k$ then
+\[
   d_{min}(c) \geq n - k
 \]
 
@@ -2568,22 +2761,49 @@ Furthermore, if $x \in C, \tilde{x} \in C$, if $a, \tilde{a} \in \F$, then $ax +
     \begin{array}{c c | c || c c c }
       u_0 & u_1 & u(D) & & x(u) \\
       \hline
-     0 & 0 & 0      & 0 & 0 & 0  \\ 
-     0 & 1 & D      & 0 & 1 & 2  \\ 
-     0 & 2 & 2D     & 0 & 2 & 1  \\ 
-     1 & 0 & 1      & 1 & 1 & 1  \\ 
-     1 & 1 & 1 + D  & 1 & 2 & 0  \\ 
-     1 & 2 & 1 + 2D & 1 & 0 & 2  \\ 
-     2 & 0 & 2      & 2 & 2 & 2  \\ 
-     2 & 1 & 2 + D  & 2 & 0 & 1  \\ 
-     2 & 2 & 2 + 2D & 2 & 1 & 0  \\ 
+     0 & 0 & 0      & 0 & 0 & 0  \\
+     0 & 1 & D      & 0 & 1 & 2  \\
+     0 & 2 & 2D     & 0 & 2 & 1  \\
+     1 & 0 & 1      & 1 & 1 & 1  \\
+     1 & 1 & 1 + D  & 1 & 2 & 0  \\
+     1 & 2 & 1 + 2D & 1 & 0 & 2  \\
+     2 & 0 & 2      & 2 & 2 & 2  \\
+     2 & 1 & 2 + D  & 2 & 0 & 1  \\
+     2 & 2 & 2 + 2D & 2 & 1 & 0  \\
     \end{array}
   \end{align*}
 \end{example}
 
-In general, if we are given an $X$ with $|X| = p^l$ with $p$ prime, we identify $X$ with $\F_p^l$ 
+In general, if we are given an $X$ with $|X| = p^l$ with $p$ prime, we identify $X$ with $\F_p^l$
 
 $\rightarrow$ polynomials over $\F_q$ of degree $< l - 1$ with addition modulo $p$ and multiplication modulo a suitably chosen polynomial of degree $l$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
