@@ -2484,10 +2484,111 @@ The code we are discussing is called
 
 
 
+% -------------------------
+%  Sebastien - 11.28.2017
+
+Suppose a code has a minimum distance $d$, and we use this cod over the BSC. At the decoder, given the received $y^n$, decode it to the "nearest" codeword (in $d_H$). Then, if the channel flips $< \frac{d}{2}$ input symbols, we will decode correctly.
+
+\subsubsection*{Relationship between the parity check $H$ and $d_min$, $\#$ of codewords}
+
+Recall $\C = \{ x: Hx = 0\}$
+
+E.g. $(7,4,3)-$Hamming code: 3 equations, also called the parity-check equations. The matrix $H$ is sometime called the parity-check matrix.
+
+Recall also that $d_{min} = w_{min}$.
+
+Suppose $H$ has the property that any $k$ columns are linearly independent. Can there be a non-zero codeword with weight $\equiv k$? No
+
+For such an $x$, $Hx = $ linear combination of weight $(x)$ columns of $H$. Such a combination $\neq 0$
+
+Thus $w_min > k$
+
+Suppose there exists $l$ columns of $H$ which are linearly dependent $\Rightarrow \exists x \neq 0$ with weight $(x) \leq l$ such that $Hx = 0$. Thus $w_{min}$ 
+
+\begin{theorem}
+  The code $C = \{ x: Hx = 0 \}$ has minimum distance $d$ if and only if any collection of $d-1$ columns of $H$ are linearly independent, and some $d$ columns are linearly independent.
+\end{theorem}
+
+\begin{theorem}
+  Suppose the matrix $H \in \F_2^{m \times n}$ has rank $r$. Then $C = \{ x: Hx = 0 \}$ has $2^{n - r}$ codewords.
+\end{theorem}
+
+\subsubsection{Revisit the singleton bound for general alphabet}
+
+Recall $d_H(x, x') = \sum_{i = 1}^n \I(x_i \neq x_i')$ with $x, x'\in \X^n$
+
+\textbf{Singleton bound}: Suppose $C \subset \X^n, |C| > |X|^k$ then 
+\[ 
+  d_{min}(c) \geq n - k
+\]
+
+\begin{proof}
+  same as in the binary case.
+\end{proof}
+
+\begin{definition}{Reed-Solomon Codes}
+  are a family of codes for which the Singleton bound is tight. (they will have $|X|^{k+1}$ codewords and $d_{min} = n - k + 1$)
+\end{definition}
+
+\textbf{Construction of R-S code}: we are given a set $\F$, a field with $+, \cdot$ operator defined. (typically $\F = \{ 0, 1 \}^l, l = 8, 16$ is usual), let $q = |\F|$.
+
+We will construct a binary code $C \subset \F^n$ with $n \leq q$, with $|C| = q^k, d_{min}(C) = n - k + 1$. To do so, we will pick $\alpha_1, ... , \alpha_n \in \F$ all distinct. The code then will be the following:
+
+for each $(u_0, ..., u_{k-1}) \in \F^k$ we will define $u(D) = u_0 + u_1 D + u_2 D^2 + ... + u_{k-1} D^{k-1}$, and construct $x(u) \in \F^n$ with
+
+\[
+  x(u) = (u(\alpha_1), ..., u(\alpha_n))
+\]
+
+and $ \C = \{ x(u): u \in \F^k \}$
+
+\textbf{Observation}: Suppose $u \in \F^k, \tilde{u} \in \F^k, u \neq \tilde{u}$
+\begin{align*}
+  x(u) - x(\tilde{u}) &= u(\alpha_1) - \tilde{u}(\alpha_1), ..., u(\alpha_n) - \tilde{u}(\alpha_n)) \\
+  v = u - \tilde{u} \Rightarrow (v(\alpha), ..., v(\alpha_n))
+\end{align*}
+
+Where $v(D) = v_0 + v_1 D + ... + v_{k-1} D^{k-1}$ a polynomial of degree $\leq k-1$, with at most $k-1$ roots.
+
+$v$ has atmost $k-1$ entries. Therefor it has at least $n - k + 1$ non-zero entries.
+
+Thus
+
+\[
+  x(u) \neq x(\tilde(u)) \Rightarrow |C| = q^k
+\]
+and $d_{min} \geq n - k + 1$ (actually equal because singleton bound says $d_{min} \leq n - k + 1$)
+
+Furthermore, if $x \in C, \tilde{x} \in C$, if $a, \tilde{a} \in \F$, then $ax + \tilde{a} \tilde{x} \in C$, because $x = x(u), \tilde{x} = x(\tilde{U}$ then $ax + \tilde{a} \tilde{x} = x(a u +  \tilde{a} \tilde{x})$, so $C$ is a linear code.
+
+\begin{example}
+  $\F = \{ 0, 1, 2 \}, n = 3, \alpha_1 = 0, \alpha_2 = 1, \alpha_3 = 2$ with $mod 3$ addition and multiplication
+
+  \begin{align*}
+    \begin{array}{c c | c || c c c }
+      u_0 & u_1 & u(D) & & x(u) \\
+      \hline
+     0 & 0 & 0      & 0 & 0 & 0  \\ 
+     0 & 1 & D      & 0 & 1 & 2  \\ 
+     0 & 2 & 2D     & 0 & 2 & 1  \\ 
+     1 & 0 & 1      & 1 & 1 & 1  \\ 
+     1 & 1 & 1 + D  & 1 & 2 & 0  \\ 
+     1 & 2 & 1 + 2D & 1 & 0 & 2  \\ 
+     2 & 0 & 2      & 2 & 2 & 2  \\ 
+     2 & 1 & 2 + D  & 2 & 0 & 1  \\ 
+     2 & 2 & 2 + 2D & 2 & 1 & 0  \\ 
+    \end{array}
+  \end{align*}
+\end{example}
+
+In general, if we are given an $X$ with $|X| = p^l$ with $p$ prime, we identify $X$ with $\F_p^l$ 
+
+$\rightarrow$ polynomials over $\F_q$ of degree $< l - 1$ with addition modulo $p$ and multiplication modulo a suitably chosen polynomial of degree $l$.
 
 
 
-
+% -------------------------------------------------------------------------
+% -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
 % appendices
 
