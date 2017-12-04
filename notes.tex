@@ -1562,13 +1562,15 @@ We have
   &= \sum_y W(y|x_0) \log \frac {W(y|x)} {P_Y(y)} - \log e
 \end{align*}
 
+\todo{why log disappear ?}
+
 \begin{theorem}
   \label{th:1000}
   $p_X$ maximizes $I(X;Y)$ iff there exists $\lambda$ such that for all $x$
   \[
     \sum_y W(y|x) \log \frac {W(y|x)} {P_Y(y)} \leq \lambda
   \]
-  with equality when $p_X(x) = 0$. Furthermore $\lambda = C(W)$.
+  with equality when $p_X(x) \not= 0$. Furthermore $\lambda = C(W)$.
 \end{theorem}
 
 \begin{proof}
@@ -2779,21 +2781,186 @@ In general, if we are given an $X$ with $|X| = p^l$ with $p$ prime, we identify 
 $\rightarrow$ polynomials over $\F_q$ of degree $< l - 1$ with addition modulo $p$ and multiplication modulo a suitably chosen polynomial of degree $l$.
 
 
+\subsubsection{Polar codes}
 
+Channel 1:
 
+\[
+  y_0 \cap y_1 = \emptyset~~~C(W)=1
+\]
+Easy to achieve capacity: send unencoded binary data
 
+Polar cosing is a technique to convert $n$ copies of a "mediocre" channel $W$ to $n$ extremal channels, while preserving the total capacity
 
+$2\times 2$ building blocks:
 
+\begin{align*}
+  \begin{bmatrix}
+    X_1\\X_2
+  \end{bmatrix}
+  &=
+  \begin{bmatrix}
+    1 & 1 \\ 0 & 1
+  \end{bmatrix}
+  \begin{bmatrix}
+    U_1 \\ U_2
+  \end{bmatrix}\\
+  \begin{bmatrix}
+    U_1\\U_2
+  \end{bmatrix}
+  &=
+  \begin{bmatrix}
+    1 & 1 \\ 0 & 1
+  \end{bmatrix}
+  \begin{bmatrix}
+    X_1 \\ X_2
+  \end{bmatrix}\\
+  \begin{matrix}
+  X_1 = U_1 \oplus U_2\\
+  X_2 = U_2
+  \end{matrix} &\iff
+  \begin{matrix}
+  U_1 = X_1 \oplus X_2\\
+  U_2 = X_2
+  \end{matrix}\\
+  \Rightarrow I(U_1U_2;Y_1Y_2) = I(X_1 X_2 ; Y_1Y_2)
+\end{align*}
 
+\[
+  U_1U_2 \text{ i.i.d. } \sim B\pfrac 1 2 \Rightarrow
+  \begin{array}{cc|c}
+    U_1 & U_2 & p\\
+    \hline
+    0 & 0 & 1/4\\
+    0 & 1 & 1/4\\
+    1 & 0 & 1/4\\
+    1 & 1 & 1/4
+  \end{array}
+  \Rightarrow
+  \begin{array}{cc|c}
+    X_1 & X_2 & p\\
+    \hline
+    0 & 0 & 1/4\\
+    0 & 1 & 1/4\\
+    1 & 0 & 1/4\\
+    1 & 1 & 1/4
+  \end{array}
+  \Rightarrow
+  X_1, X_2 \text{ i.i.d.} \sim B\pfrac 1 2
+\]
 
+\begin{align*}
+  I(X_1X_2; Y_1Y_2) &\overset{(\ast)}= I(X_1; Y_1 ) + I(X_2;Y_2) = 2I(W)\\
+  I(U_1U_2; Y_1Y_2) &= I(U_1; Y_1Y_2) + I(U_2; Y_1Y_2|U_1)\\
+  &\triangleq I(W^-) + I(W^+)
+\end{align*}
+where $(\ast)$ is because $X$'s are i.i.d.
 
+\begin{align*}
+  W^- : U_1 \rightarrow Y_1Y_2,~ W^-(y_1y_2| u_1) &= \frac 1 2 \Pr{Y_1Y_2 = y_1y_2 | X_1X_2 = U_10} +
+  \frac 1 2 \Pr{Y_1Y_2 = y_1y_2 | X_1X_2 = \bar U_1 1}\\
+  &= \frac 1 2 W(y_1|u_1) W(y_2|0) + \frac 1 2 W(y_1|\bar u_1)W(y_2|1)\\
+\end{align*}
 
+\begin{align*}
+  W^+ : U_2 \rightarrow Y_1Y_2U_1,~ W^+(y_1y_2| u_2) &= \frac 1 2 \Pr{Y_1Y_2 = y_1y_2 | X_1 = u_1 + u_2, X_2 = u_2} \\
+  &= \frac 1 2 W(y_1|u_1 + u_2) W(y_2|u_2)
+\end{align*}
 
+\textbf{Question: } Are $W^-$ and $W^+$ real ?
 
+In the general case, say $U_1U_2\dots U_n$\\
+\emph{Oracle aided decoder}
+\begin{align*}
+  \hat U_1 &= \Phi_1(Z)\\
+  \hat U_2 &= \Phi_2(ZU_1)\\
+  \hat U_3 &= \Phi_3(ZU_1 U_2)\\
+  &~~\vdots\\
+  \hat U_n &= \Phi_n(ZU_1U_2\dots U_{n-1})\\
+\end{align*}
+\emph{Unaided decoder} (with same $\Phi_i$'s as the oracle aided decoder)
+\begin{align*}
+  \tilde U_1 &= \Phi_1(Z)\\
+  \tilde U_2 &= \Phi_2(Z\tilde U_1)\\
+  \tilde U_3 &= \Phi_3(Z\tilde U_1 \tilde U_2)\\
+  &~~\vdots\\
+  \tilde U_n &= \Phi_n(Z\tilde U_1\tilde U_2\dots \tilde U_{n-1})\\
+\end{align*}
 
+Suppose that
+\begin{align*}
+  \hat U ^ n = U^n &\Rightarrow \tilde U_1 = \hat U_1 = U_1\\
+  &\Rightarrow \tilde U_2 = \Phi_2(Z\tilde U_1 = U_1) = \hat U_2 = U_2\\
+  &\Rightarrow \tilde U _3 = \Phi_3(Z,\tilde U_1 \tilde U_2 = U_1 U_2) = \tilde U_3 =U_3\\
+  &\Rightarrow \dots
+\end{align*}
 
+Check that $\hat U^n \not = U^n \Rightarrow \tilde U^n \not = U^n$
 
+\[
+  \Rightarrow \Pr{\hat U ^n = U^n} = \Pr{\tilde U^n = U^n}
+\]
 
+If we decide $U_1$ first ($\equiv$ decode $W^-$ first) and use the decision $\tilde U_1$ as if it were true (as if it was the oracle's answer) when decoding $W^+$. So $W^+$ is a "real" channel.
+
+So far $2I(W) = I(W^-) + I(W^+)$
+
+\begin{example}
+  $W=\text{BEC}(p)$
+  \[
+    Y_1 = \begin{cases}
+      X_1 & \text{ with probability } 1 - p\\
+      ? & \text{ with probability } p
+    \end{cases}
+  \]
+
+  \[
+    W^-:U_1 \rightarrow Y_1 Y_2 =
+    \begin{cases}
+      X_1X_2 & \text{ with probability } wp(1-p)^2\\
+      X_1 ? & \text{ with probability } p(1-p)\\
+      ?X_2 & \text{ with probability } p(1-p)\\
+      ? ? & \text{ with probability } p^2
+    \end{cases}
+  \]
+
+  \[
+    X_1 = U_1 \oplus U_2~~X_2=U_2
+  \]
+
+  \[
+    U_1 \text{ independent of } U_2 \equiv \begin{cases}
+      U_1&wp(1-p)^2\\
+      ?&wp(2p-p^2)\\
+      ?&wp(2p-p^2)\\
+      ?&wp(2p-p^2)\\
+    \end{cases} \equiv \text{BEC}(2p - p^2)
+  \]
+
+  \[
+    W^+:U_2 \rightarrow Y_1Y_2U_1 = \begin{cases}
+      X_1X_2U_1\\
+      X+1 ? U_1\\
+      ?X_2 U_1\\
+      ??U_1
+    \end{cases}
+    \equiv
+    \begin{cases}
+      U_2& \text{with probability } (1-p^2)\\
+      U_2& \text{with probability } (1-p^2)\\
+      U_2& \text{with probability } (1-p^2)\\
+      ?& \text{with probability } p^2
+    \end{cases}
+    \equiv
+    \text{BEC}(p^2)
+  \]
+
+  $W^+$ is a much better channel than $W$. In general
+  \[
+    I(W^+) = I(U_2;Y_1Y_2U_1) \geq O(X_2,Y_2) = I(W) \Rightarrow I(W^-) \leq I(W) \leq I(W^+)
+  \]
+\end{example}
+  \todo{recheck polar codes}
 
 
 
