@@ -2962,13 +2962,104 @@ So far $2I(W) = I(W^-) + I(W^+)$
 \end{example}
   \todo{recheck polar codes}
 
+% ------------------------
+  Sebastien 12.7.2017
 
+How to decoder the output $\Y$ of a binary input channel $W$? Given $y$ (the output of $W$)
 
+Compute $W(y|0), W(y|1)$, max likelihood decoding rule
 
+\[
+\varphi(y) = 
+\left\{
+\begin{array}{c c}
+  0 & \text{if } W(y|0) > W(y|1) \\
+  1 & \text{if } W(y|1) < W(y|1) \\
+\end{array}
+\right.
+\]
 
+\todo{include graph}
 
+\subsubsection*{Encoding / decoding complexity}
 
+\todo{include graph}
 
+\textbf{Encoding} complexity:
+\[ 
+  \frac{nk}{2} XOR - \frac{1}{2} n \log n
+\]
+
+\textbf{Decoding} complexity
+\[
+  \frac{nk}{2} proc^{-/+}
+\]
+
+We are now left with the question: does this $W$ result in extremal channel?
+
+Restrict $W = BEC(p)$: 
+\begin{align*}
+  & W^+ = BEC(p^2) = BEC(p(+)) \\
+  & W^- = BEC(p(2-p)) = BEC(p(-)) \\
+  & p(++) = (p^2)^2 \\
+  & p(+-) = p^2 (2 - p^2) \\
+  & p(-+) = (p(2-p))^2 \\
+  & etc...
+\end{align*}
+
+Define a $BEC(p)$ to be $\epsilon$-mediocre if $p \ni (\epsilon, 1-\epsilon)$ define for a $BEC(p)$ its ugliness to be $\sqrt{4 p(1-p)}$ \\
+If $W$ is $\epsilon$-mediocre then $ugl(W) \geq \sqrt{4 \epsilon ( 1 - \epsilon)}$
+
+Suppose $W = BEC(p)$
+\begin{align*}
+  ugl(W^+) &= \sqrt{4 p^2 (1-p^2)}    = ugl(W) \sqrt{p (1+p)} \\
+  ugl(W^-) &= \sqrt{4 p (2-p)(1-p)^2} = ugl(W) \sqrt{(2-p)(1+p)} = f(1-p) 
+\end{align*}
+
+\begin{align*}
+  \frac{1}{2} [ugl(W^+) + ugl(W^-)] &= ugl(W) \frac{1}{2} [f(p) + f(1-p)] \quad \text{ with } f(p) = \sqrt{p(1-p)} \\
+    &\leq ugl(W) \frac{1}{2} 2 f(\frac{1}{2}) = ugl(W) \sqrt{\frac{3}{4}}
+\end{align*}
+
+\begin{align*}
+  \Rightarrow \frac{1}{2^k} \sum_{s^k \in \{+, -\}^k} ugl(W^{(s^k)}) &\leq (\frac{3}{4})^{k/2} \quad \text{tends to 0 as } k \text{ gets large} \\
+  &= \frac{1}{2^k} \sum_{s^k \in \{+, -\}^k} \I\{W^k \text{ is } \epsilon \text{-mediocre}\} \sqrt{4 \epsilon(1 - \epsilon)} \\
+  & \Rightarrow \text{fraction of } \epsilon \text{-mediocre channel s.t. stage } k \\
+  & \leq \frac{(3/4)^{k/2}}{\sqrt{4 \epsilon (1 - \epsilon)}}  \quad \text{tends to 0 as } k \text{ gets large}
+\end{align*}
+
+So we have shown the following: let $\mu_k(\epsilon)$ be the function of $\epsilon$-mediocre channels s.t. stage $k$, then
+\[
+  \lim_{k \to \infty} \mu_k(\epsilon) = 0
+\]
+$\Rightarrow$ the fraction of $\epsilon$-good channels $\rightarrow (1-p)$\\ 
+$\Rightarrow$ the fraction of $\epsilon$-bad channels $\rightarrow p$ \\
+
+This suggest the following coding methods: Given $R < 1 - p = C(BEC(p))$, pick $\epsilon > 0$ and $k$ large enough so that fraction of $\epsilon$-good channels is $>R$. Then 
+
+\todo{include graph}
+
+\[
+  \Pr{\hat{U}^n \neq U^n} \leq \sum_{i: \epsilon\text{-good}} \Pr{\hat{U}_i \neq U_i} \leq nR \epsilon
+\]
+
+we need to show that the good channels are in fact very good.\\
+
+For this we need
+
+\begin{definition}
+  A channel $W^k$ is called $\epsilon$-pure if for all $\sqrt{k} \leq i \leq k$, $W^{si}$ is not $\epsilon$-mediocre.
+
+  \textit{Observation:} $\mu_i(\epsilon) \leq \frac{1}{\sqrt{4(\epsilon(k \epsilon))}}(\frac{3}{4})^{1/2}$ fraction of $\epsilon$-mediocre channels at gen $u$.
+
+  $\Rightarrow$ fraction of $\epsilon$-inpure channels at gen $k$ is 
+  \[ 
+    \leq \sum_{i = \sqrt{k}}^k \mu_i(\epsilon) \leq \sum_{i = \sqrt{2}}^{\infty} (\frac{3}{4})^i \frac{1}{\sqrt{\epsilon(1 - \epsilon)}} \leq const (\epsilon)(\frac{3}{4}^{\sqrt{k}/2}) \rightarrow 0
+  \]
+  $\Rightarrow$ fraction of $\epsilon$-pure channels $\rightarrow 1$ as $k$ gets large.\\
+
+  \textit{Observation:} $p$ cannot convert good to bad, bad to good $\Rightarrow$ an $\epsilon$-pure channel comes from a set of $\epsilon$-good ancestor and $\epsilon$-good$_-$
+\end{definition}
 
 
 
