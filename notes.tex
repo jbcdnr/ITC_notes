@@ -3062,7 +3062,102 @@ For this we need
 \end{definition}
 
 
+% --------------------------------
+%   Sebastien 12/12/2017
 
+\section{Quantization / Rate-Distortion Theory}
+
+We have seen (lossless) source coding
+
+\[
+  U^n \rightarrow \text{bits} \rightarrow \hat{U}^n = U^n
+\]
+
+Lossless is not possible if $U$ takes on values in $\R$. Then the question is: What is the trade-off between fidelity (how close $\hat{U}^n$ is to $U^n$) and "rate" ($\#$ of bits / source-letter)?
+
+Consider $U_1, U_2, ...$ iid $\sim P_u$ on an alphabet $\U$. We also have a reproduction alphabet $\V$ and a function 
+\[
+  d: \U \times \V \rightarrow \R \quad (\text{measures the penalty for reprenting } u \text{ as } v) 
+\]
+
+\begin{example}
+  \[ 
+    \U = \V = \{ 0, 1 \}, \quad d(u,v) = \I\{u \neq v\}
+  \]
+\end{example}
+
+\begin{example}
+  \[ 
+    \U = \V = \R, \quad d(u,v) = |u - v|^2
+  \]
+\end{example}
+
+\begin{example}
+  \begin{align*}
+    \U = \{0, 1\}, \V = \{ 0, 1, ? \} \quad & d(0,0) = d(1,1) = 0 \\
+                                            & d(0,1) = d(1,0) = 10 \\
+                                            & d(0,?) = d(?,1) = 1 \\
+  \end{align*}
+\end{example}
+
+\begin{definition}
+  Given $\U$ and $\V$, a quantizer consists of two maps: $f$ and $\phi$ 
+  \begin{align*}
+    f: & \quad \U^n \rightarrow \{ 1, ..., n \} (\log_2 M \text{ bits description of } (U_1, ..., U_n)) \\
+    \phi: & \quad \{1, ..., n \} \rightarrow \V^n
+  \end{align*}
+  We will assess the quality of the quantizer by 
+  \begin{align*}
+    rate &= \frac{\log M}{n} \\
+    distortion &= \E[d(U^n, \phi(f(u^n)))] \quad \text{ where } \quad d(u^n, v^n) = \sum_{i = 1}^n d(u_i, v_i) 
+  \end{align*}
+\end{definition}
+
+\begin{theorem}
+  Suppose that for a source iid $U$ with statistics $P_u$ and distortion measure $d$, we have designed a quantizer with rate $R$, and distortion $\Lambda$. Then there is a joint distribution $P_{uv}$ such that
+  \[ 
+    \Lambda = \E[d(U, V)] \quad \text{ and } \quad R \geq I(U;V)
+  \]
+\end{theorem}
+
+\begin{corollary}
+  For any quantizer with distortion $\Lambda$, we will have rate 
+  \[
+    R \geq \min_{\E[d(u,v)] = \Lambda} I(U;V)
+  \]
+\end{corollary}
+
+\begin{example}
+  $U$ is Gaussian $0$-mean, variance $\sigma^2$, $\V = \R$ and $d(u,v) = (u-v)^2$.\\
+  Suppose $(u,v)$ is such that $\E[(u-v)^2] = \Lambda$, then 
+  \begin{align*}
+    I(U;V) &= h(U) - h(U|V) \\
+           &= h(U) - h(U-V|V) \\
+           &\geq h(U) - h(U-V) \\
+           &\geq h(U) - \frac{1}{2} \log(2 \pi e \Lambda) \\
+           &= \frac{1}{2} \log \frac{\sigma^2}{\Lambda}
+  \end{align*}
+  \[
+    \Rightarrow I(U;V) \geq (\frac{1}{2} \log \frac{\sigma^2}{\Lambda})^+
+  \]
+  Indeed 
+  \[ 
+     \min_{\E[(u,v)^2] = \Lambda} I(U;V) = \frac{1}{2} \log \frac{\sigma^2}{\Lambda} \quad \text{when} \quad \Lambda \leq \sigma^2
+  \]
+
+  Recall: $I(U;V)$ as a function of $(P_u, P_{v|u})$ is concave in $P_u$ and convex in $P_{v|u}$
+\end{example}
+
+\todo{fat proof}
+
+\begin{theorem}
+  Given an iid source $U_1, U_2, ...$, given $d: \U \times \V \rightarrow \R$, given a $P_{uv}$ with $\E[d(U,V)] = \Lambda$ and $I(U;V) = R$, given an $\epsilon > 0$, there exists a quantizer $(f, \phi)$ with
+  \[
+    rate \leq R + \epsilon \quad \text{ and } \quad |distortion - \Lambda| < \epsilon
+  \]
+\end{theorem}
+
+\todo{fat proof}
 
 
 % -------------------------------------------------------------------------
