@@ -3160,6 +3160,121 @@ Consider $U_1, U_2, ...$ iid $\sim P_u$ on an alphabet $\U$. We also have a repr
 \todo{fat proof}
 
 
+
+
+
+% --------------------------------
+%   Sebastien 19/12/2017
+
+Suppose we are given a "working system", normally 
+
+\todo{include graphic}
+
+with $\frac{1}{M_1 M_2} \Pr{\hat{m_1}\hat{m_2} \neq m_1 m_2 | m_1 m_2 \text{ is sent }} < \epsilon$
+
+We want to show that $(R_1, R_2)$ belongs to convex hull $(\bigcup_{P_{x_1} P_{x_2}} \{...\})$
+To that end, let $U_1$ be uniformly distributed on ${1 ... M_1}$ with $R_1 = \frac{1}{n} H(U_1)$ and let $U_2$ be uniformly distributed on ${1 ... M_2}$ with $R_2 = \frac{1}{n} H(U_2)$ 
+also with \todo{include graphic}
+\[
+  \Rightarrow \Pr{V_1 V_2 \neq U_1 U_2} < \epsilon \Rightarrow 
+  \left\{
+  \begin{array}{c}
+    \Pr{V_1 \neq U_1} < \epsilon \\
+    \Pr{V_2 \neq U_2} < \epsilon \\
+  \end{array}
+  \right.
+\]
+
+
+\begin{align*}
+  H(U_1 | V_1) &\leq h_2(\epsilon) + \epsilon \log(M_1 - 1) \leq h_2(\epsilon) + \epsilon_n R_1 \\
+  H(U_2 | V_2) &\leq h_2(\epsilon) + \epsilon \log(M_2 - 1) \leq h_2(\epsilon) + \epsilon_n R_2 \\
+  H(U_1 U_2 | V_1 V_2) &\leq h_2(\epsilon) + \epsilon \log(M_1 M_2 - 1) \leq h_2(\epsilon) + \epsilon_n (R_1 + R_2)
+\end{align*}
+
+\begin{align*}
+  \rightarrow \frac{1}{n} I(U_1; V_1) = \frac{1}{n} H(U_1) - \frac{1}{n} H(U_1 | V_1) &\geq (1 - \epsilon) R_1 - \frac{1}{n} h_2(\epsilon)\\
+  \frac{1}{n} I(U_2; V_2) = \frac{1}{n} H(U_2) - \frac{1}{n} H(U_2 | V_2) &\geq (1 - \epsilon) R_2 - \frac{1}{n} h_2(\epsilon) \\
+  \frac{1}{n} I(U_1 U_2; V_1 V_2) &\geq (1 - \epsilon) (R_1 + R_2) - \frac{1}{n} h_2(\epsilon) \leftarrow \mathbf{(\Omega)}
+\end{align*}
+
+Observe
+\[
+  U_1 \rightarrow X_1^n \rightarrow Y^n \rightarrow V_1 \text{ so } I(U_1 ; V_1) \leq I(X_1^n; Y^n)
+\] 
+and 
+\[
+  U_2 \rightarrow X_2^n \rightarrow Y^n \rightarrow V_2 \text{ so } I(U_2 ; V_2) \leq I(X_2^n; Y^n)
+\]
+so
+\[
+  (U_1 U_2) \rightarrow (X_1^n X_2^n) \rightarrow Y^n \rightarrow (V_1 V_2) \text{ so } I(U_1 U_2 ; V_1 V_2) \leq I(X_1^n X_2^n; Y^n)
+\]
+
+and also $X_1^n$ is indep. of $X_2^n$
+
+\begin{align*}
+  I(X_1^n ; Y^n) &\leq I(X_1^n ; Y^n X_2^n) \\
+                 &= I(X_1^n ; Y^n | X_2^n) + \underbrace{I(X_i^n ; X_2^n)}_{\to 0} \\
+                 &= H(Y^n | X_2^n) - H(Y^n | X_1^n X_2^n) \\
+                 &\leq \sum_{i = 1}^n H(Y_i | X_{2i}) - \sum_{i = 1}^n H(Y_i | X_{1i} X_{2i}) \\
+                 &= \sum_{i = 1}^n I(X_{1i} ; Y_i | X_{2i}) \\
+                 &= \sum_{i = 1}^n \underbrace{I(X_{1i} ; Y_i X_{2i})}_{a_i} - \underbrace{I(X_{1i} ; X_{2i})}_{\to 0} 
+\end{align*}
+
+Similarly 
+\[
+  I(X_2^n ; Y^n) \leq \sum_{i = 1}^n \underbrace{I(X_{2i} ; Y_i X_{1i})}_{b_i}
+\]
+and
+\begin{align*}
+  I(X_1^n X_2^n ; Y^n) &= H(Y^n) - H(Y^n) - H(Y^n | X_1^n X_2^n ) \\
+                       &\leq \sum_i H(Y_i) - H(Y_i | X_{1i} X_{2i}) \\
+                       &= \sum_i \underbrace{I(X_{1i} X_{2i} ; Y_i)}_{c_i}
+\end{align*}
+
+Therefore we have 
+\begin{align*}
+  \mathbf{(\Omega)} \leq \frac{1}{n} \sum_{i=1}^n a_i \\
+  (1 - \epsilon) R_2 - \frac{1}{n} h_2(\epsilon) \leq \frac{1}{n} \sum_{i=1}^n b_i \\ 
+  (1 - \epsilon) (R_1 + R_2) - \frac{1}{n} h_2(\epsilon) \leq \frac{1}{n} \sum_{i=1}^n c_i \\ 
+\end{align*}
+
+\[
+  \Rightarrow (R_1, R_2) - O(\epsilon) \in Pent' = Pent = \frac{1}{n} \sum_{i=1}^n Pent_i
+\]
+\[
+  \subseteq ConvexHull(\bigcup_i Pent_i) \subseteq ConvexHull(\bigcup_{P_{X_1} P_{X_2}} \{ R_1 \leq I(X_1 ; Y X_2),  R_2 \leq I(X_2 ; Y X_1),  R_1 + R_2 \leq I(X_1 X_2 ; Y)\})
+\]
+
+So we have proved that
+
+\begin{theorem}
+  \[
+    C(W) \subseteq ConvexHull(\bigcup_{P_{X_1} P_{X_2}} \{...\})
+  \]
+  So, using what we have shown before, we get the equality
+  \[
+    C(W) = ConvexHull(\bigcup_{P_{X_1} P_{X_2}} \{...\})
+  \]
+\end{theorem}
+
+\begin{example}
+  \[ 
+    X_1 \in \{0, 1\}, X_2 \in \{0, 1\}, Y = X_1 + X_2 = \{0, 1, 2\} 
+  \]
+  so 
+  \[ 
+    R_1 \leq 1, R_2 \leq 1, R_1 + R_2 \leq \frac{3}{2}
+  \]
+\end{example}
+
+
+
+
+
+
+
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
@@ -3365,6 +3480,59 @@ How to maximize a function on the simplex?
   suggest $p = (0, 0.5, 0.5)$ the $\frac{df}{dp} = (1, 2, 2)$
   $\rightarrow$ satisfy KKT with $\lambda = 2$
 \end{example}
+
+\subsection{A story of two pentagons}
+Consider two pentagons:
+
+\[
+  Pent_1 = \{(R_1, R_2): 0 \leq R_1 \leq a_1, 0 \leq R_2 \leq b_1, 0 \leq R_1 + R_2 \leq c_1  \}
+\]
+
+\[
+  Pent_2 = \{(R_1, R_2): 0 \leq R_1 \leq a_2, 0 \leq R_2 \leq b_2, 0 \leq R_1 + R_2 \leq c_2  \}
+\]
+
+Set 
+\[
+  Pent = \frac{1}{2} Pent_1 + \frac{1}{2} Pent_2 = \{(R_1, R_2): (R_1, R_2) =  \frac{1}{2} (R'_1, R'_2) + \frac{1}{2} (R''_1, R''_2)  \}
+\]
+such that $ (R'_1, R'_2) \in Pent_1 $ and $ (R''_1, R''_2) \in Pent_2 $ 
+
+And
+\[
+  Pent' = \{(R_1, R_2): R_1 \leq \frac{a_1 + a_2}{2}, 0 \leq R_2 \leq \frac{b_1 + b_2}{2}, 0 \leq R_1 + R_2 \leq \frac{c_1 + c_2}{2} \}
+\]
+
+Suppose $(R_1, R_2) \in Pent$, then
+\[
+  \{ 0 \leq R_1 \leq \frac{a_1 + a_2}{2}, 0 \leq R_2 \leq \frac{b_1 + b_2}{2}, 0 \leq R_1 + R_2 \leq \frac{c_1 + c_2}{2} \} \Rightarrow (R_1, R_2) \in Pent'
+\]
+
+So we have shown that $Pent \subseteq Pent'$
+
+However, if we assume further
+\[
+  \{ \max(a_1, b_1) \leq c_1 \leq a_1 + b_1, \max(a_2, b_2) \leq c_2 \leq a_2 + b_2\}
+\]
+
+then $Pent' = Pent$
+
+\todo{graphic proof}
+
+\begin{theorem}
+  Suppose $(a_i, b_i, c_i) \geq 0, i = 1 , ..., n$ with $max(a_i, b_i) \leq c_i \leq a_i + b_i$ and 
+  \[
+    Pent_i = \{(R_1, R_2): R_1 \leq a_i, R_2 \leq b_i, R_1 + R_2 \leq c_i \}
+  \]
+  \[
+    Pent' = \{(R_1, R_2): R_1 \leq \frac{1}{n} \sum q_i , R_2 \leq \frac{1}{n} \sum b_i, R_1 + R_2 \leq \frac{1}{n} \sum c_i \}
+  \]
+  \[
+    Pent = \frac{1}{n} \sum Pent_i = \{\frac{1}{n} \sum (R_{1i}, R_{2i}) : (R_{1i}, R_{2i}) \in Pent_i \}
+  \]
+  then $Pent = Pent'$
+\end{theorem}
+
 \end{appendices}
 
 \end{document}
