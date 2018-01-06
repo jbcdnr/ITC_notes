@@ -82,7 +82,7 @@
 \def\I{\mathbb{I}}
 
 
-\def\C{\mathscr{C}}
+\def\C{\mathcal{C}}
 \DeclareMathOperator{\E}{\mathbb{E}}% expected value
 
 
@@ -112,7 +112,7 @@ For $\X$ a set
 \begin{definition}
 	A code $\C$ is called \textbf{singular} if
 	\begin{align*}
-		\exists (u, v) \in \U^2, u \neq v \quad s.t. \quad C(u) = C(v)
+		\exists (u, v) \in \U^2, u \neq v \quad s.t. \quad \C(u) = \C(v)
 	\end{align*}
 	Non singular code is defined as opposite
 \end{definition}
@@ -254,7 +254,7 @@ Suppose we have a code $\C: \U \rightarrow \{0, 1\}^*$. We then have $\C(u)$ a r
       \begin{array}{l}
         1, \quad p = 0.5 \\
         2, \quad p = 0.25 \\
-        3, \quad p = 0.125 + 0.125 + 0.25
+        3, \quad p = 0.125 + 0.125 = 0.25
       \end{array}
     \right.
   \end{align*}
@@ -314,11 +314,11 @@ We can measure how efficient $\C$ represents $\U$ by considering
 \begin{wikipedia}
   The entropy is a lower bound on the optimal expected length
   \begin{align*}
-    H(U) \leq \E{l(\C(u))}
+    H(U) \leq E[l(\C(u))]
   \end{align*}
   In fact, one can show that there exists a uniquely decodable code such that
   \begin{align*}
-     H(U) \leq \E{l(\C(u))} < H(U) + 1
+     H(U) \leq E[l(\C(u))] < H(U) + 1
    \end{align*}
 \end{wikipedia}
 
@@ -333,12 +333,12 @@ Formally, given a random variable $U$, find $\C(u) \rightarrow \N$ s.t.
 \begin{align*}
   \sum_{u \in U} 2^{\C(u)} \leq 1
 \quad \text{that minimizes} \quad
-  \sum_{u \in U} p(u)\C(u)
+  \sum_{u \in U} p(u)l(\C(u))
 \end{align*}
 
 Properties of optimal prefix-free codes
 \begin{itemize}
-  \item if $p(u) < p(v)$ then $\C(u) \geq \C(v)$
+  \item if $p(u) < p(v)$ then $l(\C(u)) \geq l(\C(v))$
   \item The two longest codewords have the same length
   \item There is an optimal code such that the two least probable letters are assigned codewords that differ in the last bit.
 \end{itemize}
@@ -474,7 +474,7 @@ We can apply the chain rule on the mutual information as follows
   I(U_1, U_2, ... ; V) = I(U_1; V) + I(U_2; V | U_1) + ...
 \]
 
-\begin{theorem}{Data processing inequality}
+\begin{theorem}[Data processing inequality]
   Let $X \rightarrow Y \rightarrow Z$ be a Markov chain, then
   \begin{align*}
     I(X ; Y) \geq I(X ; Z)
@@ -528,7 +528,11 @@ We can apply the chain rule on the mutual information as follows
 \end{proof}
 
 \begin{theorem}
-  Given $U$ a RV taking values in $\U$ then $0 \leq H(U) \leq \log | \U |$. $H(U)=0$ iff $U$ is constant, $H(U)=\log | \U |$ iff $U$ is $p(u) = 1 / |\U|$ for all $u$.
+  Given $U$ a RV taking values in $\U$ then
+  \[
+    0 \leq H(U) \leq \log | \U |
+  \]
+  and $H(U)=0$ iff $U$ is constant, $H(U)=\log | \U |$ iff $U$ is $p(u) = 1 / |\U|$ for all $u$.
 \end{theorem}
 
 \begin{proof}
@@ -659,7 +663,7 @@ and by the "Lemma", whenever $b_n \rightarrow b$ , \space $a_n \rightarrow b$
 
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
-
+\newpage
 \section{Typicality and typical set}
 
 \begin{definition}[Typicality]
@@ -801,10 +805,8 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
 
 If we compress data in a manner that assumes $q(u)$ is the distribution underlying some data, when, in reality, $p(u)$ is the correct distribution, the Kullback-Leiber divergence is the average number of additional bits per datum necessary for compression. It is also called \textbf{relative entropy} and is a measure of how one probability distribution diverges from a second probability distribution.
 
-% ----------------------------- %
-% ---- lecture 2017-10-10 ----- %
-% ------------ jb ------------- %
-% ----------------------------- %
+% -----------------------------
+% jb - lecture 2017-10-10
 
 \begin{lemma}
   if $U_1 \dots U_n$ are i.i.d. with distribution $q$ and $u_1 \dots u_n$ is $(\epsilon, p)$-tipycal, then
@@ -883,7 +885,10 @@ and
   \end{align*}
 \end{example}
 
-\subsection{Universal data compression}
+% -------------------------------------------------------------------------
+% -------------------------------------------------------------------------
+\newpage
+\section{Universal data compression}
 
 Suppose we know that the distribution $p$ of $U$ is either $p_1$, $p_2$ ... $p_k$, can we design a code $\C: U \to \{0,1\}^*$
 
@@ -1136,10 +1141,12 @@ So we have proved the following theorem:
 \end{corollary}
 
 
-% -------------------------------------------------------------------------
+% ---------------
 % jb 2017-10-23
-% -------------------------------------------------------------------------
 
+% -------------------------------------------------------------------------
+% -------------------------------------------------------------------------
+\newpage
 \section{Transmission of data}
 
 Interesting in the case of unreliable transmission media.
@@ -1787,7 +1794,9 @@ To illustrate the proof technique that we used to prove the coding theorem, we t
 
 \end{example}
 
-
+% -------------------------------------------------------------------------
+% -------------------------------------------------------------------------
+\newpage
 \section{Differential entropy}
 
 \begin{definition}[Differential entropy]
@@ -2283,8 +2292,9 @@ So, in terms of $\mu$, we have
 
 
 
+% -------------------------------------------------------------------------
+% -------------------------------------------------------------------------
 \newpage
-
 \section{Elementary Coding Theorem}
 Restrict ourselbes to Binary Symmetric and Binary Erasive Channel. Suppose
 \[
@@ -2970,7 +2980,7 @@ How to decoder the output $\Y$ of a binary input channel $W$? Given $y$ (the out
 Compute $W(y|0), W(y|1)$, max likelihood decoding rule
 
 \[
-\varphi(y) = 
+\varphi(y) =
 \left\{
 \begin{array}{c c}
   0 & \text{if } W(y|0) > W(y|1) \\
@@ -2986,7 +2996,7 @@ Compute $W(y|0), W(y|1)$, max likelihood decoding rule
 \todo{include graph}
 
 \textbf{Encoding} complexity:
-\[ 
+\[
   \frac{nk}{2} XOR - \frac{1}{2} n \log n
 \]
 
@@ -2997,7 +3007,7 @@ Compute $W(y|0), W(y|1)$, max likelihood decoding rule
 
 We are now left with the question: does this $W$ result in extremal channel?
 
-Restrict $W = BEC(p)$: 
+Restrict $W = BEC(p)$:
 \begin{align*}
   & W^+ = BEC(p^2) = BEC(p(+)) \\
   & W^- = BEC(p(2-p)) = BEC(p(-)) \\
@@ -3013,7 +3023,7 @@ If $W$ is $\epsilon$-mediocre then $ugl(W) \geq \sqrt{4 \epsilon ( 1 - \epsilon)
 Suppose $W = BEC(p)$
 \begin{align*}
   ugl(W^+) &= \sqrt{4 p^2 (1-p^2)}    = ugl(W) \sqrt{p (1+p)} \\
-  ugl(W^-) &= \sqrt{4 p (2-p)(1-p)^2} = ugl(W) \sqrt{(2-p)(1+p)} = f(1-p) 
+  ugl(W^-) &= \sqrt{4 p (2-p)(1-p)^2} = ugl(W) \sqrt{(2-p)(1+p)} = f(1-p)
 \end{align*}
 
 \begin{align*}
@@ -3032,10 +3042,10 @@ So we have shown the following: let $\mu_k(\epsilon)$ be the function of $\epsil
 \[
   \lim_{k \to \infty} \mu_k(\epsilon) = 0
 \]
-$\Rightarrow$ the fraction of $\epsilon$-good channels $\rightarrow (1-p)$\\ 
+$\Rightarrow$ the fraction of $\epsilon$-good channels $\rightarrow (1-p)$\\
 $\Rightarrow$ the fraction of $\epsilon$-bad channels $\rightarrow p$ \\
 
-This suggest the following coding methods: Given $R < 1 - p = C(BEC(p))$, pick $\epsilon > 0$ and $k$ large enough so that fraction of $\epsilon$-good channels is $>R$. Then 
+This suggest the following coding methods: Given $R < 1 - p = C(BEC(p))$, pick $\epsilon > 0$ and $k$ large enough so that fraction of $\epsilon$-good channels is $>R$. Then
 
 \todo{include graph}
 
@@ -3052,8 +3062,8 @@ For this we need
 
   \textit{Observation:} $\mu_i(\epsilon) \leq \frac{1}{\sqrt{4(\epsilon(k \epsilon))}}(\frac{3}{4})^{1/2}$ fraction of $\epsilon$-mediocre channels at gen $u$.
 
-  $\Rightarrow$ fraction of $\epsilon$-inpure channels at gen $k$ is 
-  \[ 
+  $\Rightarrow$ fraction of $\epsilon$-inpure channels at gen $k$ is
+  \[
     \leq \sum_{i = \sqrt{k}}^k \mu_i(\epsilon) \leq \sum_{i = \sqrt{2}}^{\infty} (\frac{3}{4})^i \frac{1}{\sqrt{\epsilon(1 - \epsilon)}} \leq const (\epsilon)(\frac{3}{4}^{\sqrt{k}/2}) \rightarrow 0
   \]
   $\Rightarrow$ fraction of $\epsilon$-pure channels $\rightarrow 1$ as $k$ gets large.\\
@@ -3065,6 +3075,9 @@ For this we need
 % --------------------------------
 %   Sebastien 12/12/2017
 
+% -------------------------------------------------------------------------
+% -------------------------------------------------------------------------
+\newpage
 \section{Quantization / Rate-Distortion Theory}
 
 We have seen (lossless) source coding
@@ -3075,19 +3088,19 @@ We have seen (lossless) source coding
 
 Lossless is not possible if $U$ takes on values in $\R$. Then the question is: What is the trade-off between fidelity (how close $\hat{U}^n$ is to $U^n$) and "rate" ($\#$ of bits / source-letter)?
 
-Consider $U_1, U_2, ...$ iid $\sim P_u$ on an alphabet $\U$. We also have a reproduction alphabet $\V$ and a function 
+Consider $U_1, U_2, ...$ iid $\sim P_u$ on an alphabet $\U$. We also have a reproduction alphabet $\V$ and a function
 \[
-  d: \U \times \V \rightarrow \R \quad (\text{measures the penalty for reprenting } u \text{ as } v) 
+  d: \U \times \V \rightarrow \R \quad (\text{measures the penalty for reprenting } u \text{ as } v)
 \]
 
 \begin{example}
-  \[ 
+  \[
     \U = \V = \{ 0, 1 \}, \quad d(u,v) = \I\{u \neq v\}
   \]
 \end{example}
 
 \begin{example}
-  \[ 
+  \[
     \U = \V = \R, \quad d(u,v) = |u - v|^2
   \]
 \end{example}
@@ -3101,27 +3114,27 @@ Consider $U_1, U_2, ...$ iid $\sim P_u$ on an alphabet $\U$. We also have a repr
 \end{example}
 
 \begin{definition}
-  Given $\U$ and $\V$, a quantizer consists of two maps: $f$ and $\phi$ 
+  Given $\U$ and $\V$, a quantizer consists of two maps: $f$ and $\phi$
   \begin{align*}
     f: & \quad \U^n \rightarrow \{ 1, ..., n \} (\log_2 M \text{ bits description of } (U_1, ..., U_n)) \\
     \phi: & \quad \{1, ..., n \} \rightarrow \V^n
   \end{align*}
-  We will assess the quality of the quantizer by 
+  We will assess the quality of the quantizer by
   \begin{align*}
     rate &= \frac{\log M}{n} \\
-    distortion &= \E[d(U^n, \phi(f(u^n)))] \quad \text{ where } \quad d(u^n, v^n) = \sum_{i = 1}^n d(u_i, v_i) 
+    distortion &= \E[d(U^n, \phi(f(u^n)))] \quad \text{ where } \quad d(u^n, v^n) = \sum_{i = 1}^n d(u_i, v_i)
   \end{align*}
 \end{definition}
 
 \begin{theorem}
   Suppose that for a source iid $U$ with statistics $P_u$ and distortion measure $d$, we have designed a quantizer with rate $R$, and distortion $\Lambda$. Then there is a joint distribution $P_{uv}$ such that
-  \[ 
+  \[
     \Lambda = \E[d(U, V)] \quad \text{ and } \quad R \geq I(U;V)
   \]
 \end{theorem}
 
 \begin{corollary}
-  For any quantizer with distortion $\Lambda$, we will have rate 
+  For any quantizer with distortion $\Lambda$, we will have rate
   \[
     R \geq \min_{\E[d(u,v)] = \Lambda} I(U;V)
   \]
@@ -3129,7 +3142,7 @@ Consider $U_1, U_2, ...$ iid $\sim P_u$ on an alphabet $\U$. We also have a repr
 
 \begin{example}
   $U$ is Gaussian $0$-mean, variance $\sigma^2$, $\V = \R$ and $d(u,v) = (u-v)^2$.\\
-  Suppose $(u,v)$ is such that $\E[(u-v)^2] = \Lambda$, then 
+  Suppose $(u,v)$ is such that $\E[(u-v)^2] = \Lambda$, then
   \begin{align*}
     I(U;V) &= h(U) - h(U|V) \\
            &= h(U) - h(U-V|V) \\
@@ -3140,8 +3153,8 @@ Consider $U_1, U_2, ...$ iid $\sim P_u$ on an alphabet $\U$. We also have a repr
   \[
     \Rightarrow I(U;V) \geq (\frac{1}{2} \log \frac{\sigma^2}{\Lambda})^+
   \]
-  Indeed 
-  \[ 
+  Indeed
+  \[
      \min_{\E[(u,v)^2] = \Lambda} I(U;V) = \frac{1}{2} \log \frac{\sigma^2}{\Lambda} \quad \text{when} \quad \Lambda \leq \sigma^2
   \]
 
@@ -3166,17 +3179,17 @@ Consider $U_1, U_2, ...$ iid $\sim P_u$ on an alphabet $\U$. We also have a repr
 % --------------------------------
 %   Sebastien 19/12/2017
 
-Suppose we are given a "working system", normally 
+Suppose we are given a "working system", normally
 
 \todo{include graphic}
 
 with $\frac{1}{M_1 M_2} \Pr{\hat{m_1}\hat{m_2} \neq m_1 m_2 | m_1 m_2 \text{ is sent }} < \epsilon$
 
 We want to show that $(R_1, R_2)$ belongs to convex hull $(\bigcup_{P_{x_1} P_{x_2}} \{...\})$
-To that end, let $U_1$ be uniformly distributed on ${1 ... M_1}$ with $R_1 = \frac{1}{n} H(U_1)$ and let $U_2$ be uniformly distributed on ${1 ... M_2}$ with $R_2 = \frac{1}{n} H(U_2)$ 
+To that end, let $U_1$ be uniformly distributed on ${1 ... M_1}$ with $R_1 = \frac{1}{n} H(U_1)$ and let $U_2$ be uniformly distributed on ${1 ... M_2}$ with $R_2 = \frac{1}{n} H(U_2)$
 also with \todo{include graphic}
 \[
-  \Rightarrow \Pr{V_1 V_2 \neq U_1 U_2} < \epsilon \Rightarrow 
+  \Rightarrow \Pr{V_1 V_2 \neq U_1 U_2} < \epsilon \Rightarrow
   \left\{
   \begin{array}{c}
     \Pr{V_1 \neq U_1} < \epsilon \\
@@ -3201,8 +3214,8 @@ also with \todo{include graphic}
 Observe
 \[
   U_1 \rightarrow X_1^n \rightarrow Y^n \rightarrow V_1 \text{ so } I(U_1 ; V_1) \leq I(X_1^n; Y^n)
-\] 
-and 
+\]
+and
 \[
   U_2 \rightarrow X_2^n \rightarrow Y^n \rightarrow V_2 \text{ so } I(U_2 ; V_2) \leq I(X_2^n; Y^n)
 \]
@@ -3219,10 +3232,10 @@ and also $X_1^n$ is indep. of $X_2^n$
                  &= H(Y^n | X_2^n) - H(Y^n | X_1^n X_2^n) \\
                  &\leq \sum_{i = 1}^n H(Y_i | X_{2i}) - \sum_{i = 1}^n H(Y_i | X_{1i} X_{2i}) \\
                  &= \sum_{i = 1}^n I(X_{1i} ; Y_i | X_{2i}) \\
-                 &= \sum_{i = 1}^n \underbrace{I(X_{1i} ; Y_i X_{2i})}_{a_i} - \underbrace{I(X_{1i} ; X_{2i})}_{\to 0} 
+                 &= \sum_{i = 1}^n \underbrace{I(X_{1i} ; Y_i X_{2i})}_{a_i} - \underbrace{I(X_{1i} ; X_{2i})}_{\to 0}
 \end{align*}
 
-Similarly 
+Similarly
 \[
   I(X_2^n ; Y^n) \leq \sum_{i = 1}^n \underbrace{I(X_{2i} ; Y_i X_{1i})}_{b_i}
 \]
@@ -3233,11 +3246,11 @@ and
                        &= \sum_i \underbrace{I(X_{1i} X_{2i} ; Y_i)}_{c_i}
 \end{align*}
 
-Therefore we have 
+Therefore we have
 \begin{align*}
   \mathbf{(\Omega)} \leq \frac{1}{n} \sum_{i=1}^n a_i \\
-  (1 - \epsilon) R_2 - \frac{1}{n} h_2(\epsilon) \leq \frac{1}{n} \sum_{i=1}^n b_i \\ 
-  (1 - \epsilon) (R_1 + R_2) - \frac{1}{n} h_2(\epsilon) \leq \frac{1}{n} \sum_{i=1}^n c_i \\ 
+  (1 - \epsilon) R_2 - \frac{1}{n} h_2(\epsilon) \leq \frac{1}{n} \sum_{i=1}^n b_i \\
+  (1 - \epsilon) (R_1 + R_2) - \frac{1}{n} h_2(\epsilon) \leq \frac{1}{n} \sum_{i=1}^n c_i \\
 \end{align*}
 
 \[
@@ -3260,11 +3273,11 @@ So we have proved that
 \end{theorem}
 
 \begin{example}
-  \[ 
-    X_1 \in \{0, 1\}, X_2 \in \{0, 1\}, Y = X_1 + X_2 = \{0, 1, 2\} 
+  \[
+    X_1 \in \{0, 1\}, X_2 \in \{0, 1\}, Y = X_1 + X_2 = \{0, 1, 2\}
   \]
-  so 
-  \[ 
+  so
+  \[
     R_1 \leq 1, R_2 \leq 1, R_1 + R_2 \leq \frac{3}{2}
   \]
 \end{example}
@@ -3492,11 +3505,11 @@ Consider two pentagons:
   Pent_2 = \{(R_1, R_2): 0 \leq R_1 \leq a_2, 0 \leq R_2 \leq b_2, 0 \leq R_1 + R_2 \leq c_2  \}
 \]
 
-Set 
+Set
 \[
   Pent = \frac{1}{2} Pent_1 + \frac{1}{2} Pent_2 = \{(R_1, R_2): (R_1, R_2) =  \frac{1}{2} (R'_1, R'_2) + \frac{1}{2} (R''_1, R''_2)  \}
 \]
-such that $ (R'_1, R'_2) \in Pent_1 $ and $ (R''_1, R''_2) \in Pent_2 $ 
+such that $ (R'_1, R'_2) \in Pent_1 $ and $ (R''_1, R''_2) \in Pent_2 $
 
 And
 \[
@@ -3520,7 +3533,7 @@ then $Pent' = Pent$
 \todo{graphic proof}
 
 \begin{theorem}
-  Suppose $(a_i, b_i, c_i) \geq 0, i = 1 , ..., n$ with $max(a_i, b_i) \leq c_i \leq a_i + b_i$ and 
+  Suppose $(a_i, b_i, c_i) \geq 0, i = 1 , ..., n$ with $max(a_i, b_i) \leq c_i \leq a_i + b_i$ and
   \[
     Pent_i = \{(R_1, R_2): R_1 \leq a_i, R_2 \leq b_i, R_1 + R_2 \leq c_i \}
   \]
