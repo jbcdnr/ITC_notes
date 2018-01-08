@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[twoside]{article}
 % General document formatting
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath}
@@ -13,39 +13,7 @@
 
 \title{Information Theory and Coding - Prof.~Emere Telatar}
 \date{\today}
-\author{Jean-Baptiste Cordonnier, Sebastien Speierer, Thomas Batschelet}
-
-% define example environments
-% \newcounter{example}[section]
-% \newenvironment{example}
-%     {
-%     \refstepcounter{example}
-%     \begin{center}
-% 	    \begin{tabular}{|p{0.8\textwidth}|}
-% 		    \hline\\
-% 			\textbf{Example~\theexample.}\\
-% 		    }
-% 		    {
-% 		    \\\hline
-% 	    \end{tabular}
-%     \end{center}
-%     }
-
-% define definition environments
-% \newcounter{definition}[section]
-% \newenvironment{definition}
-%     {
-%     \refstepcounter{definition}
-%     \begin{center}
-% 	    \begin{tabular}{|p{0.8\textwidth}|}
-% 		    \hline\\
-% 			\textbf{Definition~\thedefinition.}\\
-% 		    }
-% 		    {
-% 		    \\\hline
-% 	    \end{tabular}
-%     \end{center}
-%     }
+\author{Jean-Baptiste Cordonnier, Sebastien Speierer}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[theorem]
@@ -89,6 +57,10 @@
 \begin{document}
 
 \maketitle
+\setcounter{tocdepth}{1}
+\tableofcontents
+
+\cleardoublepage
 
 \section{Data compression}
 
@@ -235,7 +207,8 @@ In coding theory, the \textbf{Kraft-McMillan inequality} gives a necessary and s
 \end{example}
 
 % -------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Alphabet with statistics}
 
 Suppose we have an alphabet $\U$, and suppose we have a random variable $U$ taking values in $\U$. We denote by $p(u) = Pr(U = u), u \in \U$ with $p(u) \geq 0$ and $\sum_u p(u) = 1$.\\
@@ -370,7 +343,8 @@ So we have shown that with
 if $\C$ is optimal for $U$, then $\C'$ is optimal for $V$
 
 % -------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Entropy and mutual information}
 \label{sec:entropy}
 
@@ -506,7 +480,8 @@ We can apply the chain rule on the mutual information as follows
 \end{proof}
 
 % -----------------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Data processing}
 
 \begin{theorem}
@@ -663,7 +638,8 @@ and by the "Lemma", whenever $b_n \rightarrow b$ , \space $a_n \rightarrow b$
 
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Typicality and typical set}
 
 \begin{definition}[Typicality]
@@ -887,7 +863,8 @@ and
 
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Universal data compression}
 
 Suppose we know that the distribution $p$ of $U$ is either $p_1$, $p_2$ ... $p_k$, can we design a code $\C: U \to \{0,1\}^*$
@@ -1068,7 +1045,8 @@ hence if $M$ is a s-state machine
 % -------------------------------------------------------------------------
 % Lemple-Ziv
 
-\newpage
+
+\cleardoublepage
 \section{Lemple-Ziv data compression method}
 
 Given some alphabet $\U$ to both encoder and decoder, they also agree an order on $\U$:
@@ -1146,7 +1124,8 @@ So we have proved the following theorem:
 
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Transmission of data}
 
 Interesting in the case of unreliable transmission media.
@@ -1796,7 +1775,8 @@ To illustrate the proof technique that we used to prove the coding theorem, we t
 
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Differential entropy}
 
 \begin{definition}[Differential entropy]
@@ -2294,7 +2274,8 @@ So, in terms of $\mu$, we have
 
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Elementary Coding Theorem}
 Restrict ourselbes to Binary Symmetric and Binary Erasive Channel. Suppose
 \[
@@ -3077,7 +3058,8 @@ For this we need
 
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Quantization / Rate-Distortion Theory}
 
 We have seen (lossless) source coding
@@ -3294,7 +3276,7 @@ So we have proved that
 % appendices
 
 
-\newpage
+\cleardoublepage
 \begin{appendices}
 \section{Markov chains}
 \label{appendix:markov-chains}
@@ -3327,6 +3309,7 @@ A stochastic process is a collection $U_1, U_2 \dots U_n$ of RVs each taking val
   \]
   In other words, the process is time shift invariant.
 \end{definition}
+
 
 \section{Concave/convex functions}
 \label{sec:appendix-convex}
@@ -3494,7 +3477,8 @@ How to maximize a function on the simplex?
   $\rightarrow$ satisfy KKT with $\lambda = 2$
 \end{example}
 
-\subsection{A story of two pentagons}
+
+\section{A story of two pentagons}
 Consider two pentagons:
 
 \[
