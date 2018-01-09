@@ -1,4 +1,6 @@
+*.thm
 *.aux
+*.toc
 *.fdb_latexmk
 *.fls
 *.log

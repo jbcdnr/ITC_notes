@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[twoside]{article}
 % General document formatting
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath}
@@ -13,39 +13,7 @@
 
 \title{Information Theory and Coding - Prof.~Emere Telatar}
 \date{\today}
-\author{Jean-Baptiste Cordonnier, Sebastien Speierer, Thomas Batschelet}
-
-% define example environments
-% \newcounter{example}[section]
-% \newenvironment{example}
-%     {
-%     \refstepcounter{example}
-%     \begin{center}
-% 	    \begin{tabular}{|p{0.8\textwidth}|}
-% 		    \hline\\
-% 			\textbf{Example~\theexample.}\\
-% 		    }
-% 		    {
-% 		    \\\hline
-% 	    \end{tabular}
-%     \end{center}
-%     }
-
-% define definition environments
-% \newcounter{definition}[section]
-% \newenvironment{definition}
-%     {
-%     \refstepcounter{definition}
-%     \begin{center}
-% 	    \begin{tabular}{|p{0.8\textwidth}|}
-% 		    \hline\\
-% 			\textbf{Definition~\thedefinition.}\\
-% 		    }
-% 		    {
-% 		    \\\hline
-% 	    \end{tabular}
-%     \end{center}
-%     }
+\author{Jean-Baptiste Cordonnier, Sebastien Speierer}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[theorem]
@@ -89,6 +57,10 @@
 \begin{document}
 
 \maketitle
+\setcounter{tocdepth}{1}
+\tableofcontents
+
+\cleardoublepage
 
 \section{Data compression}
 
@@ -235,7 +207,8 @@ In coding theory, the \textbf{Kraft-McMillan inequality} gives a necessary and s
 \end{example}
 
 % -------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Alphabet with statistics}
 
 Suppose we have an alphabet $\U$, and suppose we have a random variable $U$ taking values in $\U$. We denote by $p(u) = Pr(U = u), u \in \U$ with $p(u) \geq 0$ and $\sum_u p(u) = 1$.\\
@@ -370,7 +343,8 @@ So we have shown that with
 if $\C$ is optimal for $U$, then $\C'$ is optimal for $V$
 
 % -------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Entropy and mutual information}
 \label{sec:entropy}
 
@@ -477,8 +451,9 @@ We can apply the chain rule on the mutual information as follows
 \begin{theorem}[Data processing inequality]
   Let $X \rightarrow Y \rightarrow Z$ be a Markov chain, then
   \begin{align*}
-    I(X ; Y) \geq I(X ; Z)
+    I(X ; Y) \geq I(X ; Z) \quad \text{ and } \quad I(Y ; Z) \geq I(X ; Z)
   \end{align*}
+  We have equality iff $I(X ; Y | Z) = 0$ (i.e. $X \rightarrow Z \rightarrow Y$ form a Markov chain)
   This important and useful theorem demonstrates that no processing of $Y$, deterministic or random, can increase the information that $Y$ contains about $X$.
 \end{theorem}
 
@@ -507,7 +482,8 @@ We can apply the chain rule on the mutual information as follows
 \end{proof}
 
 % -----------------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Data processing}
 
 \begin{theorem}
@@ -664,7 +640,8 @@ and by the "Lemma", whenever $b_n \rightarrow b$ , \space $a_n \rightarrow b$
 
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Typicality and typical set}
 
 \begin{definition}[Typicality]
@@ -888,7 +865,8 @@ and
 
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Universal data compression}
 
 Suppose we know that the distribution $p$ of $U$ is either $p_1$, $p_2$ ... $p_k$, can we design a code $\C: U \to \{0,1\}^*$
@@ -1002,9 +980,6 @@ consequently this scheme is asymptotically optimal.
 
 
 
-
-
-
 % -------------------------------------------------------------------------
 % lesson - 16.0.2017 - Thomas
 
@@ -1069,7 +1044,8 @@ hence if $M$ is a s-state machine
 % -------------------------------------------------------------------------
 % Lemple-Ziv
 
-\newpage
+
+\cleardoublepage
 \section{Lemple-Ziv data compression method}
 
 Given some alphabet $\U$ to both encoder and decoder, they also agree an order on $\U$:
@@ -1147,7 +1123,8 @@ So we have proved the following theorem:
 
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Transmission of data}
 
 Interesting in the case of unreliable transmission media.
@@ -1797,7 +1774,8 @@ To illustrate the proof technique that we used to prove the coding theorem, we t
 
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Differential entropy}
 
 \begin{definition}[Differential entropy]
@@ -1932,7 +1910,7 @@ Suppose $X_1 ... X_n$ are $\R$-valued RV's ($X^n \in \R^n$), we define
 \begin{definition}
   For $X, Y$ $\R$-valued RV's, define
   \begin{align*}
-    I(x ; Y) &= \int f_{XY}(x,y) \log(\frac{f_{XY}(x, y)}{f_X(x) f_Y(y)}) \\
+    I(X ; Y) &= \int f_{XY}(x,y) \log(\frac{f_{XY}(x, y)}{f_X(x) f_Y(y)}) \\
     &= D(f_{XY} || f_X(x) f_Y(y)) \\
     &= h(X) + h(Y) - h(XY) \\
     &= h(X) - h(X | Y) \\
@@ -1995,14 +1973,14 @@ we then have
 \end{theorem}
 
 \begin{example}
-  $X^n$ is a Gaussian Random Variable with $\E{x^N} = \bar{\mu}$ and variance matrix $K, K_{i,j} = \E{(X_i - \mu _i)(X_j - \mu_j)}$
+  $X^n$ is a Gaussian Random Variable with $\E{X^N} = \bar{\mu}$ and variance matrix $K, K_{i,j} = \E{(X_i - \mu _i)(X_j - \mu_j)}$
   \[
     h(X^n) = \underbrace{h(X^n - \bar{\mu})}_{\text{Gaussian with zero-mean with covariance} K}
   \]
 
   consequently we may assume that $\bar{\mu} = \bar{0}$, recall that the joint pdf of a zero-mean gaussian is given by
   \begin{align*}
-    f(\bar{x}) = \underbrace{\frac{1}{det(2 \pi K)^{1/2}}}_{(2 \pi)^{n/2} (det(k)^{1/2})} e^{0.5 (X^T K^{-1} X)}
+    f(\bar{x}) = \underbrace{\frac{1}{det(2 \pi K)^{1/2}}}_{(2 \pi)^{n/2} (det(K)^{1/2})} e^{0.5 (X^T K^{-1} X)}
   \end{align*}
 
   \[
@@ -2038,7 +2016,7 @@ we then have
   \[
     g(x) = \frac{1}{det(2 \pi K)^{1/2}} e^{1 \frac{1}{2}(X^T K^{-1} X)}
   \]
-  observe that $\log(\frac{1}{g(x)}) = \frac{1}{2} \log(det(2 \pi K) + \frac{1}{2} \log(2) X^T K_{-1} X$
+  observe that $\log(\frac{1}{g(x)}) = \frac{1}{2} \log(det(2 \pi K) + \frac{1}{2} \log(e) X^T K^{-1} X$
   so
   \begin{align*}
     \int f(\bar{x}) \log(\frac{1}{g(x)}) d \bar{x} = \frac{1}{2} \log(det(2 \pi K)) + \frac{\log(e)}{2} \underbrace{E{X^T K^{-1} X}}_{n}
@@ -2046,12 +2024,12 @@ we then have
   \end{align*}
   how
   \[
-    0 \geq \int f(x) \log(\frac{g(x)}{f(x)}) dx = - \{\frac{1}{2} \log(det(2 \pi e K))\} + h(x)
+    0 \geq \int f(x) \log(\frac{g(x)}{f(x)}) dx = - \frac{1}{2} \log(det(2 \pi e K)) + h(x)
   \]
 \end{proof}
 
 \textbf{Another example of maximum entropy} \\
-Suppose we know that $X \in [a, b]$ with probability 1. then $h(X) \leq \log(b - a)$ equality uff $X$ is uniform on $[a, b]$.
+Suppose we know that $X \in [a, b]$ with probability 1. then $h(X) \leq \log(b - a)$ equality iff $X$ is uniform on $[a, b]$.
 \begin{proof}
   Let
   \[
@@ -2294,7 +2272,8 @@ So, in terms of $\mu$, we have
 
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Elementary Coding Theorem}
 
 \begin{wikipedia}
@@ -3082,7 +3061,8 @@ For this we need
 
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
-\newpage
+
+\cleardoublepage
 \section{Quantization / Rate-Distortion Theory}
 
 We have seen (lossless) source coding
@@ -3299,7 +3279,7 @@ So we have proved that
 % appendices
 
 
-\newpage
+\cleardoublepage
 \begin{appendices}
 \section{Markov chains}
 \label{appendix:markov-chains}
@@ -3332,6 +3312,7 @@ A stochastic process is a collection $U_1, U_2 \dots U_n$ of RVs each taking val
   \]
   In other words, the process is time shift invariant.
 \end{definition}
+
 
 \section{Concave/convex functions}
 \label{sec:appendix-convex}
@@ -3499,7 +3480,8 @@ How to maximize a function on the simplex?
   $\rightarrow$ satisfy KKT with $\lambda = 2$
 \end{example}
 
-\subsection{A story of two pentagons}
+
+\section{A story of two pentagons}
 Consider two pentagons:
 
 \[
