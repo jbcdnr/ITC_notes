@@ -479,6 +479,7 @@ We can apply the chain rule on the mutual information as follows
   \begin{align*}
     I(X ; Y) \geq I(X ; Z)
   \end{align*}
+  This important and useful theorem demonstrates that no processing of $Y$, deterministic or random, can increase the information that $Y$ contains about $X$.
 \end{theorem}
 
 \begin{notation}
@@ -2291,12 +2292,16 @@ So, in terms of $\mu$, we have
 "Water filling" solution pour water of volume $\beta$ to the basin with altitude map given by $\sigma^2_i$'s
 
 
-
 % -------------------------------------------------------------------------
 % -------------------------------------------------------------------------
 \newpage
 \section{Elementary Coding Theorem}
-Restrict ourselbes to Binary Symmetric and Binary Erasive Channel. Suppose
+
+\begin{wikipedia}
+  The object of coding is to introduce redundancy so that even if some of the information is lost or corrupted, it will still be possible to recover the message at the receiver.
+\end{wikipedia}
+
+Restrict ourselves to Binary Symmetric and Binary Erasive Channel. Suppose
 \[
   Enc: \{1, ..., M\} \rightarrow \{ 0, 1\}^n, n = 1000, rate = \frac{1}{2}
   \Rightarrow n = 2^{500}
