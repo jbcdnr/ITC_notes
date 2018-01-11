@@ -3163,6 +3163,147 @@ Consider $U_1, U_2, ...$ iid $\sim P_u$ on an alphabet $\U$. We also have a repr
 \todo{fat proof}
 
 
+% --------------------------------
+%   JB 18/12/2017
+
+Given i.i.d. source $U_1U_2 \dots$ and a distorsion measure $d:\U \times \V \to \R$ the possible ($R$ rate, $D$ distorition) pairs are
+
+\[
+  R\geq \min_{p_{V|U} : \Ex{d(U,V)} = D} I(U;V)
+\]
+
+\begin{definition}[Rate distorsion]
+  \[
+    R\geq \min_{p_{V|U} : \Ex{d(U,V)} \leq D} I(U;V)
+  \]
+\end{definition}
+
+\begin{example}
+  When $U\sim N(0, \sigma^2)$ and $d(u,v) = (u-v)^2$
+  \[
+    R(D) = \left(\frac 1 2 \log \frac { \sigma^2} D \right)^+
+  \]
+  \[
+    D(R) = \sigma^2 2^{-2R}, R \geq 0
+  \]
+\end{example}
+
+\subsection{Multi party communications}
+
+Encode two message $m_1 \in \{1, \dots, M_1\}$ and $m_2 \in \{1, \dots, M_2\}$ with two encoders $Enc_i$. Transmit with one channel and decode with onde decoder $Dec$ that gives $(\hat m_1, \hat m_2)$.
+
+\[
+  R_i = \frac 1 n \log M_i
+\]
+\[
+  p_e = \frac 1 {M_1 M_2} \sum_{m_1, m_2} \Pr{(\hat m_1, \hat m_2) \not= (m_1, m_2) | m_1,m_2 \text{ is sent}}
+\]
+
+\begin{definition}
+  Given a channel $W(y|x_1,x_2)$ (memoryless), a rate pair $(R_1, R_2)$ is said to be achievable if $\forall \epsilon > 0$ there is $(Enc_1, Enc_2, Dec)$ such that the rate of $Enc_1$ is greater that $R_1 - \epsilon$, the rate of $Enc_2$ is greater that $R_2 - \epsilon$ and $p_e \leq \epsilon$. The set of all achievable rate-pairs (for the given $W$) is denoted $C(W)$ and called the capacity region.
+\end{definition}
+
+
+\begin{theorem}
+  Given $W(y|x_1,x_2)$ for any $p_{X_1}, p_{X_2}$ then the achievable pair rates are
+  \[
+    \{
+      (R_1, R_2) : R_1 \leq I(X_1;YX_2), R_2 \leq I(X_2;YX_1), R_1+R_2 \leq I(X_1X_2;Y)
+    \}
+  \]
+\end{theorem}
+
+
+
+\begin{proof}
+  Suppose we are given $W$, $p_{X_1}$ and $p_{X_2}$, $R_1 \leq I(X_1;YX_2)$, $R_2 \leq I(X_2;YX_1)$, $R_1 + R_2 \leq I(X_1X_2;Y)$. Fix $\epsilon$
+
+  Let $M_1 = 2^{n(R_1 - \epsilon})$, $M_2 = 2^{n(R_2 - \epsilon})$, set $p_{X_1X_2Y} = p_{X_1}(x_1)p_{X_2}(x_2)W(y|x_1x_2)$. Create the random encoder with
+  \[
+    \{ X_{ij}(m) : i \in \{1,2\}, 0 \leq j < n, m \in M_i\} \sim p_{X_i}
+  \]
+\end{proof}
+
+We use the typicality decoder: given $Y^n$ search for $\hat m_1, \hat m_2$ such that
+\[
+  (Enc_1^n(\hat m_1), Enc_2^n(\hat m_2), Y^n) \in T(n, \delta, p)
+\]
+If only one pair $(\hat m_1, \hat m_2)$ is found declare it, otherwise declare 0. We are fine concerning the rates. For the probability of error assume (w.l.o.g.) that $m_1 = 1, m_2 = 1$ is sent.
+
+\[
+  \{
+    \text{error}
+  \}
+  =
+  \{(X_1^n(1), X_2^n(1), Y^n) \not \in T\} \cup \bigcup_{(m_1',m_2') \not=(1,1)} \{(X_1^n(m_1'), X_2^n(m_2'), Y^n) \in T\}
+\]
+
+\[
+  p_e = \Pr{(X_1^n(1), X_2^n(1), Y^n) \not \in T} + \sum_{(m_1',m_2') \not=(1,1)} \Pr{(X_1^n(m_1'), X_2^n(m_2'), Y^n) \in T}
+\]
+
+\[
+  (m_1', m_2') \not = (1,1) \Rightarrow \begin{cases}
+    m_1' = 1, m_2' \not=1, \text{genericity } (1,2), (M_2 - 1) \text{ such terms}\\
+    m_1' \not= 1, m_2' =1, \text{genericity } (2,1), (M_1 - 1) \text{ such terms}\\
+    m_1' \not= 1, m_2' \not=1, \text{genericity } (2,2), (M_1 - 1)(M_2 - 1) \text{ such terms}\\
+  \end{cases}
+\]
+
+Then
+\begin{align*}
+  p_e \leq \Pr{(X_1^n(1), X_2^n(1), Y^n) \not \in T}
+  & + (M_2 - 1) \Pr{(X_1^n(1), X_2^n(2), Y^n) \in T}\\
+  & + (M_1 - 1) \Pr{(X_1^n(2), X_2^n(1), Y^n) \in T}\\
+  & + (M_1 - 1)(M_2 - 1) \Pr{(X_1^n(2), X_2^n(2), Y^n) \in T}
+\end{align*}
+
+Given that $(X_1^n(1), X_2^n(1), Y^n)$ i.i.d. $\sim p_{X_1,X_2,Y}$ then
+\[
+  \lim_{n \to \infty} \Pr{(X_1^n(1), X_2^n(1), Y^n) \not \in T} = 0
+\]
+
+$(X_1^n(1), X_2^n(2), Y^n)$ i.i.d. $\sim p_{X_1,Y}p_{X_2} \triangleq q_1$ then
+\[
+  \Pr{(X_1^n(1), X_2^n(2), Y^n) \in T(p)} = 2^{-n(D(p||q_1) + o(\delta))}
+\]
+
+\[
+  D(p||q_1) = \sum_{x_1,x_2,y} p(x_1,x_2,y) \log \frac {p(x_1,x_2,y)}{p(x1,y)p(x_2)} = I(X_2; YX_1)
+\]
+Similarly
+
+\begin{align*}
+    \Pr{(X_1^n(2), X_2^n(1), Y^n) \in T(p)} = 2^{-n(I(X_1;YX_2) + o(\delta))}\\
+    \Pr{(X_1^n(2), X_2^n(2), Y^n) \in T(p)} = 2^{-n(I(X_1X_2;Y) + o(\delta))}
+\end{align*}
+
+so
+
+\begin{align*}
+  p_e \leq 2^{-n(I(X_2;YX_1) + o(\delta))} + 2^{-n(I(X_1;YX_2) + o(\delta))} + 2^{-n(I(X_1X_2;Y) + o(\delta))} \to 0
+\end{align*}
+as $R_2\leq I(X_2;YX_1)$, $R_1\leq I(X_1;YX_2)$ and $R_1 + R_2\leq I(X_1X_2;Y)$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
