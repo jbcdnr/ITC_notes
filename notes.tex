@@ -3150,8 +3150,6 @@ Consider $U_1, U_2, ...$ iid $\sim P_u$ on an alphabet $\U$. We also have a repr
   Recall: $I(U;V)$ as a function of $(P_u, P_{v|u})$ is concave in $P_u$ and convex in $P_{v|u}$
 \end{example}
 
-\todo{fat proof}
-
 \begin{theorem}
   Given an iid source $U_1, U_2, ...$, given $d: \U \times \V \rightarrow \R$, given a $P_{uv}$ with $\E[d(U,V)] = \Lambda$ and $I(U;V) = R$, given an $\epsilon > 0$, there exists a quantizer $(f, \phi)$ with
   \[
@@ -3159,7 +3157,9 @@ Consider $U_1, U_2, ...$ iid $\sim P_u$ on an alphabet $\U$. We also have a repr
   \]
 \end{theorem}
 
-\todo{fat proof}
+\begin{proof}
+  See \textbf{chapter 10 section 4} in \textit{"Elements of information theory, second edition"}
+\end{proof}
 
 
 % --------------------------------
@@ -3211,8 +3211,6 @@ Encode two message $m_1 \in \{1, \dots, M_1\}$ and $m_2 \in \{1, \dots, M_2\}$ w
     \}
   \]
 \end{theorem}
-
-
 
 \begin{proof}
   Suppose we are given $W$, $p_{X_1}$ and $p_{X_2}$, $R_1 \leq I(X_1;YX_2)$, $R_2 \leq I(X_2;YX_1)$, $R_1 + R_2 \leq I(X_1X_2;Y)$. Fix $\epsilon$
@@ -3283,27 +3281,6 @@ so
   p_e \leq 2^{-n(I(X_2;YX_1) + o(\delta))} + 2^{-n(I(X_1;YX_2) + o(\delta))} + 2^{-n(I(X_1X_2;Y) + o(\delta))} \to 0
 \end{align*}
 as $R_2\leq I(X_2;YX_1)$, $R_1\leq I(X_1;YX_2)$ and $R_1 + R_2\leq I(X_1X_2;Y)$
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 % --------------------------------
