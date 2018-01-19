@@ -2058,6 +2058,8 @@ Suppose we know that $X \in [a, b]$ with probability 1. then $h(X) \leq \log(b -
   A simple encoder for this channel would be to distribute $m$ points in $\R$ such that $m_{i+1} - m_i = 100\sigma$. The decoder pick the point $m$ closest to $y$. Errrors appear with low probability because the space between point is much larger than the noise. We need a very large range of values (e.g. electrical tension) which is not feasible in practice.
 \end{example}
 
+\subsection{Channel with cost constraints}
+
 To avoid physically unrealisable scenarios, we need to impose some kind of cost constraint in our encoder. Suppose now that we are given $b : \X \to \R$ ($b(x) = x^2$ for the previous example) that associates a cost $b(x)$ to each input symbol. When an encoder $Enc: \{ 1 \dots M \} \to \X^n$ is given, in adition to rate $R = \frac 1 n \log M$, we will also define
 
 \[
@@ -2076,7 +2078,7 @@ Given a channel $W(y|x)$ with input $\X$, output $\Y$, $b:\X\to \R$ and $\beta \
 \end{definition}
 
 \begin{theorem}[Bad news]
-  Suppose a channel $\U^L \to \X^n \xrightarrow{W} \Y^n \to V^L$ with $\frac 1 n \sum_{i=1}^N \Ex{b(X_i)} \leq \beta$ and $\bar p_e = \frac 1 L \sum_{i=1}^L \Pr{U_i \not= V_i}$. Then
+  Suppose a channel $\U^L \to \X^n \xrightarrow{W} \Y^n \to V^L$ with $\frac 1 n \sum_{i=1}^n \Ex{b(X_i)} \leq \beta$ and $\bar p_e = \frac 1 L \sum_{i=1}^L \Pr{U_i \not= V_i}$. Then
 
   \[
     h(\bar p_e) + \bar p_e \log(|\U| - 1) \geq H - \frac L n C(W, \beta)
@@ -2158,7 +2160,7 @@ Given a channel $W(y|x)$ with input $\X$, output $\Y$, $b:\X\to \R$ and $\beta \
 
 
 \begin{example}
-  Assume an additive Gaussian noise channel $W$, $y=x+Z$ with $Z \sim N(0, \sigma^2$, and $b(x) = x^2$.
+  Assume an additive Gaussian noise channel $W$, $Y=X+Z$ with $Z \sim N(0, \sigma^2)$, and $b(x) = x^2$.
 
   \begin{align*}
     C(W, \beta) &= \max_{X, \Ex{X^2} \leq \beta} I(X;Y) \\
@@ -2176,7 +2178,7 @@ Given a channel $W(y|x)$ with input $\X$, output $\Y$, $b:\X\to \R$ and $\beta \
   \[
     \Ex{(X+Z)^2} = \Ex{X^2} + \sigma^2 \leq \beta + \sigma^2 \to h(X+Z) \leq \frac 1 2 \log (2\pi e (\beta + \sigma^2))
   \]
-  On the other hanf, for $X \sim N(0, \beta)$, we have $\Ex{X^2}\leq \beta$. $X+Z$ is $N(0, \beta+\sigma^2)$ so
+  On the other hand, for $X \sim N(0, \beta)$, we have $\Ex{X^2}\leq \beta$. $X+Z$ is $N(0, \beta+\sigma^2)$ so
 
   \begin{align*}
     &h(X+Z)~=~\frac 1 2~\log~2\pi~e~(\beta~+~\sigma^2)\\
@@ -2680,19 +2682,15 @@ Suppose a code has a minimum distance $d$, and we use this cod over the BSC. At 
 
 \subsubsection*{Relationship between the parity check $H$ and $d_min$, $\#$ of codewords}
 
-Recall $\C = \{ x: Hx = 0\}$
-
-E.g. $(7,4,3)-$Hamming code: 3 equations, also called the parity-check equations. The matrix $H$ is sometime called the parity-check matrix.
-
-Recall also that $d_{min} = w_{min}$.
+Recall $\C = \{ x: Hx = 0\}$, e.g. $(7,4,3)-$Hamming code: 3 equations, also called the parity-check equations. The matrix $H$ is sometime called the parity-check matrix. Recall also that $d_{min} = w_{min}$.
 
 Suppose $H$ has the property that any $k$ columns are linearly independent. Can there be a non-zero codeword with weight $\equiv k$? No
 
-For such an $x$, $Hx = $ linear combination of weight $(x)$ columns of $H$. Such a combination $\neq 0$
+For such an $x$, $Hx $ is a linear combination with weights $x$  of the columns of $H$. Such a combination $\neq 0$
 
 Thus $w_min > k$
 
-Suppose there exists $l$ columns of $H$ which are linearly dependent $\Rightarrow \exists x \neq 0$ with weight $(x) \leq l$ such that $Hx = 0$. Thus $w_{min}$
+Suppose there exists $l$ columns of $H$ which are linearly dependent $\Rightarrow \exists x \neq 0$ with weight $w(x) \leq l$ such that $Hx = 0$. Thus $w_{min} \leq l$
 
 \begin{theorem}
   The code $C = \{ x: Hx = 0 \}$ has minimum distance $d$ if and only if any collection of $d-1$ columns of $H$ are linearly independent, and some $d$ columns are linearly independent.
