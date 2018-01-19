@@ -31,7 +31,7 @@
 
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
 \renewcommand{\Pr}[1]{Pr\left\{#1\right\}}
-\newcommand{\Ex}[1]{E\left[#1\right]}
+\newcommand{\Ex}[1]{\mathbb{E}\left[#1\right]}
 \newcommand{\pfrac}[2]{\left( \frac{#1}{#2} \right)}
 \newcommand{\overeq}[1]{\stackrel{#1}{=}}
 
@@ -165,7 +165,7 @@ For $\X$ a set
   \end{align*}
 \end{proposition}
 
-In coding theory, the \textbf{Kraft-McMillan inequality} gives a necessary and sufficient condition for the existence of a uniquely decodable code for a given set of codeword lengths.
+In coding theory, the \textbf{Kraft-McMillan inequality} gives a necessary and sifficient condition for the existence of a uniquely decodable code for a given set of codeword lengths.
 
 \begin{wikipedia}
   Kraft's inequality limits the lengths of codewords in a prefix code: if one takes an exponential of the length of each valid codeword, the resulting set of values must look like a probability mass function, that is, it must have total measure less than or equal to one. Kraft's inequality can be thought of in terms of a constrained budget to be spent on codewords, with shorter codewords being more expensive.
@@ -241,7 +241,7 @@ We can measure how efficient $\C$ represents $\U$ by considering
 \begin{theorem}
   if $\C$ is uniquely decodable, then
   \begin{align*}
-    E[l(\C(u))] \geq \sum_u p(u) \log(\frac{1}{p(u)})
+    E[l(\C(u))] \geq \sum_u p(u) \log \frac{1}{p(u)}
   \end{align*}
 \end{theorem}
 
@@ -268,7 +268,7 @@ We can measure how efficient $\C$ represents $\U$ by considering
   \begin{align*}
     &\C(u) = \lceil \log\frac{1}{p(u)} \rceil < 1 + \log \frac{1}{p(u)} \\
     &\Rightarrow \sum_u 2^{-\C(u)} \leq \sum_u p(u) = 1 \\
-    &\Rightarrow \sum_u p(u) \C(u) < \sum_u p(u) \log(\frac{1}{p(u)}) + \underbrace{1}_{\sum p(u)}
+    &\Rightarrow \sum_u p(u) \C(u) < \sum_u p(u) \log \frac{1}{p(u)} + \underbrace{1}_{\sum p(u)}
   \end{align*}
 \end{proof}
 
@@ -279,7 +279,7 @@ We can measure how efficient $\C$ represents $\U$ by considering
 \begin{theorem}
   The entropy of a random variable $U \in \U$ is
   \begin{align*}
-    H(U) = \sum_{u \in \U} p(u) \log(\frac{1}{p(u)})
+    H(U) = \sum_{u \in \U} p(u) \log \frac{1}{p(u)}
   \end{align*}
   with $p(u) = Pr(U = u)$
 \end{theorem}
@@ -298,7 +298,7 @@ We can measure how efficient $\C$ represents $\U$ by considering
 Note that $H(U)$ is a fonction of the distribution $\C_u(.)$ of the random variable $U$, it isn't a function of $U$.
 
 \begin{align*}
-  H(U) = E[f(U)] \quad \text{where} \quad f(U) = \log(\frac{1}{p(u)})
+  H(U) = E[f(U)] \quad \text{where} \quad f(U) = \log \frac{1}{p(u)}
 \end{align*}
 
 How to design optimal codes (in the sense of minimizing $E[l(\C(u))]$)? \\
@@ -684,7 +684,7 @@ Suppose we observe $u_1,u_2..., u_n$. We will call it to be \textit{typical-$(\e
   \end{align*}
   but
   \begin{align*}
-    p(u)^{p(u)} = 2^{-p(u) \log(\frac{1}{p(u)})} \Rightarrow \prod p(u)^{p(u)} = 2^{-H(u)}
+    p(u)^{p(u)} = 2^{-p(u) \log \frac{1}{p(u)}} \Rightarrow \prod p(u)^{p(u)} = 2^{-H(u)}
   \end{align*}
 \end{proof}
 
@@ -1026,11 +1026,11 @@ for any $k$ we have
 So far we know that
 
 \begin{align*}
-  \frac{\text{ length of the output of any s-state IL machine when it reads } u_1 u_2 ... }{n} \geq \frac{m(n) \log(\frac{m(n)}{8 s^2})}{n}
+  \frac{\text{ length of the output of any s-state IL machine when it reads } u_1 u_2 ... }{n} \geq \frac{m(n) \log \frac{m(n)}{8 s^2}}{n}
 \end{align*}
 with
 \begin{align*}
-  \frac{m(n) \log(\frac{m(n)}{8 s^2})}{n} = \frac{m(n) \log(m(n))}{n} - \frac{m(n) \log(8 s^2)}{length(v_1 ... v_m)}
+  \frac{m(n) \log \frac{m(n)}{8 s^2}}{n} = \frac{m(n) \log(m(n))}{n} - \frac{m(n) \log(8 s^2)}{length(v_1 ... v_m)}
 \end{align*}
 
 hence if $M$ is a s-state machine
@@ -1316,7 +1316,7 @@ with
 \begin{align*}
   p_e = \Pr{U \neq V}
   \quad \text{ and } \quad
-  h_2(p) = p \log(\frac{1}{p}) + (1 - p) \log(\frac{1}{(1-p)})
+  h_2(p) = p \log \frac{1}{p} + (1 - p) \log \frac{1}{(1-p)}
 \end{align*}
 
 \begin{proof}
@@ -1396,11 +1396,11 @@ So if $H(U|V) > \lambda \Rightarrow \exists f(\lambda) > 0$, $p_e > f(\lambda)$
   $$ H(U_1 ... U_L) \geq L H$$
   We also have
   \begin{align*}
-    I(U^2; V^2) \leq n C(W)
+    I(U^L; V^L) \leq n C(W)
   \end{align*}
   therefore, since $\frac{n}{L} \leq \frac{\tau_s}{\tau_c}$
   \begin{align*}
-    H(U^2 | V^2) = \frac{1}{L} (H(U^2) - I(U^2; V^2)) &\geq H - \frac{n}{L} C(W) \\
+    H(U^L | V^L) = \frac{1}{L} (H(U^L) - I(U^L; V^L)) &\geq H - \frac{n}{L} C(W) \\
     &\geq H - \frac{\tau_s}{\tau_c} C(W) \\
     &= \tau_s (\frac{H}{\tau_s} - \frac{C(W)}{\tau_c})
   \end{align*}
@@ -1443,7 +1443,7 @@ So if $H(U|V) > \lambda \Rightarrow \exists f(\lambda) > 0$, $p_e > f(\lambda)$
     &= H(U_2 | U_1) = h_2(p)
 \end{align*}
 
-suppose $w = BEC(q), c(w) = (1 - q)\log(2)$ and $\tau_s = \tau_c = 1$
+suppose $W = BEC(q), C(W) = (1 - q)\log 2$ and $\tau_s = \tau_c = 1$
 
 \begin{align*}
   h_2(\bar{p_e}) \geq h_2(p) - (1 - q)\log(2) \Rightarrow \bar{p_e} \geq \lambda
@@ -1451,7 +1451,7 @@ suppose $w = BEC(q), c(w) = (1 - q)\log(2)$ and $\tau_s = \tau_c = 1$
 
 What we want to do next is to show a matching "Good news" theorem:
 
-We could show that if $\frac{H}{\tau_s} \leq \frac{c(w)}{\tau_c}$ then for any $\lambda > 0$, we can find a stable encoder and decoder such that $p_e < \lambda$.
+We could show that if $\frac{H}{\tau_s} \leq \frac{C(W)}{\tau_c}$ then for any $\lambda > 0$, we can find a stable encoder and decoder such that $p_e < \lambda$.
 Instead, we will show stronger results:
 \begin{enumerate}
   \item \textbf{Separation theorem}
@@ -1872,10 +1872,10 @@ We recognize a Riemann sum for equality (a).
 Suppose $X_1 ... X_n$ are $\R$-valued RV's ($X^n \in \R^n$), we define
 
 \[
-  h(X^n) = h(X_1 ... X_n) = \underbrace{\int \int}_{\R^n} f_{X^n} (x_1 ... x_n) \log(\frac{1}{f_{X^n}(x_1 ... x_n)}) dx_1...dx_n
+  h(X^n) = h(X_1 ... X_n) = \underbrace{\int \int}_{\R^n} f_{X^n} (x_1 ... x_n) \log \frac{1}{f_{X^n}(x_1 ... x_n)} dx_1...dx_n
 \]
 \[
-  h(X|Y) = \int \int f_{XY}(x, y) \log(\frac{1}{f_{XY}(X|Y)}) dx dy = \E{\log(\frac{1}{f_XY(X | Y)})}
+  h(X|Y) = \int \int f_{XY}(x, y) \log \frac{1}{f_{XY}(X|Y)} dx dy = \Ex{\log \frac{1}{f_XY(X | Y)}}
 \]
 
 \begin{theorem}
@@ -1893,7 +1893,7 @@ Suppose $X_1 ... X_n$ are $\R$-valued RV's ($X^n \in \R^n$), we define
 \begin{definition}
   Given two densities $f(x), g(x)$, let
   \[
-    D(f || g) = \int f(x) \log(\frac{f(x)}{g(x)}) dx
+    D(f || g) = \int f(x) \log \frac{f(x)}{g(x)} dx
   \]
 \end{definition}
 
@@ -1910,7 +1910,7 @@ Suppose $X_1 ... X_n$ are $\R$-valued RV's ($X^n \in \R^n$), we define
 \begin{definition}
   For $X, Y$ $\R$-valued RV's, define
   \begin{align*}
-    I(X ; Y) &= \int f_{XY}(x,y) \log(\frac{f_{XY}(x, y)}{f_X(x) f_Y(y)}) \\
+    I(x ; Y) &= \int f_{XY}(x,y) \log \frac{f_{XY}(x, y)}{f_X(x) f_Y(y)} dy \\
     &= D(f_{XY} || f_X(x) f_Y(y)) \\
     &= h(X) + h(Y) - h(XY) \\
     &= h(X) - h(X | Y) \\
@@ -1947,9 +1947,9 @@ Suppose $X_1 ... X_n$ are $\R$-valued RV's ($X^n \in \R^n$), we define
 
     \begin{align*}
       I(X_{\delta} ; Y_{\delta})
-      &= \sum_{n, m} \Pr{X_{\delta} = n \delta, Y_{\delta} = m \delta} \log(\frac{\Pr{X_{\delta} = n \delta, Y_{\delta} = m \delta}}{\Pr{X_{\delta} = n \delta} \Pr{Y_{\delta} = m \delta}}) \\
-      &\equiv \sum_{n, m} \delta^2 f_{XY} (n \delta, m \delta) \log(\frac{\delta^2 f_{XY}(n \delta, m \delta)}{\delta f_X(n \delta) \delta f_Y(m \delta)}) \\
-      &\equiv \sum_{n, m} \delta^2 f_{XY} (n \delta, m \delta) \log(\frac{f_{XY}(n \delta, m \delta)}{f_X(n \delta) f_Y(m \delta)}) \\
+      &= \sum_{n, m} \Pr{X_{\delta} = n \delta, Y_{\delta} = m \delta} \log \frac{\Pr{X_{\delta} = n \delta, Y_{\delta} = m \delta}}{\Pr{X_{\delta} = n \delta} \Pr{Y_{\delta} = m \delta}} \\
+      &\equiv \sum_{n, m} \delta^2 f_{XY} (n \delta, m \delta) \log \frac{\delta^2 f_{XY}(n \delta, m \delta)}{\delta f_X(n \delta) \delta f_Y(m \delta)} \\
+      &\equiv \sum_{n, m} \delta^2 f_{XY} (n \delta, m \delta) \log \frac{f_{XY}(n \delta, m \delta)}{f_X(n \delta) f_Y(m \delta)} \\
       &= \text{Riemann sum for} \quad \int \int f_{XY}(x,y) \log \frac{f_{XY}(x,y)}{f_X(x) f_Y(y)}dx dy = I(X ; Y)
     \end{align*}
   \end{proof}
@@ -1958,7 +1958,7 @@ Suppose $X_1 ... X_n$ are $\R$-valued RV's ($X^n \in \R^n$), we define
 In general, define for $X^n \in \R^n, Y^m \in \R^m, Z^k \in \R^k$
 
 \[
-  I(X^n ; Y^m | Z^k) = \underbrace{\int ... \int}_{n + m + k} f_{X^n Y^m Z^k}(x^n, y^m, z^k) \log(\frac{f_{XY|Z}(x^n y^m | z^k)}{f_{X|Z}(x^n | z^k) f_{Y|Z}(Y^m | z^k)}
+  I(X^n ; Y^m | Z^k) = \underbrace{\int ... \int}_{n + m + k} f_{X^n Y^m Z^k}(x^n, y^m, z^k) \log \frac{f_{XY|Z}(x^n y^m | z^k)}{f_{X|Z}(x^n | z^k) f_{Y|Z}(Y^m | z^k)}
 \]
 
 we then have
@@ -1984,17 +1984,17 @@ we then have
   \end{align*}
 
   \[
-    \log(\frac{1}{f(\bar{x})}) = \frac{1}{2} \log(det(2 \pi K)) + \frac{1}{2} X^T K^{-1} X(\log(e))
+    \log \frac{1}{f(\bar{x})} = \frac{1}{2} \log(det(2 \pi K)) + \frac{1}{2} x^T K^{-1} x(\log(e))
   \]
   \begin{align*}
-    h(X) &= \E{\frac{1}{2} \log(det(2 \pi K)) + \frac{\log(e)}{2} X^T K^{-1} X } \\
-    &= \frac{1}{2} \log(det(2 \pi K)) + \frac{\log(e)}{2} \underbrace{\underbrace{\E{X^T K^{-1} X}}_{tr(K^{-1}K) = tr(I_n) = n}}_{\frac{1}{2} \log(e^n)} \\
+    h(X) &= \Ex{\frac{1}{2} \log(det(2 \pi K)) + \frac{\log(e)}{2} x^T K^{-1} x } \\
+    &= \frac{1}{2} \log(det(2 \pi K)) + \frac{\log(e)}{2} \underbrace{\underbrace{\Ex{x^T K^{-1} x}}_{tr(K^{-1}K) = tr(I_n) = n}}_{\frac{1}{2} \log(e^n)} \\
     &= \frac{1}{2} \log(det(2 \pi e K))
   \end{align*}
 
   \textit{Side knowledge}:
   \begin{align*}
-    \E{X^T A X} = \E{\sum_{i,j} X_i A_{ij} X_j} = \sum_{i, j} A_{ij} \E{X_i X_j}
+    \Ex{X^T A X} = \Ex{\sum_{i,j} X_i A_{ij} X_j} = \sum_{i, j} A_{ij} \Ex{X_i X_j}
     = \sum_{i,j} A_{ij} K_{ij} = \sum_i (\sum_j A_{ij} K_{ij}) = tr(AK)
   \end{align*}
 \end{example}
@@ -2002,7 +2002,7 @@ we then have
 \begin{theorem}
   Suppose $X \in \R^n$ is a random vector with
   \[
-    \E{X_i X_j} = k_{ij}
+    \Ex{X_i X_j} = k_{ij}
   \]
   Then
   \[
@@ -2014,17 +2014,17 @@ we then have
 \begin{proof}
   Let $f$ be the density of $X^n$, let g be the gaussian density
   \[
-    g(x) = \frac{1}{det(2 \pi K)^{1/2}} e^{1 \frac{1}{2}(X^T K^{-1} X)}
+    g(x) = \frac{1}{det(2 \pi K)^{1/2}} e^{-\frac{1}{2}(x^T K^{-1} x)}
   \]
-  observe that $\log(\frac{1}{g(x)}) = \frac{1}{2} \log(det(2 \pi K) + \frac{1}{2} \log(e) X^T K^{-1} X$
+  observe that $\log \frac{1}{g(x)} = \frac{1}{2} \log(det(2 \pi K) + \frac{1}{2} \log(2) x^T K^{-1} x$
   so
   \begin{align*}
-    \int f(\bar{x}) \log(\frac{1}{g(x)}) d \bar{x} = \frac{1}{2} \log(det(2 \pi K)) + \frac{\log(e)}{2} \underbrace{E{X^T K^{-1} X}}_{n}
-    = \int g(x) \log(\frac{1}{g(x)}) dx
+    \int f(\bar{x}) \log \frac{1}{g(x)} d \bar{x} = \frac{1}{2} \log(det(2 \pi K)) + \frac{\log(e)}{2} \underbrace{\Ex{x^T K^{-1} x}}_{n}
+    = \int g(x) \log \frac{1}{g(x)} dx
   \end{align*}
   how
   \[
-    0 \geq \int f(x) \log(\frac{g(x)}{f(x)}) dx = - \frac{1}{2} \log(det(2 \pi e K)) + h(x)
+    0 \geq \int f(x) \log \frac{g(x)}{f(x)} dx = - \{\frac{1}{2} \log(det(2 \pi e K))\} + h(x)
   \]
 \end{proof}
 
@@ -2042,10 +2042,10 @@ Suppose we know that $X \in [a, b]$ with probability 1. then $h(X) \leq \log(b -
     \right.
 \]
 \[
-  \int f(x) \log(\frac{1}{g(x)}) dx = \log(b - a) = \int g(x) \log(\frac{1}{g(x)}) dx
+  \int f(x) \log \frac{1}{g(x)} dx = \log(b - a) = \int g(x) \log \frac{1}{g(x)} dx
 \]
 \[
-  0 \geq \int f(x) \log(\frac{g(x)}{f(x)} dx) = - \log(b - a) + h(X)
+  0 \geq \int f(x) \log \frac{g(x)}{f(x)} dx = - \log(b - a) + h(X)
 \]
 \end{proof}
 
@@ -2066,8 +2066,9 @@ To avoid physically unrealisable scenarios, we need to impose some kind of cost 
   b(Enc(m)) = \frac 1 n \sum_{i=1}^n b(Enc(m)_i)
 \]
 and we let
+\todo{Please check this makes sense}
 \[
-  cost(Enc) = \max_{1\leq m \leq M}
+  cost(Enc) = b(Enc(m))
 \]
 
 \begin{definition}[Channel capacity with power]
@@ -2098,7 +2099,7 @@ Given a channel $W(y|x)$ with input $\X$, output $\Y$, $b:\X\to \R$ and $\beta \
     &\overset{(d)}\geq H - \frac n L C\left(W, \frac 1 n \sum_{i=1}^N \beta_i\right) \\
     &\geq H - \frac n L C(W, \beta)
   \end{align*}
-  where we use (a) data processing, (b) stationary sources, (c) memory lossness and (d) we use the \cref{claim:concavity_inf}.
+  where we use (a) data processing, (b) stationary sources, (c) memoryless and (d) we use the \cref{claim:concavity_inf}.
 \end{proof}
 
 \begin{claim}
@@ -2111,8 +2112,8 @@ Given a channel $W(y|x)$ with input $\X$, output $\Y$, $b:\X\to \R$ and $\beta \
 
   For concavity, given $\beta_1, \beta_2$ and $\epsilon > 0$, find $p_{X_1}$ and $p_{X_2}$ such that
   \begin{align*}
-    \left. I(X;Y) \right|_{p_{X_1}} \geq X(W, \beta_1) - \epsilon \text{ with } \Ex{b(X)}|_{p_{X_1}} \leq \beta_1\\
-    \left. I(X;Y) \right|_{p_{X_2}} \geq X(W, \beta_2) - \epsilon \text{ with } \Ex{b(X)}|_{p_{X_2}} \leq \beta_2\\
+    \left. I(X;Y) \right|_{p_{X_1}} \geq C(W, \beta_1) - \epsilon \text{ with } \Ex{b(X)}|_{p_{X_1}} \leq \beta_1\\
+    \left. I(X;Y) \right|_{p_{X_2}} \geq C(W, \beta_2) - \epsilon \text{ with } \Ex{b(X)}|_{p_{X_2}} \leq \beta_2\\
   \end{align*}
 
   For $0 \leq \lambda \leq 1$ we define $p_X(x) = \lambda p_{X_1}(x) + (1-\lambda) p_{X_2}(x)$, then
@@ -2120,7 +2121,7 @@ Given a channel $W(y|x)$ with input $\X$, output $\Y$, $b:\X\to \R$ and $\beta \
     \Ex{b(X)}|_{p_X} = \lambda \Ex{b(X)}|_{p_{X_1}} + (1-\lambda) \Ex{b(X)}|_{p_{X_2}} \leq \lambda \beta_1 + (1-\lambda)\beta_2
   \]
 
-  Using that $I(\cdot;\cdot)$ is convex, we get
+  Using that $I(\cdot;\cdot)$ is concave, we get
   \[
     C(W,\lambda \beta_1 + (1-\lambda)\beta_2 ) \geq I(X;Y)|_{p_{X}} \geq \lambda I(X;Y)|_{p_{X_1}} + (1-\lambda) I(X;Y)|_{p_{X_2}} \geq \lambda C(W, \beta_1) + (1-\lambda)C(W,\beta_2) - \epsilon
   \]
@@ -2136,7 +2137,7 @@ Given a channel $W(y|x)$ with input $\X$, output $\Y$, $b:\X\to \R$ and $\beta \
   Given a channel $W(y|x)$ with $x \in \X$, $y \in \Y$, $b:\X \to \R$, $\beta \geq \max_x b(x)$, $\epsilon \geq 0$ and $R < C(W, \beta)$ then there is a $Enc:\{1 \dots M\} \to \X^n$ and $Dec:\Y^n \to \{0 \dots M \}$ such that
   \begin{align*}
     \frac 1 n \log M \geq R\\
-    \forall m~:~p_{e,m} = \Pr{Dex(Y^n) \not = m | m \text{ is sent}} < \epsilon \\
+    \forall m~:~p_{e,m} = \Pr{Dec(Y^n) \not = m | m \text{ is sent}} < \epsilon \\
     cost(Enc) = \max_m \frac 1 n \sum_{i=1}^n b(Enc(m)_i) < \beta + \epsilon
   \end{align*}
 \end{theorem}
@@ -2145,7 +2146,7 @@ Given a channel $W(y|x)$ with input $\X$, output $\Y$, $b:\X\to \R$ and $\beta \
   Verbatim as the proof of the coding theorem without costs, namely choose a $p_X$ such that $\Ex{b(X)} \leq \beta$ and $I(X;Y) \geq R$. Construct $Enc(\cdot)$ randomly, use the tipycality decoder. Eliminate half the codewords to end up with $Enc(1) \dots Enc(M)$ with the property that
   \begin{equation}
     \label{eq:pro}
-    \forall m~:~\Pr{Dex(Y^n) \not = m | m \text{ is sent}} < \epsilon
+    \forall m~:~\Pr{Dec(Y^n) \not = m | m \text{ is sent}} < \epsilon
   \end{equation}
   Recall that the decoder decodes $m$ only if $(Enc(m), y^n) \in T(p_{X,Y}, n, \delta)$ in particular $Enc(m) \in T(p_X, n, \delta)$. Then \cref{eq:pro} implies that for each $m$, $Enc(m) \in T(p_X, n, \delta)$ and
 
@@ -2166,11 +2167,11 @@ Given a channel $W(y|x)$ with input $\X$, output $\Y$, $b:\X\to \R$ and $\beta \
     C(W, \beta) &= \max_{X, \Ex{X^2} \leq \beta} I(X;Y) \\
     &= \max_{p_X, \Ex{X^2} \leq \beta} h(Y) - h(Y|X) \\
     &= \max_{p_X, \Ex{X^2} \leq \beta} h(Y) - h(Y-X|X) \\
-    &= \max_{p_X, \Ex{X^2} \leq \beta} h(Y) - h(ZX) \\
+    &= \max_{p_X, \Ex{X^2} \leq \beta} h(Y) - h(Z|X) \\
     &= \max_{p_X, \Ex{X^2} \leq \beta} h(Y) - h(Z) \\
     &= \left(\max_{p_X, \Ex{X^2} \leq \beta} h(X+Z)\right) - h(Z) \\
     &= \left(\max_{p_X, \Ex{X^2} \leq \beta} h(X+Z)\right) - \frac 1 2 \log(2\pi e \sigma^2) \\
-    &\overset{(a)}\leq \frac 1 2 \log \pfrac{2\pi e (\beta - \sigma^2)}{2\pi \sigma^2}\\
+    &\overset{(a)}\leq \frac 1 2 \log \pfrac{2\pi e (\beta + \sigma^2)}{2\pi e\sigma^2}\\
     &= \frac 1 2 \log \left(1 + \frac \beta {\sigma^2}\right)
   \end{align*}
 
@@ -2182,7 +2183,7 @@ Given a channel $W(y|x)$ with input $\X$, output $\Y$, $b:\X\to \R$ and $\beta \
 
   \begin{align*}
     &h(X+Z)~=~\frac 1 2~\log~2\pi~e~(\beta~+~\sigma^2)\\
-\Rightarrow&\max_{p_X, \Ex{X^2} \leq \beta} \geq \frac 1 2 \log \frac {\beta + \sigma^2} {\sigma^2}
+\Rightarrow&\max_{p_X, \Ex{X^2} \leq \beta} h(X+Z) \geq \frac 1 2 \log \frac {\beta + \sigma^2} {\sigma^2}
   \end{align*}
   Then
   \[
@@ -2196,6 +2197,10 @@ Given a channel $W(y|x)$ with input $\X$, output $\Y$, $b:\X\to \R$ and $\beta \
 % ----------------------------
 %   Sebastien 11.22.2017
 
+\subsection{$K$ independant gaussian noice channel}
+
+Let's study the channel $W$ such that $\vec{X} \to \vec Y = \vec X + \vec Z$ with
+
 \[
   \vec{Z} \sim N(\vec{0}, diag(\vec{\sigma^2}))
 \]
@@ -2205,25 +2210,25 @@ Given a channel $W(y|x)$ with input $\X$, output $\Y$, $b:\X\to \R$ and $\beta \
 \]
 
 \begin{align*}
-  &C(X^k \rightarrow Y^k = X^k + Z^k, \beta) = \max_{p_{X^k}, \E{||X^k||} \leq \beta} I(X^k, Y^k) \\
-  & \text{ with } I(X^k, Y^k) = h(Y^k) - h(Y^k | X^k) \leq \sum_{i = 1}^k \underbrace{[h(Y_i) - h(Z_i)}_{I(X_i, X_i + Z_i)} \\
+  &C(X^k \rightarrow Y^k = X^k + Z^k, \beta) = \max_{p_{X^k}, \Ex{||X^k||} \leq \beta} I(X^k, Y^k) \\
+  & \text{ with } I(X^k, Y^k) = h(Y^k) - h(Y^k | X^k) \leq \sum_{i = 1}^k \underbrace{(h(Y_i) - h(Z_i))}_{I(X_i, X_i + Z_i)} \\
   & \text{ with } h(Y^k | X^k) = h(Y^k - X^k | X^k) = h(Z^k) = \sum_{i = 1}^k h(Z_i)
 \end{align*}
 
 with equality if $X_i$'s are independent
 
 \[
-  C(X^k \rightarrow Y^k = X^k + Z^k, \beta) \leq \sum_{i = 1}^k \frac{1}{2} \log(1 + \frac{beta_i}{\sigma^2_i}) \quad \text{ with } \beta_i = \E{X_i^2}
+  C(X^k \rightarrow Y^k = X^k + Z^k, \beta) \leq \sum_{i = 1}^k \frac{1}{2} \log \left(1 + \frac{\beta_i}{\sigma^2_i}\right) \quad \text{ with } \beta_i = \Ex{X_i^2}
 \]
 
 with equality when $X_i \sim N(0, \beta_i)$
 
 \[
-  C(X^k \rightarrow Y^k = X^k + Z^k, \beta) = \max_{\beta_1, ..., \beta_k \geq 0, \sum \beta_i = \beta} \sum_{i = 1}^k \frac{1}{2} \log(1 + \frac{\beta_i}{\sigma^2_i})
+  C(X^k \rightarrow Y^k = X^k + Z^k, \beta) = \max_{\beta_1, ..., \beta_k \geq 0, \sum \beta_i = \beta} \sum_{i = 1}^k \frac{1}{2} \log \left(1 + \frac{\beta_i}{\sigma^2_i} \right)
 \]
 
 \[
-  C(\beta) = \max_{f_1, ..., f_k \geq 0, \sum f_i = 1} \sum_{i = 1}^k \frac{1}{2} \log(1 + \frac{f_i \beta}{\sigma^2_i})
+  C(\beta) = \max_{f_1, ..., f_k \geq 0, \sum f_i = 1} \sum_{i = 1}^k \frac{1}{2} \log \left(1 + \frac{f_i \beta_i}{\sigma^2_i} \right)
 \]
 
 thus, we are maximazing a concave function on the simplex, so the optimal $f_i$ satisfies: \textit{for some $\lambda$}
@@ -2237,7 +2242,7 @@ thus, we are maximazing a concave function on the simplex, so the optimal $f_i$ 
   \frac{1}{2} \frac{\frac{\beta}{\sigma^2_j}}{1 + f_j \frac{\beta}{\sigma^2_j}} = \frac{\beta}{2} - \frac{1}{\sigma_j^2 + \beta_j}
 \]
 
-so the optimal $\{\beta_j\}$ satisfies
+Using the change of variable $\mu = 1 / \lambda$, the optimal $\{\beta_j\}$ satisfies
 
 \begin{align*}
   \beta_j + \sigma_j^2 &\geq \mu \text{ for all } j \\
@@ -2264,7 +2269,7 @@ So, in terms of $\mu$, we have
 \]
 
 \[
-  C(\beta) = \sum_i \underbrace{\log(1 + \frac{(\mu - \sigma_i^2)^+}{\sigma_i^2})}_{(\log \frac{\mu}{\sigma^2_i})^+} = \sum_i (\log(\frac{\mu}{\sigma^2_i}))^+
+  C(\beta) = \sum_i \underbrace{\log(1 + \frac{(\mu - \sigma_i^2)^+}{\sigma_i^2})}_{(\log \frac{\mu}{\sigma^2_i})^+} = \sum_i \left(\log \frac{\mu}{\sigma^2_i}\right)^+
 \]
 
 \todo{include water-filling scheme}
@@ -2282,7 +2287,7 @@ So, in terms of $\mu$, we have
   The object of coding is to introduce redundancy so that even if some of the information is lost or corrupted, it will still be possible to recover the message at the receiver.
 \end{wikipedia}
 
-Restrict ourselves to Binary Symmetric and Binary Erasive Channel. Suppose
+Restrict ourselves to Binary Symmetric and Binary Erasure Channel. Suppose
 \[
   Enc: \{1, ..., M\} \rightarrow \{ 0, 1\}^n, n = 1000, rate = \frac{1}{2}
   \Rightarrow n = 2^{500}
@@ -2451,13 +2456,13 @@ So, if $X$ and $X'$ are codewords
 \]
 and in fact $ = 3$.
 
-For each codeword $X$, consider $\underbrace{B}_{\text{ball}}(\underbrace{X}_{\text{center}}, \underbrace{1}_{\text{radius}}) = \{Y \in \#^7_2 : d_H(X, Y) \leq 1 \}$
+For each codeword $X$, consider $\underbrace{B}_{\text{ball}}(\underbrace{X}_{\text{center}}, \underbrace{1}_{\text{radius}}) = \{Y \in \F^7_2 : d_H(X, Y) \leq 1 \}$
 
 \[
   \Rightarrow \text{ if } X \neq X', \text{ then } B(X, 1) \cup B(X', 1) = \emptyset
 \]
 
-Also, $|B(X, 1)| = \underbrace{1}_{X} + \underbrace{17}_{\text{ all } Y \text{'s at } d_H = 1}$
+Also, $|B(X, 1)| = \underbrace{1}_{X} + \underbrace{7}_{\text{ all } Y \text{'s at } d_H = 1}$
 
 There are 16 coderwords:
 
@@ -2549,7 +2554,7 @@ Let's extend the Hamming code to more general parameters $(2^{m}-1, 2^m - 1 - m,
  % \KwResult{how to write algorithm with \LaTeX2e }
  $S \leftarrow F_2^n$\;
  \While{$S \not = \emptyset$}{
-  pich $x \in S$ as a codeword\;
+  pick $x \in S$ as a codeword\;
   $S \leftarrow S \setminus B(x, d-1)$\;
  }
 \end{algorithm}
@@ -2567,7 +2572,7 @@ Let's extend the Hamming code to more general parameters $(2^{m}-1, 2^m - 1 - m,
 \end{observation}
 
 \begin{theorem}[Singleton bound]
-  Suppose we have a code in $\F_2^n$ with $M > 2^k$ codewords. Then the code jas minimum distance $\leq n - k$ (i.e. there are $x\not = x$ codewords with $d_H(x,x' \leq n-k)$).
+  Suppose we have a code in $\F_2^n$ with $M > 2^k$ codewords. Then the code has minimum distance $\leq n - k$ (i.e. there are $x\not = x$ codewords with $d_H(x,x' \leq n-k)$).
 \end{theorem}
 
 \begin{proof}
@@ -2704,9 +2709,10 @@ Suppose there exists $l$ columns of $H$ which are linearly dependent $\Rightarro
 
 Recall $d_H(x, x') = \sum_{i = 1}^n \I(x_i \neq x_i')$ with $x, x'\in \X^n$
 
+\todo{check that change}
 \textbf{Singleton bound}: Suppose $C \subset \X^n, |C| > |X|^k$ then
 \[
-  d_{min}(c) \geq n - k
+  d_{min}(c) \leq n - k
 \]
 
 \begin{proof}
@@ -2742,11 +2748,11 @@ $v$ has atmost $k-1$ entries. Therefor it has at least $n - k + 1$ non-zero entr
 Thus
 
 \[
-  x(u) \neq x(\tilde(u)) \Rightarrow |C| = q^k
+  x(u) \neq x(\tilde u) \Rightarrow |C| = q^k
 \]
 and $d_{min} \geq n - k + 1$ (actually equal because singleton bound says $d_{min} \leq n - k + 1$)
 
-Furthermore, if $x \in C, \tilde{x} \in C$, if $a, \tilde{a} \in \F$, then $ax + \tilde{a} \tilde{x} \in C$, because $x = x(u), \tilde{x} = x(\tilde{U}$ then $ax + \tilde{a} \tilde{x} = x(a u +  \tilde{a} \tilde{x})$, so $C$ is a linear code.
+Furthermore, if $x \in C, \tilde{x} \in C$, if $a, \tilde{a} \in \F$, then $ax + \tilde{a} \tilde{x} \in C$, because $x = x(u), \tilde{x} = x(\tilde{u})$ then $ax + \tilde{a} \tilde{x} = x(a u +  \tilde{a} \tilde{x})$, so $C$ is a linear code.
 
 \begin{example}
   $\F = \{ 0, 1, 2 \}, n = 3, \alpha_1 = 0, \alpha_2 = 1, \alpha_3 = 2$ with $mod 3$ addition and multiplication
@@ -2955,7 +2961,7 @@ So far $2I(W) = I(W^-) + I(W^+)$
   \todo{recheck polar codes}
 
 % ------------------------
-  Sebastien 12.7.2017
+% Sebastien 12.7.2017
 
 How to decoder the output $\Y$ of a binary input channel $W$? Given $y$ (the output of $W$)
 
@@ -3154,6 +3160,147 @@ Consider $U_1, U_2, ...$ iid $\sim P_u$ on an alphabet $\U$. We also have a repr
 \end{theorem}
 
 \todo{fat proof}
+
+
+% --------------------------------
+%   JB 18/12/2017
+
+Given i.i.d. source $U_1U_2 \dots$ and a distorsion measure $d:\U \times \V \to \R$ the possible ($R$ rate, $D$ distorition) pairs are
+
+\[
+  R\geq \min_{p_{V|U} : \Ex{d(U,V)} = D} I(U;V)
+\]
+
+\begin{definition}[Rate distorsion]
+  \[
+    R\geq \min_{p_{V|U} : \Ex{d(U,V)} \leq D} I(U;V)
+  \]
+\end{definition}
+
+\begin{example}
+  When $U\sim N(0, \sigma^2)$ and $d(u,v) = (u-v)^2$
+  \[
+    R(D) = \left(\frac 1 2 \log \frac { \sigma^2} D \right)^+
+  \]
+  \[
+    D(R) = \sigma^2 2^{-2R}, R \geq 0
+  \]
+\end{example}
+
+\subsection{Multi party communications}
+
+Encode two message $m_1 \in \{1, \dots, M_1\}$ and $m_2 \in \{1, \dots, M_2\}$ with two encoders $Enc_i$. Transmit with one channel and decode with onde decoder $Dec$ that gives $(\hat m_1, \hat m_2)$.
+
+\[
+  R_i = \frac 1 n \log M_i
+\]
+\[
+  p_e = \frac 1 {M_1 M_2} \sum_{m_1, m_2} \Pr{(\hat m_1, \hat m_2) \not= (m_1, m_2) | m_1,m_2 \text{ is sent}}
+\]
+
+\begin{definition}
+  Given a channel $W(y|x_1,x_2)$ (memoryless), a rate pair $(R_1, R_2)$ is said to be achievable if $\forall \epsilon > 0$ there is $(Enc_1, Enc_2, Dec)$ such that the rate of $Enc_1$ is greater that $R_1 - \epsilon$, the rate of $Enc_2$ is greater that $R_2 - \epsilon$ and $p_e \leq \epsilon$. The set of all achievable rate-pairs (for the given $W$) is denoted $C(W)$ and called the capacity region.
+\end{definition}
+
+
+\begin{theorem}
+  Given $W(y|x_1,x_2)$ for any $p_{X_1}, p_{X_2}$ then the achievable pair rates are
+  \[
+    \{
+      (R_1, R_2) : R_1 \leq I(X_1;YX_2), R_2 \leq I(X_2;YX_1), R_1+R_2 \leq I(X_1X_2;Y)
+    \}
+  \]
+\end{theorem}
+
+
+
+\begin{proof}
+  Suppose we are given $W$, $p_{X_1}$ and $p_{X_2}$, $R_1 \leq I(X_1;YX_2)$, $R_2 \leq I(X_2;YX_1)$, $R_1 + R_2 \leq I(X_1X_2;Y)$. Fix $\epsilon$
+
+  Let $M_1 = 2^{n(R_1 - \epsilon})$, $M_2 = 2^{n(R_2 - \epsilon})$, set $p_{X_1X_2Y} = p_{X_1}(x_1)p_{X_2}(x_2)W(y|x_1x_2)$. Create the random encoder with
+  \[
+    \{ X_{ij}(m) : i \in \{1,2\}, 0 \leq j < n, m \in M_i\} \sim p_{X_i}
+  \]
+\end{proof}
+
+We use the typicality decoder: given $Y^n$ search for $\hat m_1, \hat m_2$ such that
+\[
+  (Enc_1^n(\hat m_1), Enc_2^n(\hat m_2), Y^n) \in T(n, \delta, p)
+\]
+If only one pair $(\hat m_1, \hat m_2)$ is found declare it, otherwise declare 0. We are fine concerning the rates. For the probability of error assume (w.l.o.g.) that $m_1 = 1, m_2 = 1$ is sent.
+
+\[
+  \{
+    \text{error}
+  \}
+  =
+  \{(X_1^n(1), X_2^n(1), Y^n) \not \in T\} \cup \bigcup_{(m_1',m_2') \not=(1,1)} \{(X_1^n(m_1'), X_2^n(m_2'), Y^n) \in T\}
+\]
+
+\[
+  p_e = \Pr{(X_1^n(1), X_2^n(1), Y^n) \not \in T} + \sum_{(m_1',m_2') \not=(1,1)} \Pr{(X_1^n(m_1'), X_2^n(m_2'), Y^n) \in T}
+\]
+
+\[
+  (m_1', m_2') \not = (1,1) \Rightarrow \begin{cases}
+    m_1' = 1, m_2' \not=1, \text{genericity } (1,2), (M_2 - 1) \text{ such terms}\\
+    m_1' \not= 1, m_2' =1, \text{genericity } (2,1), (M_1 - 1) \text{ such terms}\\
+    m_1' \not= 1, m_2' \not=1, \text{genericity } (2,2), (M_1 - 1)(M_2 - 1) \text{ such terms}\\
+  \end{cases}
+\]
+
+Then
+\begin{align*}
+  p_e \leq \Pr{(X_1^n(1), X_2^n(1), Y^n) \not \in T}
+  & + (M_2 - 1) \Pr{(X_1^n(1), X_2^n(2), Y^n) \in T}\\
+  & + (M_1 - 1) \Pr{(X_1^n(2), X_2^n(1), Y^n) \in T}\\
+  & + (M_1 - 1)(M_2 - 1) \Pr{(X_1^n(2), X_2^n(2), Y^n) \in T}
+\end{align*}
+
+Given that $(X_1^n(1), X_2^n(1), Y^n)$ i.i.d. $\sim p_{X_1,X_2,Y}$ then
+\[
+  \lim_{n \to \infty} \Pr{(X_1^n(1), X_2^n(1), Y^n) \not \in T} = 0
+\]
+
+$(X_1^n(1), X_2^n(2), Y^n)$ i.i.d. $\sim p_{X_1,Y}p_{X_2} \triangleq q_1$ then
+\[
+  \Pr{(X_1^n(1), X_2^n(2), Y^n) \in T(p)} = 2^{-n(D(p||q_1) + o(\delta))}
+\]
+
+\[
+  D(p||q_1) = \sum_{x_1,x_2,y} p(x_1,x_2,y) \log \frac {p(x_1,x_2,y)}{p(x1,y)p(x_2)} = I(X_2; YX_1)
+\]
+Similarly
+
+\begin{align*}
+    \Pr{(X_1^n(2), X_2^n(1), Y^n) \in T(p)} = 2^{-n(I(X_1;YX_2) + o(\delta))}\\
+    \Pr{(X_1^n(2), X_2^n(2), Y^n) \in T(p)} = 2^{-n(I(X_1X_2;Y) + o(\delta))}
+\end{align*}
+
+so
+
+\begin{align*}
+  p_e \leq 2^{-n(I(X_2;YX_1) + o(\delta))} + 2^{-n(I(X_1;YX_2) + o(\delta))} + 2^{-n(I(X_1X_2;Y) + o(\delta))} \to 0
+\end{align*}
+as $R_2\leq I(X_2;YX_1)$, $R_1\leq I(X_1;YX_2)$ and $R_1 + R_2\leq I(X_1X_2;Y)$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
