@@ -1060,10 +1060,10 @@ Given some alphabet $\U$ to both encoder and decoder, they also agree an order o
 
 \begin{example}
   Define an alphabet $\U = \{a, b, c\}$ with $a \leq b \leq c$ and an input message
-  $$ u = a b a c a c $$
+  $$ u = b b a c a c $$
   \begin{itemize}
     \item Create the dictionary $\D = \{a, b, c\}$ and its corresponding binary description $\D_{bin} = \{00, 01, 10\}$
-    \item The first word in the message is $'a'$, output its binary description
+    \item The first word in the message is $'b'$, output its binary description
     $$ output = 01 $$
     \item Update the dictionary:
     $$ \D = \{a, ba, bb, bc , c\} \quad \D_{bin} = \{000, 001, 010, 011, 100\} $$
