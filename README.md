@@ -8,5 +8,6 @@ Scribing of lectures by Prof. Telatar for the *Information Theory and Coding* co
 
 ### Contributors
 
-- Jean-Baptiste @jbcdnr
-- Sebastien @Speierers
+- Jean-Baptiste [@jbcdnr](https://github.com/jbcdnr)
+- Sebastien [@Speierers](https://github.com/Speierers)
+
