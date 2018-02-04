@@ -968,23 +968,6 @@ consequently this scheme is asymptotically optimal.
   And we already know that $H(U) \geq H(U|V)$
 \end{proof}
 
-
-
-% ----------------------------- %
-% ---- lecture 2017-10-16 ----- %
-% --------- thomas ------------ %
-% ----------------------------- %
-
-
-
-
-
-
-% -------------------------------------------------------------------------
-% lesson - 16.0.2017 - Thomas
-
-\todo{Thomas scribes here}
-
 % -------------------------------------------------------------------------
 % lesson - 17.0.2017 - sebastien
 
@@ -1547,8 +1530,6 @@ We have
   &= \sum_y W(y|x_0) \log \frac {W(y|x)} {P_Y(y)} - \log e
 \end{align*}
 
-\todo{why log disappear ?}
-
 \begin{theorem}
   \label{th:1000}
   $p_X$ maximizes $I(X;Y)$ iff there exists $\lambda$ such that for all $x$
@@ -2066,7 +2047,6 @@ To avoid physically unrealisable scenarios, we need to impose some kind of cost 
   b(Enc(m)) = \frac 1 n \sum_{i=1}^n b(Enc(m)_i)
 \]
 and we let
-\todo{Please check this makes sense}
 \[
   cost(Enc) = b(Enc(m))
 \]
@@ -2271,8 +2251,6 @@ So, in terms of $\mu$, we have
 \[
   C(\beta) = \sum_i \underbrace{\log(1 + \frac{(\mu - \sigma_i^2)^+}{\sigma_i^2})}_{(\log \frac{\mu}{\sigma^2_i})^+} = \sum_i \left(\log \frac{\mu}{\sigma^2_i}\right)^+
 \]
-
-\todo{include water-filling scheme}
 
 "Water filling" solution pour water of volume $\beta$ to the basin with altitude map given by $\sigma^2_i$'s
 
@@ -2709,7 +2687,6 @@ Suppose there exists $l$ columns of $H$ which are linearly dependent $\Rightarro
 
 Recall $d_H(x, x') = \sum_{i = 1}^n \I(x_i \neq x_i')$ with $x, x'\in \X^n$
 
-\todo{check that change}
 \textbf{Singleton bound}: Suppose $C \subset \X^n, |C| > |X|^k$ then
 \[
   d_{min}(c) \leq n - k
@@ -2958,7 +2935,6 @@ So far $2I(W) = I(W^-) + I(W^+)$
     I(W^+) = I(U_2;Y_1Y_2U_1) \geq O(X_2,Y_2) = I(W) \Rightarrow I(W^-) \leq I(W) \leq I(W^+)
   \]
 \end{example}
-  \todo{recheck polar codes}
 
 % ------------------------
 % Sebastien 12.7.2017
@@ -2977,11 +2953,8 @@ Compute $W(y|0), W(y|1)$, max likelihood decoding rule
 \right.
 \]
 
-\todo{include graph}
 
 \subsubsection*{Encoding / decoding complexity}
-
-\todo{include graph}
 
 \textbf{Encoding} complexity:
 \[
@@ -3035,7 +3008,6 @@ $\Rightarrow$ the fraction of $\epsilon$-bad channels $\rightarrow p$ \\
 
 This suggest the following coding methods: Given $R < 1 - p = C(BEC(p))$, pick $\epsilon > 0$ and $k$ large enough so that fraction of $\epsilon$-good channels is $>R$. Then
 
-\todo{include graph}
 
 \[
   \Pr{\hat{U}^n \neq U^n} \leq \sum_{i: \epsilon\text{-good}} \Pr{\hat{U}_i \neq U_i} \leq nR \epsilon
@@ -3288,13 +3260,11 @@ as $R_2\leq I(X_2;YX_1)$, $R_1\leq I(X_1;YX_2)$ and $R_1 + R_2\leq I(X_1X_2;Y)$
 
 Suppose we are given a "working system", normally
 
-\todo{include graphic}
-
 with $\frac{1}{M_1 M_2} \Pr{\hat{m_1}\hat{m_2} \neq m_1 m_2 | m_1 m_2 \text{ is sent }} < \epsilon$
 
 We want to show that $(R_1, R_2)$ belongs to convex hull $(\bigcup_{P_{x_1} P_{x_2}} \{...\})$
 To that end, let $U_1$ be uniformly distributed on ${1 ... M_1}$ with $R_1 = \frac{1}{n} H(U_1)$ and let $U_2$ be uniformly distributed on ${1 ... M_2}$ with $R_2 = \frac{1}{n} H(U_2)$
-also with \todo{include graphic}
+also with
 \[
   \Rightarrow \Pr{V_1 V_2 \neq U_1 U_2} < \epsilon \Rightarrow
   \left\{
@@ -3638,8 +3608,6 @@ However, if we assume further
 \]
 
 then $Pent' = Pent$
-
-\todo{graphic proof}
 
 \begin{theorem}
   Suppose $(a_i, b_i, c_i) \geq 0, i = 1 , ..., n$ with $max(a_i, b_i) \leq c_i \leq a_i + b_i$ and
