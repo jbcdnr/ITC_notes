@@ -5,3 +5,8 @@ Scribing of lectures by Prof. Telatar for the *Information Theory and Coding* co
 ### Useful external ressources
 
 - [Tutorial on polar code](https://www.youtube.com/watch?v=VhyoZSB9g0w) by Prof. Telatar
+
+### Contributors
+
+- Jean-Baptiste @jbcdnr
+- Sebastien @Speierers
